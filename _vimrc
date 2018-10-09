@@ -41,12 +41,15 @@ endif
 
 
 
-
+# automatically indent on hit tab-key
 set autoindent
 set tabstop=4
 set shiftwidth=4
 set expandtab
 set backspace=indent,eol,start
+
+# enable clipboard binding
+set clipboard+=unnamed
 
 
 
