@@ -52,7 +52,11 @@ set backspace=indent,eol,start
 set clipboard+=unnamed
 
 
+" enable syntax highlight
+syntax on
 
+" indicate line number as default
+set number
 
 
 
