@@ -93,7 +93,7 @@ let g:NERDTreeWinSize = 30
 let NERDTreeShowHidden=1
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 nnoremap <Leader>dir :NERDTreeTabsToggle<CR>
-autocmd BufWritePre * :FixWhitespace
+""""autocmd BufWritePre * :FixWhitespace
 
 "" quickrun
 nnoremap <Leader>go :QuickRun<CR>
@@ -253,10 +253,10 @@ nnoremap - <C-x>
 "" move 15 words
 nmap <silent> <Tab> 15<Right>
 nmap <silent> <S-Tab> 15<Left>
-nmap <silent> ll 15<Right>
-nmap <silent> hh 15<Left>
-nmap <silent> jj 15<Down>
-nmap <silent> kk 15<Up>
+""nmap <silent> ll 15<Right>
+""nmap <silent> hh 15<Left>
+""nmap <silent> jj 15<Down>
+""nmap <silent> kk 15<Up>
 
 "" pbcopy for OSX copy/paste
 vmap <C-x> :!pbcopy<CR>
@@ -314,3 +314,22 @@ set whichwrap=b,s,h,l,<,>,[,]
 highlight Pmenu ctermbg=233 ctermfg=241
 highlight PmenuSel ctermbg=233 ctermfg=166
 highlight Search ctermbg=166 ctermfg=233
+
+"" map Ctrl+j to escape
+imap <C-j> <esc>
+noremap! <C-j> <esc>
+
+"" Change color of pair bracket
+hi MatchParen ctermbg=94
+
+"" Change cursol color
+let &t_ti.="\e[1 q"
+let &t_SI.="\e[5 q"
+let &t_EI.="\e[1 q"
+let &t_te.="\e[0 q"
+
+"" Set shortcut to move cursol by hjkl
+"" inoremap <C-p> <Up>
+"" inoremap <C-n> <Down>
+"" inoremap <C-b> <Left>
+"" inoremap <C-f> <Right>
