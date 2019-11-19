@@ -333,3 +333,6 @@ let &t_te.="\e[0 q"
 "" inoremap <C-n> <Down>
 "" inoremap <C-b> <Left>
 "" inoremap <C-f> <Right>
+inoremap <C-s> <Esc>:w<CR>
+nnoremap <C-s> :w<CR>
+nnoremap ; :
