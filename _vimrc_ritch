@@ -315,9 +315,51 @@ highlight Pmenu ctermbg=233 ctermfg=241
 highlight PmenuSel ctermbg=233 ctermfg=166
 highlight Search ctermbg=166 ctermfg=233
 
-"" map Ctrl+j to escape
-imap <C-j> <esc>
-noremap! <C-j> <esc>
+"" map jj, kk  to escape
+inoremap <silent> jj <esc>
+inoremap <silent> kk <esc>
+
+
+"let g:some_key = '<Up>'
+"execute 'nnoremap <Plug>(some-key) ' . g:some_key
+
+"function! s:TestFun()
+"  " doing something
+"    return \"\<Plug>(some-key)\"
+"    endfunction
+"execute 'nmap <expr> ' . g:some_key . ' <SID>TestFun()'
+
+
+
+
+" Reference
+" https://vi.stackexchange.com/questions/5667/escape-return-value-key-in-mapping-function
+let base_time = 0
+let last_time = 0
+
+" Normally, returns arg1
+" When a key has been pressed while long time, returns arg2
+function! s:Accelerate(arg1, arg2)
+  let t =  reltime()
+  let t = t[0]*1000 + t[1]/1000 "get time in ms
+  if t > g:last_time + 50 "reset basetime if the key is  released
+      let g:base_time = t
+  endif
+  let g:last_time = t
+  if g:last_time > g:base_time + 800 "accelerate
+    return a:arg2
+  endif
+  return a:arg1
+endfunction
+
+" Alternative nnoremap k <Up>
+nnoremap <expr>k <SID>Accelerate("\<Up>", "3\<Up>")
+nnoremap <expr>j <SID>Accelerate("\<Down>", "3\<Down>")
+
+
+
+
+
 
 "" Change color of pair bracket
 hi MatchParen ctermbg=94
