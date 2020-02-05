@@ -355,6 +355,8 @@ endfunction
 " Alternative nnoremap k <Up>
 nnoremap <expr>k <SID>Accelerate("\<Up>", "3\<Up>")
 nnoremap <expr>j <SID>Accelerate("\<Down>", "3\<Down>")
+nnoremap <expr>h <SID>Accelerate("\<Left>", "3\<Left>")
+nnoremap <expr>l <SID>Accelerate("\<Right>", "3\<Right>")
 
 
 
