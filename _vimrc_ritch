@@ -263,6 +263,7 @@ vmap <C-x> :!pbcopy<CR>
 vmap <C-c> :w !pbcopy<CR><CR>
 
 "" move line/word
+let g:BASH_Ctrl_j = 'off'
 nmap <C-e> $
 nmap <C-a> 0
 nmap <C-f> W
@@ -271,6 +272,10 @@ imap <C-e> <C-o>$
 imap <C-a> <C-o>0
 imap <C-f> <C-o>W
 imap <C-b> <C-o>B
+
+" scroll and move
+nnoremap <C-j> jzz
+nnoremap <C-k> kzz
 
 " base
 set encoding=utf-8
@@ -316,8 +321,10 @@ highlight PmenuSel ctermbg=233 ctermfg=166
 highlight Search ctermbg=166 ctermfg=233
 
 "" map jj, kk  to escape
-inoremap <silent> jj <esc>
-inoremap <silent> kk <esc>
+inoremap jj <esc>
+inoremap kk <esc>
+inoremap jk <esc>
+inoremap kj <esc>
 
 
 "let g:some_key = '<Up>'
@@ -342,7 +349,7 @@ let last_time = 0
 function! s:Accelerate(arg1, arg2)
   let t =  reltime()
   let t = t[0]*1000 + t[1]/1000 "get time in ms
-  if t > g:last_time + 50 "reset basetime if the key is  released
+  if t > g:last_time + 100 "reset basetime if the key is  released
       let g:base_time = t
   endif
   let g:last_time = t
@@ -353,14 +360,10 @@ function! s:Accelerate(arg1, arg2)
 endfunction
 
 " Alternative nnoremap k <Up>
-nnoremap <expr>k <SID>Accelerate("\<Up>", "3\<Up>")
-nnoremap <expr>j <SID>Accelerate("\<Down>", "3\<Down>")
-nnoremap <expr>h <SID>Accelerate("\<Left>", "3\<Left>")
-nnoremap <expr>l <SID>Accelerate("\<Right>", "3\<Right>")
-
-
-
-
+nnoremap <expr>k <SID>Accelerate("\<Up>", "2\<Up>")
+nnoremap <expr>j <SID>Accelerate("\<Down>", "2\<Down>")
+nnoremap <expr>h <SID>Accelerate("\<Left>", "2\<Left>")
+nnoremap <expr>l <SID>Accelerate("\<Right>", "2\<Right>")
 
 
 "" Change color of pair bracket
