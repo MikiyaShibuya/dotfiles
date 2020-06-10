@@ -264,14 +264,26 @@ vmap <C-c> :w !pbcopy<CR><CR>
 
 "" move line/word
 let g:BASH_Ctrl_j = 'off'
-nmap <C-e> $
+nmap <C-e> $<Right>
 nmap <C-a> 0
 nmap <C-f> W
 nmap <C-b> B
-imap <C-e> <C-o>$
+""imap <C-e> <C-o>$
 imap <C-a> <C-o>0
 imap <C-f> <C-o>W
 imap <C-b> <C-o>B
+
+"" Define function to perform moveing cursor to end of line
+function! EndCursor()
+  "" let l1 = line(".")
+  "" let c1 = col(".")
+  "" call cursor(l1, c1+1)
+  normal! h$
+
+endfunction
+command! EndCursor call EndCursor()
+
+imap <C-e> <C-o>$<Right><C-o>:call EndCursor()<CR>
 
 " scroll and move
 nnoremap <C-j> jzz
@@ -322,9 +334,6 @@ highlight Search ctermbg=166 ctermfg=233
 
 "" map jj, kk  to escape
 inoremap jj <esc>
-inoremap kk <esc>
-inoremap jk <esc>
-inoremap kj <esc>
 
 
 "let g:some_key = '<Up>'
@@ -383,3 +392,5 @@ let &t_te.="\e[0 q"
 inoremap <C-s> <Esc>:w<CR>
 nnoremap <C-s> :w<CR>
 nnoremap ; :
+
+set virtualedit=onemore
