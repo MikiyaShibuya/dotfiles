@@ -20,8 +20,8 @@ let g:polyglot_disabled = ['python']
 " plugin
 call plug#begin('~/.local/share/nvim/plugged')
 " space + ne -> sidebar
-Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
+" Plug 'scrooloose/nerdtree'
+" Plug 'jistr/vim-nerdtree-tabs'
 " ga -> align
 Plug 'junegunn/vim-easy-align'
 " space + go -> exec script
@@ -58,9 +58,25 @@ Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 " space + sh -> vimshell
 Plug 'Shougo/vimshell.vim'
 
+" defx
+if has('nvim')
+  Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/defx.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+
+"
+Plug 'simeji/winresizer'
+
 call plug#end()
 filetype plugin indent on
 let mapleader="\<Space>"
+
+
+
+
 
 
 
@@ -81,8 +97,115 @@ syntax enable
 set background=dark
 colorscheme solarized
 let g:solarized_termcolors=256
-let g:solarized_contrast = "high"
-let g:solarized_visibility= "high"
+let g:solarized_contrast="high"
+let g:solarized_visibility="high"
+
+
+"#### winresizer ####
+let g:winresizer_start_key= '<C-f>'
+let g:winresizer_vert_resize = 3
+let g:winresizer_horiz_resize = 3
+
+
+
+" vim-airline
+let g:airline_theme = 'powerlineish'
+let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tagbar#enabled = 1
+let g:airline_skip_empty_sections = 1
+
+" vim-airline
+let g:airline#extensions#virtualenv#enabled = 1
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+  endif
+  if !exists('g:airline_powerline_fonts')
+    " No airLine font
+    let g:airline#extensions#tabline#left_sep = ' '
+    let g:airline#extensions#tabline#left_alt_sep = '|'
+    let g:airline#extensions#tabline#buffer_idx_mode = 1
+    let g:airline_left_sep          = '▶'
+    let g:airline_left_alt_sep      = '»'
+    let g:airline_right_sep         = '◀'
+    let g:airline_right_alt_sep     = '«'
+    let g:airline#extensions#branch#prefix     = '⤴' "➔, ➥, ⎇
+    let g:airline#extensions#readonly#symbol   = '⊘'
+    let g:airline#extensions#linecolumn#prefix = '¶'
+    let g:airline#extensions#paste#symbol      = 'ρ'
+    let g:airline_symbols.linenr    = '␊'
+    let g:airline_symbols.branch    = '⎇'
+    let g:airline_symbols.paste     = 'ρ'
+    let g:airline_symbols.paste     = 'Þ'
+    let g:airline_symbols.paste     = '∥'
+    let g:airline_symbols.whitespace = 'Ξ'
+  else
+    let g:airline#extensions#tabline#left_sep = ''
+    let g:airline#extensions#tabline#left_alt_sep = ''
+    let g:airline_left_sep = ''
+    let g:airline_left_alt_sep = ''
+    let g:airline_right_sep = ''
+    let g:airline_right_alt_sep = ''
+    let g:airline_symbols.branch = ''
+    let g:airline_symbols.readonly = ''
+    let g:airline_symbols.linenr = ''
+  endif
+
+
+
+" defx settings
+autocmd FileType defx call s:defx_my_settings()
+
+function! s:defx_my_settings() abort
+  nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
+  nnoremap <silent><buffer><expr> c defx#do_action('copy')
+  nnoremap <silent><buffer><expr> m defx#do_action('move')
+  nnoremap <silent><buffer><expr> p defx#do_action('paste')
+  nnoremap <silent><buffer><expr> l defx#do_action('drop')
+  nnoremap <silent><buffer><expr> t defx#do_action('open','tabnew')
+  nnoremap <silent><buffer><expr> E defx#do_action('drop', 'vsplit')
+  nnoremap <silent><buffer><expr> P defx#do_action('drop', 'pedit')
+  nnoremap <silent><buffer><expr> o defx#do_action('open_or_close_tree')
+  nnoremap <silent><buffer><expr> K defx#do_action('new_directory')
+  nnoremap <silent><buffer><expr> N defx#do_action('new_file')
+  nnoremap <silent><buffer><expr> M defx#do_action('new_multiple_files')
+  nnoremap <silent><buffer><expr> C defx#do_action('toggle_columns', 'mark:indent:icon:filename:type:size:time')
+  nnoremap <silent><buffer><expr> S defx#do_action('toggle_sort', 'time')
+  nnoremap <silent><buffer><expr> d defx#do_action('remove')
+  nnoremap <silent><buffer><expr> r defx#do_action('rename')
+  nnoremap <silent><buffer><expr> ! defx#do_action('execute_command')
+  nnoremap <silent><buffer><expr> x defx#do_action('execute_system')
+  nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
+  nnoremap <silent><buffer><expr> . defx#do_action('toggle_ignored_files')
+  nnoremap <silent><buffer><expr> ; defx#do_action('repeat')
+  nnoremap <silent><buffer><expr> h defx#do_action('cd', ['..'])
+  nnoremap <silent><buffer><expr> ~ defx#do_action('cd')
+  nnoremap <silent><buffer><expr> q defx#do_action('quit')
+  nnoremap <silent><buffer><expr> <Space> defx#do_action('toggle_select') . 'j'
+  nnoremap <silent><buffer><expr> * defx#do_action('toggle_select_all')
+  nnoremap <silent><buffer><expr> j line('.') == line('$') ? 'gg' : 'j'
+  nnoremap <silent><buffer><expr> k line('.') == 1 ? 'G' : 'k'
+  nnoremap <silent><buffer><expr> <C-l> defx#do_action('redraw')
+  nnoremap <silent><buffer><expr> <C-g> defx#do_action('print')
+  nnoremap <silent><buffer><expr> cd defx#do_action('change_vim_cwd')
+endfunction
+
+"let g:python_host_prog = system('(type pyenv &>/dev/null && echo -n "$(pyenv root)/versions/$(pyenv global | grep python2)/bin/python") || echo -n $(which python2)')
+"let g:python3_host_prog = system('(type pyenv &>/dev/null && echo -n "$(pyenv root)/versions/$(pyenv global | grep python3)/bin/python") || echo -n $(which python3)')
+
+call defx#custom#option('_', {
+      \ 'winwidth': 40,
+      \ 'split': 'vertical',
+      \ 'direction': 'topleft',
+      \ 'show_ignored_files': 1,
+      \ 'buffer_name': 'exlorer',
+      \ 'toggle': 1,
+      \ 'resume': 1,
+      \ })
+
+" Open NERD tab by Ctrl-N in Normal mode
+nmap <C-n> :Defx<CR>
 
 
 
@@ -105,29 +228,6 @@ if use_ycm == "true"
 endif
 
 
-" vim-airline
-let g:airline_theme = 'powerlineish'
-let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tagbar#enabled = 1
-let g:airline_skip_empty_sections = 1
-
-" nerdtree
-let g:NERDTreeChDirMode=2
-let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
-let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
-let g:NERDTreeShowBookmarks=1
-let g:nerdtree_tabs_focus_on_files=1
-let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
-let g:NERDTreeWinSize = 30
-let NERDTreeShowHidden=1
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
-" nnoremap <Leader>dir :NERDTreeTabsToggle<CR>
-
-" Open NERD tab by Ctrl-N in Normal mode
-nmap <C-n> :NERDTreeToggle<CR>
-"autocmd BufWritePre * :FixWhitespace
 
 " quickrun
 nnoremap <Leader>go :QuickRun<CR>
@@ -169,41 +269,6 @@ autocmd FileType python setlocal completeopt-=preview
 let g:syntastic_python_checkers=['python', 'flake8']
 let python_highlight_all = 1
 
-" vim-airline
-let g:airline#extensions#virtualenv#enabled = 1
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-  endif
-  if !exists('g:airline_powerline_fonts')
-    " No airLine font
-    let g:airline#extensions#tabline#left_sep = ' '
-    let g:airline#extensions#tabline#left_alt_sep = '|'
-    let g:airline#extensions#tabline#buffer_idx_mode = 1
-    let g:airline_left_sep          = '▶'
-    let g:airline_left_alt_sep      = '»'
-    let g:airline_right_sep         = '◀'
-    let g:airline_right_alt_sep     = '«'
-    let g:airline#extensions#branch#prefix     = '⤴' "➔, ➥, ⎇
-    let g:airline#extensions#readonly#symbol   = '⊘'
-    let g:airline#extensions#linecolumn#prefix = '¶'
-    let g:airline#extensions#paste#symbol      = 'ρ'
-    let g:airline_symbols.linenr    = '␊'
-    let g:airline_symbols.branch    = '⎇'
-    let g:airline_symbols.paste     = 'ρ'
-    let g:airline_symbols.paste     = 'Þ'
-    let g:airline_symbols.paste     = '∥'
-    let g:airline_symbols.whitespace = 'Ξ'
-  else
-    let g:airline#extensions#tabline#left_sep = ''
-    let g:airline#extensions#tabline#left_alt_sep = ''
-    let g:airline_left_sep = ''
-    let g:airline_left_alt_sep = ''
-    let g:airline_right_sep = ''
-    let g:airline_right_alt_sep = ''
-    let g:airline_symbols.branch = ''
-    let g:airline_symbols.readonly = ''
-    let g:airline_symbols.linenr = ''
-  endif
 
 " function
 " xaml
@@ -380,6 +445,13 @@ inoremap jj <esc>
 "    endfunction
 "execute 'nmap <expr> ' . g:some_key . ' <SID>TestFun()'
 
+" function! s:TestFun(arg1)
+"   let t =  reltime()
+"   echo t
+"   return a:arg1
+" endfunction
+" nnoremap <expr>o <SID>TestFun("\<Up>")
+
 
 " Reference
 " https://vi.stackexchange.com/questions/5667/escape-return-value-key-in-mapping-function
@@ -389,8 +461,21 @@ let last_time = 0
 " Normally, returns arg1
 " When a key has been pressed while long time, returns arg2
 function! s:Accelerate(arg1, arg2)
+
+  " millis in vim
+  " let t =  reltime()
+  " let t = t[0]*1000 + t[1]/1000
+
+  " millis in NeoVim
   let t =  reltime()
-  let t = t[0]*1000 + t[1]/1000 "get time in ms
+  let t1 = t[0]
+  let t2 = t[1]
+  let t2 = t2/4294967.296
+  if t2 < 0
+    let t2 += 1000
+  endif
+  let t = (t1 * 1000 + t2)*4
+
   if t > g:last_time + 100 "reset basetime if the key is  released
       let g:base_time = t
   endif
@@ -421,5 +506,15 @@ inoremap <C-s> <Esc>:w<CR>
 nnoremap <C-s> :w<CR>
 nnoremap ; :
 
+" Move window by Shift-hjkl
+nmap <silent> <S-h> :wincmd h<CR>
+nmap <silent> <S-j> :wincmd j<CR>
+nmap <silent> <S-k> :wincmd k<CR>
+nmap <silent> <S-l> :wincmd l<CR>
+
+
 " An additional right-most charactor
 set virtualedit=onemore
+
+let $LANG='en_US.UTF-8'
+set guicursor=n-v-c:block-Cursor/lCursor,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor20,o:hor50
