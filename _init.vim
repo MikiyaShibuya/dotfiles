@@ -38,7 +38,8 @@ Plug 'tpope/vim-surround'
 " error detect
 Plug 'scrooloose/syntastic'
 " delete white space
-Plug 'bronson/vim-trailing-whitespace'
+Plug 'ntpeters/vim-better-whitespace'
+"Plug 'bronson/vim-trailing-whitespace'
 " auto complete
 Plug 'sheerun/vim-polyglot'
 " Plug 'Valloric/YouCompleteMe'
@@ -67,7 +68,11 @@ else
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
-"
+Plug 'kristijanhusak/defx-icons'
+
+Plug 'christoomey/vim-tmux-navigator'
+
+" Window resizer
 Plug 'simeji/winresizer'
 
 call plug#end()
@@ -158,11 +163,11 @@ if !exists('g:airline_symbols')
 autocmd FileType defx call s:defx_my_settings()
 
 function! s:defx_my_settings() abort
-  nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
+  nnoremap <silent><buffer><expr> <CR> defx#do_action('open','tabnew')
   nnoremap <silent><buffer><expr> c defx#do_action('copy')
   nnoremap <silent><buffer><expr> m defx#do_action('move')
   nnoremap <silent><buffer><expr> p defx#do_action('paste')
-  nnoremap <silent><buffer><expr> l defx#do_action('drop')
+  nnoremap <silent><buffer><expr> l defx#do_action('open', 'tabnew')
   nnoremap <silent><buffer><expr> t defx#do_action('open','tabnew')
   nnoremap <silent><buffer><expr> E defx#do_action('drop', 'vsplit')
   nnoremap <silent><buffer><expr> P defx#do_action('drop', 'pedit')
@@ -195,7 +200,7 @@ endfunction
 "let g:python3_host_prog = system('(type pyenv &>/dev/null && echo -n "$(pyenv root)/versions/$(pyenv global | grep python3)/bin/python") || echo -n $(which python3)')
 
 call defx#custom#option('_', {
-      \ 'winwidth': 40,
+      \ 'winwidth': 25,
       \ 'split': 'vertical',
       \ 'direction': 'topleft',
       \ 'show_ignored_files': 1,
@@ -205,7 +210,8 @@ call defx#custom#option('_', {
       \ })
 
 " Open NERD tab by Ctrl-N in Normal mode
-nmap <C-n> :Defx<CR>
+nmap <silent><C-n> :Defx -columns=icons:indent:filename:type<CR>
+
 
 
 
@@ -372,6 +378,7 @@ nmap <C-b> B
 imap <C-a> <C-o>0
 imap <C-f> <C-o>W
 imap <C-b> <C-o>B
+vmap <C-e> $
 
 " Define function to perform moveing cursor to end of line
 function! EndCursor()
@@ -480,7 +487,7 @@ function! s:Accelerate(arg1, arg2)
       let g:base_time = t
   endif
   let g:last_time = t
-  if g:last_time > g:base_time + 800 "accelerate
+  if g:last_time > g:base_time + 100 "accelerate
     return a:arg2
   endif
   return a:arg1
@@ -511,7 +518,6 @@ nmap <silent> <S-h> :wincmd h<CR>
 nmap <silent> <S-j> :wincmd j<CR>
 nmap <silent> <S-k> :wincmd k<CR>
 nmap <silent> <S-l> :wincmd l<CR>
-
 
 " An additional right-most charactor
 set virtualedit=onemore
