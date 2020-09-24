@@ -3,7 +3,8 @@
 	email = mikiya.mail4univ@gmail.com
 
 [alias]
-        graph = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=short
+    old-graph = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=short
+    graph = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=format:'%Y-%m-%d %H:%M'
 
 [core]
 	editor = vim -c \"set fenc=utf-8\"
