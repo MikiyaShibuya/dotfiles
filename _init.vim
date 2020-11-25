@@ -36,7 +36,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
 " error detect
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
 " delete white space
 Plug 'ntpeters/vim-better-whitespace'
 "Plug 'bronson/vim-trailing-whitespace'
@@ -115,7 +115,7 @@ let g:winresizer_horiz_resize = 3
 
 " vim-airline
 let g:airline_theme = 'powerlineish'
-let g:airline#extensions#syntastic#enabled = 1
+" let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
@@ -250,13 +250,13 @@ let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
 let g:vimshell_prompt =  '$ '
 
 " syntastic
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_error_symbol='✗'
-let g:syntastic_warning_symbol='⚠'
-let g:syntastic_style_error_symbol = '✗'
-let g:syntastic_style_warning_symbol = '⚠'
-let g:syntastic_auto_loc_list=1
-let g:syntastic_aggregate_errors = 1
+" let g:syntastic_always_populate_loc_list=1
+" let g:syntastic_error_symbol='✗'
+" let g:syntastic_warning_symbol='⚠'
+" let g:syntastic_style_error_symbol = '✗'
+" let g:syntastic_style_warning_symbol = '⚠'
+" let g:syntastic_auto_loc_list=1
+" let g:syntastic_aggregate_errors = 1
 
 " jedi-vim
 let g:jedi#popup_on_dot = 0
@@ -272,8 +272,8 @@ let g:jedi#force_py_version = 3
 autocmd FileType python setlocal completeopt-=preview
 
 " syntastic
-let g:syntastic_python_checkers=['python', 'flake8']
-let python_highlight_all = 1
+" let g:syntastic_python_checkers=['python', 'flake8']
+" let python_highlight_all = 1
 
 
 " function
