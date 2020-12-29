@@ -1,6 +1,6 @@
 [user]
-	name = MikiyaShibuya
-	email = mikiya.mail4univ@gmail.com
+    name = MikiyaShibuya
+    email = mikiya.mail4univ@gmail.com
 
 [alias]
     old-graph = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=short
@@ -8,6 +8,7 @@
     graph-curr = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --date=format:'%Y-%m-%d %H:%M'
 
 [core]
-	editor = vim -c \"set fenc=utf-8\"
+    editor = vim -c \"set fenc=utf-8\"
+    excludesfile = ~/.gitignore_global
 [pager]
-	diff = diff-highlight | less
+    diff = diff-highlight | less

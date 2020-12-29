@@ -1,88 +1,31 @@
-" setting
-if has('vim_starting')
+
+" ======= D E I N   P L U G I N   M A N A G E R  ======= "
+
+if &compatible
   set nocompatible
+endif
+" Add the dein installation directory into runtimepath
+set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
+
+if dein#load_state('~/.cache/dein')
+  call dein#begin('~/.cache/dein')
+
+  call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
+  call dein#add('Shougo/deoplete.nvim')
+  if !has('nvim')
+    call dein#add('roxma/nvim-yarp')
+    call dein#add('roxma/vim-hug-neovim-rpc')
   endif
 
-if !filereadable(expand('~/.local/share/nvim/site/autoload/plug.vim'))
-  if !executable("curl")
-    echoerr "You have to install curl or first install vim-plug yourself!"
-    execute "q!"
-  endif
-  echo "Installing Vim-Plug..."
-  echo ""
-  silent !\curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  let g:not_finish_vimplug = "yes"
-  autocmd VimEnter * PlugInstall
+  call dein#load_toml('~/.config/nvim/dein.toml', {'lazy': 0})
+  call dein#load_toml('~/.config/nvim/dein_lazy.toml', {'lazy': 1})
+
+  call dein#end()
+  call dein#save_state()
 endif
 
-let g:polyglot_disabled = ['python']
-
-" plugin
-call plug#begin('~/.local/share/nvim/plugged')
-" space + ne -> sidebar
-" Plug 'scrooloose/nerdtree'
-" Plug 'jistr/vim-nerdtree-tabs'
-" ga -> align
-Plug 'junegunn/vim-easy-align'
-" space + go -> exec script
-Plug 'thinca/vim-quickrun'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-" gcc -> comment
-Plug 'tpope/vim-commentary'
-" option bar
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-" auto bracket
-Plug 'Raimondi/delimitMate'
-Plug 'tpope/vim-surround'
-" error detect
-" Plug 'scrooloose/syntastic'
-" delete white space
-Plug 'ntpeters/vim-better-whitespace'
-"Plug 'bronson/vim-trailing-whitespace'
-" auto complete
-Plug 'sheerun/vim-polyglot'
-" Plug 'Valloric/YouCompleteMe'
-Plug 'ervandew/supertab'
-" html
-Plug 'hail2u/vim-css3-syntax'
-Plug 'gorodinskiy/vim-coloresque'
-Plug 'tpope/vim-haml'
-Plug 'mattn/emmet-vim'
-" javascript
-Plug 'jelera/vim-javascript-syntax'
-" php
-Plug 'arnaud-lb/vim-php-namespace'
-" python
-" Plug 'davidhalter/jedi-vim'
-Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
-" space + sh -> vimshell
-Plug 'Shougo/vimshell.vim'
-
-" defx
-if has('nvim')
-  Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/defx.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-
-Plug 'kristijanhusak/defx-icons'
-
-Plug 'christoomey/vim-tmux-navigator'
-
-" Window resizer
-Plug 'simeji/winresizer'
-
-call plug#end()
 filetype plugin indent on
-let mapleader="\<Space>"
-
-
-
-
-
+syntax enable
 
 
 "######## Color scheme: solarized ########"
@@ -121,41 +64,6 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline_skip_empty_sections = 1
 
-" vim-airline
-let g:airline#extensions#virtualenv#enabled = 1
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-  endif
-  if !exists('g:airline_powerline_fonts')
-    " No airLine font
-    let g:airline#extensions#tabline#left_sep = ' '
-    let g:airline#extensions#tabline#left_alt_sep = '|'
-    let g:airline#extensions#tabline#buffer_idx_mode = 1
-    let g:airline_left_sep          = '▶'
-    let g:airline_left_alt_sep      = '»'
-    let g:airline_right_sep         = '◀'
-    let g:airline_right_alt_sep     = '«'
-    let g:airline#extensions#branch#prefix     = '⤴' "➔, ➥, ⎇
-    let g:airline#extensions#readonly#symbol   = '⊘'
-    let g:airline#extensions#linecolumn#prefix = '¶'
-    let g:airline#extensions#paste#symbol      = 'ρ'
-    let g:airline_symbols.linenr    = '␊'
-    let g:airline_symbols.branch    = '⎇'
-    let g:airline_symbols.paste     = 'ρ'
-    let g:airline_symbols.paste     = 'Þ'
-    let g:airline_symbols.paste     = '∥'
-    let g:airline_symbols.whitespace = 'Ξ'
-  else
-    let g:airline#extensions#tabline#left_sep = ''
-    let g:airline#extensions#tabline#left_alt_sep = ''
-    let g:airline_left_sep = ''
-    let g:airline_left_alt_sep = ''
-    let g:airline_right_sep = ''
-    let g:airline_right_alt_sep = ''
-    let g:airline_symbols.branch = ''
-    let g:airline_symbols.readonly = ''
-    let g:airline_symbols.linenr = ''
-  endif
 
 
 
