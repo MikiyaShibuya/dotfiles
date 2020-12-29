@@ -80,7 +80,6 @@ eval "$(pyenv init -)"
 
 # Use nvim as a default
 alias vim='nvim'
-alias ls='ls --color=auto'
 
 # history
 HISTFILE=$HOME/.zsh-history
