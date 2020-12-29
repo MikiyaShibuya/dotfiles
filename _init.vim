@@ -1,6 +1,10 @@
 
 " ======= D E I N   P L U G I N   M A N A G E R  ======= "
 
+" Dein installation
+" $ curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > /tmp/installer.sh
+" $ sh /tmp/installer.sh ~/.cache/dein
+
 if &compatible
   set nocompatible
 endif

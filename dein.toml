@@ -53,6 +53,7 @@ repo = 'christoomey/vim-tmux-navigator'
 [[plugins]]
 repo = 'simeji/winresizer'
 
+# Check node version (v10 or later needed) if coc.nvim got syntax error
 [[plugins]]
 repo = 'neoclide/coc.nvim'
 rev = 'release'
