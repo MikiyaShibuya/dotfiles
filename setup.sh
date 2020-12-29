@@ -8,7 +8,6 @@ ln -s $HOME/dotfiles/_init.vim $HOME/.config/nvim/init.vim
 ln -s $HOME/dotfiles/_gitconfig $HOME/.gitconfig
 ln -s $HOME/dotfiles/_tmux.conf $HOME/.tmux.conf
 ln -s $HOME/dotfiles/zshrc $HOME/.zshrc
-ln -s $HOME/dotfiles/oh-my-zsh $HOME/.oh-my-zsh
 
 ln -s $HOME/dotfiles/dein.toml $HOME/.config/nvim/dein.toml
 ln -s $HOME/dotfiles/dein_lazy.toml $HOME/.config/nvim/dein_lazy.toml
