@@ -1,0 +1,174 @@
+[[plugins]]
+repo = 'vim-airline/vim-airline'
+hook_add = '''
+" vim-airline
+    let g:airline#extensions#virtualenv#enabled = 1
+    if !exists('g:airline_symbols')
+      let g:airline_symbols = {}
+    endif
+    if !exists('g:airline_powerline_fonts')
+      " No airLine font
+      let g:airline#extensions#tabline#left_sep = ' '
+      let g:airline#extensions#tabline#left_alt_sep = '|'
+      let g:airline#extensions#tabline#buffer_idx_mode = 1
+      let g:airline_left_sep          = '▶'
+      let g:airline_left_alt_sep      = '»'
+      let g:airline_right_sep         = '◀'
+      let g:airline_right_alt_sep     = '«'
+      let g:airline#extensions#branch#prefix     = '⤴' "➔, ➥, ⎇
+      let g:airline#extensions#readonly#symbol   = '⊘'
+      let g:airline#extensions#linecolumn#prefix = '¶'
+      let g:airline#extensions#paste#symbol      = 'ρ'
+      let g:airline_symbols.linenr    = '␊'
+      let g:airline_symbols.branch    = '⎇'
+      let g:airline_symbols.paste     = 'ρ'
+      let g:airline_symbols.paste     = 'Þ'
+      let g:airline_symbols.paste     = '∥'
+      let g:airline_symbols.whitespace = 'Ξ'
+    else
+      let g:airline#extensions#tabline#left_sep = ''
+      let g:airline#extensions#tabline#left_alt_sep = ''
+      let g:airline_left_sep = ''
+      let g:airline_left_alt_sep = ''
+      let g:airline_right_sep = ''
+      let g:airline_right_alt_sep = ''
+      let g:airline_symbols.branch = ''
+      let g:airline_symbols.readonly = ''
+      let g:airline_symbols.linenr = ''
+    endif
+'''
+
+[[plugins]]
+repo = 'vim-airline/vim-airline-themes'
+
+[[plugins]]
+repo = 'Shougo/defx.nvim'
+
+[[plugins]]
+repo = 'kristijanhusak/defx-icons'
+
+[[plugins]]
+repo = 'christoomey/vim-tmux-navigator'
+
+[[plugins]]
+repo = 'simeji/winresizer'
+
+[[plugins]]
+repo = 'neoclide/coc.nvim'
+rev = 'release'
+on_i = 1
+merged = '0'
+hook_source = 'call coil398#init#coc#hook_source()'
+hook_add = '''
+  nmap <silent> <C-]> <Plug>(coc-definition)
+  nmap <silent> <C-t> <Plug>(coc-references)
+'''
+
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+hook_add = '''
+let g:gitgutter_highlight_lines = 1
+highlight SignColumn ctermbg=brown
+highlight GitGutterAdd ctermfg=blue ctermbg=brown
+'''
+
+[[plugins]]
+repo = "tpope/vim-fugitive"
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+depends = 'context_filetype.vim'
+on_i = 1
+hook_source = '''
+    call deoplete#enable()
+    " No display of the number of competion list
+    set shortmess+=c
+
+    " <TAB>: completion.
+    inoremap <silent><expr> <TAB>
+          \ pumvisible() ? "\<C-n>" :
+          \ <SID>check_back_space() ? "\<TAB>" :
+          \ deoplete#manual_complete()
+    function! s:check_back_space() abort
+      let col = col('.') - 1
+      return !col || getline('.')[col - 1]  =~ '\s'
+    endfunction
+
+    " <S-TAB>: completion back.
+    inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-h>"
+    " <C-e>: popup cancel
+    inoremap <expr><C-e>       deoplete#cancel_popup()
+
+    call deoplete#custom#source('_', 'matchers', ['matcher_head'])
+    call deoplete#custom#source('_', 'converters', [
+          \ 'converter_remove_paren',
+          \ 'converter_remove_overlap',
+          \ 'matcher_length',
+          \ 'converter_truncate_abbr',
+          \ 'converter_truncate_menu',
+          \ 'converter_auto_delimiter',
+          \ ])
+    call deoplete#custom#option('keyword_patterns', {
+          \ '_': '[a-zA-Z_]\k*\(?',
+          \ 'tex': '[^\w|\s][a-zA-Z_]\w*',
+          \ })
+    call deoplete#custom#option('camel_case', v:true)
+'''
+
+[[plugins]]
+repo = 'sheerun/vim-polyglot'
+
+[[plugins]] # toml syntax
+repo = 'cespare/vim-toml'
+on_ft = 'toml'
+
+
+# idk really needed
+
+[[plygins]]
+repo = 'scrooloose/nerdtree'
+
+[[plygins]]
+repo = 'jistr/vim-nerdtree-tabs'
+
+[[plygins]]
+repo = 'junegunn/vim-easy-align'
+
+[[plygins]]
+repo = 'thinca/vim-quickrun'
+
+[[plygins]]
+repo = 'Shougo/vimproc.vim'
+
+[[plygins]]
+repo = 'tpope/vim-commentary'
+
+[[plygins]]
+repo = 'Raimondi/delimitMate'
+
+[[plygins]]
+repo = 'tpope/vim-surround'
+
+[[plygins]]
+repo = 'ntpeters/vim-better-whitespace'
+
+[[plygins]]
+repo = 'ervandew/supertab'
+
+[[plygins]]
+repo = 'hail2u/vim-css3-syntax'
+
+[[plygins]]
+repo = 'gorodinskiy/vim-coloresque'
+
+[[plygins]]
+repo = 'tpope/vim-haml'
+
+[[plygins]]
+repo = 'mattn/emmet-vim'
+
+[[plygins]]
+repo = 'jelera/vim-javascript-syntax'
+
+[[plygins]]
+repo = 'raimon49/requirements.txt.vim'

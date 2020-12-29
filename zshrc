@@ -22,7 +22,7 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 # ======== A U T O   C O M P L E T E T I O N ========
 autoload -U compinit
 compinit
-setopt no_share_history
+#setopt no_share_history
 
 # Display cursor in completion
 zstyle ':completion:*:processes' menu yes select=2
