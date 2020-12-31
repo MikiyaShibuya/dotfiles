@@ -1,4 +1,4 @@
-# ======== O S   R E C O G N I T I O N ========
+# ======== O S   D E T E C T I O N ========
 
 if [ "$(uname)" = 'Darwin' ]; then
   OS='Mac'
@@ -58,9 +58,11 @@ alias ls="ls -GF"
 # Installation:
 # brew install peco
 function peco-history-selection() {
-    if [ $OS = "Mac" ]; then
+    if [ "$(uname)" = 'Darwin' ]; then
+        # For macOS
         BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
-    elif [ $OS = "Linux" ]; then
+    elif [ "$(expr substr $(uname -s) 1 5)" = 'Linux' ]; then
+        # For Linux
         BUFFER=`history -n 1 | tac  | awk '!a[$0]++' | peco`
     fi
     # for ubuntu BUFFER=`history -n 1 | tac  | awk '!a[$0]++' | peco`
