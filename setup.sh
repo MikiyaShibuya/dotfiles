@@ -12,4 +12,4 @@ ln -s $HOME/dotfiles/p10k.zsh $HOME/.p10k.zsh
 
 ln -s $HOME/dotfiles/dein.toml $HOME/.config/nvim/dein.toml
 ln -s $HOME/dotfiles/dein_lazy.toml $HOME/.config/nvim/dein_lazy.toml
-ln -s $HOME/dotfiles/coc_settings.json $HOME/.config/nvim/coc_settings
+ln -s $HOME/dotfiles/coc-settings.json $HOME/.config/nvim/coc-settings.json

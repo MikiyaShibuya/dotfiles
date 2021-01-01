@@ -50,10 +50,11 @@ repo = 'kristijanhusak/defx-icons'
 [[plugins]]
 repo = 'christoomey/vim-tmux-navigator'
 
-[[plugins]]
-repo = 'simeji/winresizer'
+#[[plugins]]
+#repo = 'simeji/winresizer'
 
 # Check node version (v10 or later needed) if coc.nvim got syntax error
+# Type :CocConfig to open config
 [[plugins]]
 repo = 'neoclide/coc.nvim'
 rev = 'release'
@@ -63,6 +64,19 @@ hook_source = 'call coil398#init#coc#hook_source()'
 hook_add = '''
   nmap <silent> <C-]> <Plug>(coc-definition)
   nmap <silent> <C-t> <Plug>(coc-references)
+
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+  endfunction
+
+  inoremap <silent><expr> <Tab>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<Tab>" :
+        \ coc#refresh()
+
+
 '''
 
 [[plugins]]
@@ -76,45 +90,6 @@ highlight GitGutterAdd ctermfg=blue ctermbg=brown
 [[plugins]]
 repo = "tpope/vim-fugitive"
 
-[[plugins]]
-repo = 'Shougo/deoplete.nvim'
-depends = 'context_filetype.vim'
-on_i = 1
-hook_source = '''
-    call deoplete#enable()
-    " No display of the number of competion list
-    set shortmess+=c
-
-    " <TAB>: completion.
-    inoremap <silent><expr> <TAB>
-          \ pumvisible() ? "\<C-n>" :
-          \ <SID>check_back_space() ? "\<TAB>" :
-          \ deoplete#manual_complete()
-    function! s:check_back_space() abort
-      let col = col('.') - 1
-      return !col || getline('.')[col - 1]  =~ '\s'
-    endfunction
-
-    " <S-TAB>: completion back.
-    inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-h>"
-    " <C-e>: popup cancel
-    inoremap <expr><C-e>       deoplete#cancel_popup()
-
-    call deoplete#custom#source('_', 'matchers', ['matcher_head'])
-    call deoplete#custom#source('_', 'converters', [
-          \ 'converter_remove_paren',
-          \ 'converter_remove_overlap',
-          \ 'matcher_length',
-          \ 'converter_truncate_abbr',
-          \ 'converter_truncate_menu',
-          \ 'converter_auto_delimiter',
-          \ ])
-    call deoplete#custom#option('keyword_patterns', {
-          \ '_': '[a-zA-Z_]\k*\(?',
-          \ 'tex': '[^\w|\s][a-zA-Z_]\w*',
-          \ })
-    call deoplete#custom#option('camel_case', v:true)
-'''
 
 [[plugins]]
 repo = 'sheerun/vim-polyglot'
