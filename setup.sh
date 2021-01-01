@@ -6,7 +6,7 @@ mkdir -p  $HOME/.config/nvim
 ln -s $HOME/dotfiles/_init.vim $HOME/.config/nvim/init.vim
 
 ln -s $HOME/dotfiles/_gitconfig $HOME/.gitconfig
-ln -s $HOME/dotfiles/_tmux.conf $HOME/.tmux.conf
+ln -s $HOME/dotfiles/tmux.conf $HOME/.tmux.conf
 ln -s $HOME/dotfiles/zshrc $HOME/.zshrc
 ln -s $HOME/dotfiles/p10k.zsh $HOME/.p10k.zsh
 
