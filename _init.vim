@@ -47,6 +47,7 @@ endif
 syntax enable
 set background=dark
 colorscheme solarized
+
 let g:solarized_termcolors=256
 let g:solarized_contrast="high"
 let g:solarized_visibility="high"
@@ -346,6 +347,13 @@ set noerrorbells visualbell t_vb=
 set clipboard=unnamed
 set mouse=a
 set whichwrap=b,s,h,l,<,>,[,]
+
+"######## Additional color settings #######
+
+hi clear SignColumn
+set background=dark
+highlight clear SignColumn
+
 highlight Pmenu ctermbg=233 ctermfg=241
 highlight PmenuSel ctermbg=233 ctermfg=166
 highlight Search ctermbg=166 ctermfg=233
@@ -436,5 +444,6 @@ set virtualedit=onemore
 let $LANG='en_US.UTF-8'
 set guicursor=n-v-c:block-Cursor/lCursor,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor20,o:hor50
 
-# Reload dein setting
+
+" Reload dein setting
 call map(dein#check_clean(), "delete(v:val, 'rf')")

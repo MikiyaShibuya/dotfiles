@@ -82,9 +82,8 @@ hook_add = '''
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
 hook_add = '''
-let g:gitgutter_highlight_lines = 1
-highlight SignColumn ctermbg=brown
-highlight GitGutterAdd ctermfg=blue ctermbg=brown
+" let g:gitgutter_highlight_lines = 1 " Change color of changed line
+let g:gitgutter_override_sign_column_highlight = 0
 '''
 
 [[plugins]]
