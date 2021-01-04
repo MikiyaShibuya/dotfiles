@@ -58,14 +58,7 @@ alias ls="ls -GF"
 # Installation:
 # brew install peco
 function peco-history-selection() {
-    if [ "$(uname)" = 'Darwin' ]; then
-        # For macOS
-        BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
-    elif [ "$(expr substr $(uname -s) 1 5)" = 'Linux' ]; then
-        # For Linux
-        BUFFER=`history -n 1 | tac  | awk '!a[$0]++' | peco`
-    fi
-    # for ubuntu BUFFER=`history -n 1 | tac  | awk '!a[$0]++' | peco`
+    BUFFER="$(history -nr 1 | awk '!a[$0]++' | peco --query "$LBUFFER" | sed 's/\\n/\n/g')"
     CURSOR=$#BUFFER
     zle reset-prompt
 }
