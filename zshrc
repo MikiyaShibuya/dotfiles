@@ -53,19 +53,6 @@ zstyle ':completion:*' list-colors 'di=34' 'ln=35' 'so=32' 'ex=31' 'bd=46;34' 'c
 
 alias ls="ls -GF"
 
-# ======== P E C O (ctrl-R) ========
-
-# Installation:
-# brew install peco
-function peco-history-selection() {
-    BUFFER="$(history -nr 1 | awk '!a[$0]++' | peco --query "$LBUFFER" | sed 's/\\n/\n/g')"
-    CURSOR=$#BUFFER
-    zle reset-prompt
-}
-
-zle -N peco-history-selection
-bindkey '^R' peco-history-selection
-
 # ======== M I S C ========
 
 # pyenv
@@ -84,4 +71,10 @@ SAVEHIST=1000000
 # share .zshhistory
 setopt inc_append_history
 setopt share_history
+
+# ======== F Z F ========
+# Installation (must be under x86 mode):
+# git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+# ~/.fzf/install
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 

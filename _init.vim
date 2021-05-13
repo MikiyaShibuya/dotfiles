@@ -121,8 +121,21 @@ call defx#custom#option('_', {
       \ 'resume': 1,
       \ })
 
+call defx#custom#column('git', 'indicators', {
+  \ 'Modified'  : '✹',
+  \ 'Staged'    : '✚',
+  \ 'Untracked' : '✭',
+  \ 'Renamed'   : '➜',
+  \ 'Unmerged'  : '═',
+  \ 'Ignored'   : '☒',
+  \ 'Deleted'   : '✖',
+  \ 'Unknown'   : '?'
+  \ })
+
 " Open NERD tab by Ctrl-N in Normal mode
-nmap <silent><C-n> :Defx -columns=icons:indent:filename:type<CR>
+"nmap <silent><C-n> :Defx -columns=icons:indent:git:mark:filename:type<CR>
+nmap <silent><C-n> :Defx -columns=git:mark:filename:type<CR>
+
 
 
 

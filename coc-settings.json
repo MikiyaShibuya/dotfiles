@@ -2,6 +2,16 @@
     "suggest.noselect": false,
     "suggest.preferCompleteThanJumpPlaceholder": true,
     "languageserver": {
+        "ccls": {
+          "command": "ccls",
+          "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
+          "rootPatterns": [".ccls-root", "compile_commands.json"],
+          "initializationOptions": {
+             "cache": {
+               "directory": "/tmp/ccls-cache"
+             }
+           }
+        },
         "clangd": {
             "command": "clangd",
             "args": ["--background-index"],
