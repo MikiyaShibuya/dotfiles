@@ -14,14 +14,6 @@ fi
 # Installation:
 # $ git clone https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 
-# Install powerlevel10k if it is not exist
-if [ ! -d "$HOME/powerlevel10k" ]
-then
-    echo "Powerlevel10k repository ~/powerlevel10k does not exist."
-    echo "Cloning automatically."
-    git clone --depth 1 git@github.com:romkatv/powerlevel10k.git ~/powerlevel10k
-fi
-
 # $ p10k configure
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -76,5 +68,8 @@ setopt share_history
 # Installation (must be under x86 mode):
 # git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # ~/.fzf/install
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if [ -f "$HOME/.fzf.zsh" ]
+then
+    source ~/.fzf.zsh
+fi
 
