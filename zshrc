@@ -50,7 +50,7 @@ alias ls="ls -GF"
 # pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+eval "$(pyenv init --path)"
 
 # Use nvim as a default
 alias vim='nvim'

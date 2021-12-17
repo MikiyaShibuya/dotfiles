@@ -46,3 +46,9 @@ if [ ! -e $HOME/.tmux ];then
     git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 fi
 
+# Install pyenv
+if [ ! -d "$HOME/.pyenv" ]
+then
+    git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+fi
+
