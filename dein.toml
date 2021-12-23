@@ -100,50 +100,50 @@ on_ft = 'toml'
 
 # idk really needed
 
-[[plygins]]
+[[plugins]]
 repo = 'scrooloose/nerdtree'
 
-[[plygins]]
+[[plugins]]
 repo = 'jistr/vim-nerdtree-tabs'
 
-[[plygins]]
+[[plugins]]
 repo = 'junegunn/vim-easy-align'
 
-[[plygins]]
+[[plugins]]
 repo = 'thinca/vim-quickrun'
 
-[[plygins]]
+[[plugins]]
 repo = 'Shougo/vimproc.vim'
 
-[[plygins]]
+[[plugins]]
 repo = 'tpope/vim-commentary'
 
-[[plygins]]
+[[plugins]]
 repo = 'Raimondi/delimitMate'
 
-[[plygins]]
+[[plugins]]
 repo = 'tpope/vim-surround'
 
-[[plygins]]
+[[plugins]]
 repo = 'ntpeters/vim-better-whitespace'
 
-[[plygins]]
+[[plugins]]
 repo = 'ervandew/supertab'
 
-[[plygins]]
+[[plugins]]
 repo = 'hail2u/vim-css3-syntax'
 
-[[plygins]]
+[[plugins]]
 repo = 'gorodinskiy/vim-coloresque'
 
-[[plygins]]
+[[plugins]]
 repo = 'tpope/vim-haml'
 
-[[plygins]]
+[[plugins]]
 repo = 'mattn/emmet-vim'
 
-[[plygins]]
+[[plugins]]
 repo = 'jelera/vim-javascript-syntax'
 
-[[plygins]]
+[[plugins]]
 repo = 'raimon49/requirements.txt.vim'

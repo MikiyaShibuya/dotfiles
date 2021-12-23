@@ -40,3 +40,9 @@ then
     yes | ~/.fzf/install
 fi
 
+# Install tqm, tmux plugin manager
+if [ ! -e $HOME/.tmux ];then
+    mkdir -p $HOME/.tmux/plugins
+    git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
+fi
+
