@@ -73,3 +73,5 @@ then
     source ~/.fzf.zsh
 fi
 
+
+xset r rate 200 50
