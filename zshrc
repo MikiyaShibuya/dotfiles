@@ -73,5 +73,5 @@ then
     source ~/.fzf.zsh
 fi
 
+xset r rate 200 50 &> /dev/null
 
-xset r rate 200 50
