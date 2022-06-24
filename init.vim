@@ -28,6 +28,11 @@ if dein#load_state('~/.cache/dein')
 endif
 
 filetype plugin indent on
+
+if dein#check_install()
+  call dein#install()
+endif
+
 syntax enable
 
 

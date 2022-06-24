@@ -79,7 +79,10 @@ if [ "$(uname)" = 'Darwin' ]; then
     export LC_ALL=$LANG
     eval "$(/opt/homebrew/bin/brew shellenv)"
 
-elif [ "$(expr substr $(uname -s) 1 5)" = 'Linux']; then
+elif [ "$(expr substr $(uname -s) 1 5)" = 'Linux' ]; then
     # Linux
-    
+    if [ -n $DISPLAY ]
+    then
+        xset r rate 200 50 &> /dev/null
+    fi
 fi
