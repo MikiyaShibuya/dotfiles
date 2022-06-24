@@ -466,3 +466,4 @@ set guicursor=n-v-c:block-Cursor/lCursor,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor
 " Reload dein setting
 call map(dein#check_clean(), "delete(v:val, 'rf')")
 
+let g:coc_global_extensions = ['coc-pyright']
