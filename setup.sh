@@ -9,7 +9,7 @@ ln -nfs $PWD/init.vim $HOME/.config/nvim/init.vim
 ln -nfs $PWD/gitconfig $HOME/.gitconfig
 ln -nfs $PWD/tmux.conf $HOME/.tmux.conf
 ln -nfs $PWD/zshrc $HOME/.zshrc
-ln -nfs $PWD/p10k.zsh $HOME/.p10k.zsh
+ln -nfs $PWD/p10k_mac.zsh $HOME/.p10k.zsh
 
 # dein & coc settings for nvim
 ln -nfs $PWD/dein.toml $HOME/.config/nvim/dein.toml
