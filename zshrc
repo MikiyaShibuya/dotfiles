@@ -73,5 +73,8 @@ then
     source ~/.fzf.zsh
 fi
 
-xset r rate 200 50 &> /dev/null
+if [ -n $DISPLAY ]
+then
+    xset r rate 200 50 &> /dev/null
+fi
 
