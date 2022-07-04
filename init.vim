@@ -467,3 +467,5 @@ set guicursor=n-v-c:block-Cursor/lCursor,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor
 call map(dein#check_clean(), "delete(v:val, 'rf')")
 
 let g:coc_global_extensions = ['coc-pyright']
+let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
+

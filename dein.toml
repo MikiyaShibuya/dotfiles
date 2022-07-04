@@ -147,3 +147,6 @@ repo = 'jelera/vim-javascript-syntax'
 
 [[plugins]]
 repo = 'raimon49/requirements.txt.vim'
+
+[[plugins]]
+repo = 'averms/black-nvim'

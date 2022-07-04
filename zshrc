@@ -78,7 +78,6 @@ if [ "$(uname)" = 'Darwin' ]; then
     export LANG=en_US.UTF-8
     export LC_ALL=$LANG
     eval "$(/opt/homebrew/bin/brew shellenv)"
-
 elif [ "$(expr substr $(uname -s) 1 5)" = 'Linux' ]; then
     # Linux
     if [ -n $DISPLAY ]

@@ -34,5 +34,10 @@
             }
         }
     },
-    "python.jediEnabled": false
-} 
+    "python.jediEnabled": false,
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": ["--line-length=80"],
+    "python.formatting.blackPath": "/usr/local/bin/black",
+    "coc.preferences.formatOnType": true,
+    "coc.preferences.formatOnSaveFiletypes": ["py"]
+}
