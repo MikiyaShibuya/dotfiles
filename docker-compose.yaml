@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  dotfiles:
+    build:
+      args:
+        - USER=$USER
+      context: .
+    volumes:
+      - $PWD:/home/$USER/dotfiles
+    ports:
+      - 2222:2222
+    privileged: true
+    tty: true

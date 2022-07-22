@@ -85,3 +85,5 @@ elif [ "$(expr substr $(uname -s) 1 5)" = 'Linux' ]; then
         xset r rate 200 50 &> /dev/null
     fi
 fi
+
+export PATH="$PATH:$HOME/.local/bin"

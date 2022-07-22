@@ -1,0 +1,75 @@
+# ======== vim-airline & icons ========
+[[plugins]]
+repo = 'vim-airline/vim-airline'
+hook_add='''
+  let g:airline_theme = 'powerlineish'
+  let g:airline_powerline_fonts = 1
+  let g:airline#extensions#tabline#enabled = 1
+  let g:airline#extensions#tabline#buffer_nr_show = 1
+  let g:airline#extensions#branch#enabled = 1
+  let g:airline#extensions#hunks#enabled=0
+  let g:airline_section_a = airline#section#create(['mode', 'crypt'])
+
+  let g:airline#extensions#virtualenv#enabled = 0
+  if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+  endif
+
+  let g:airline_symbols.paste = '∥'
+  let g:airline_symbols.whitespace = 'Ξ'
+
+  let g:airline#extensions#tabline#left_sep = ''
+  let g:airline#extensions#tabline#left_alt_sep = ''
+  let g:airline_left_sep = ''
+  let g:airline_left_alt_sep = ''
+  let g:airline_right_sep = ''
+  let g:airline_right_alt_sep = ''
+  let g:airline_symbols.branch = ''
+  let g:airline_symbols.readonly = ''
+  let g:airline_symbols.linenr = ''
+'''
+[[plugins]]
+repo = 'vim-airline/vim-airline-themes.git'
+# Add icons to status bar
+[[plugins]]
+repo = 'ryanoasis/vim-devicons'
+
+
+# ======== gitgutter for showing changes ========
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+hook_add = '''
+" let g:gitgutter_highlight_lines = 1 " Change color of changed line
+let g:gitgutter_override_sign_column_highlight = 0
+'''
+
+# Check node version (v10 or later needed) if coc.nvim got syntax error
+# Type :CocConfig to open config
+[[plugins]]
+repo = 'neoclide/coc.nvim'
+rev = 'release'
+on_i = 1
+merged = '0'
+hook_source = 'call coil398#init#coc#hook_source()'
+hook_add = '''
+  nmap <silent> <C-]> <Plug>(coc-definition)
+  nmap <silent> <C-t> <Plug>(coc-references)
+
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+  endfunction
+
+  inoremap <silent><expr> <Tab>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<Tab>" :
+        \ coc#refresh()
+
+  " Install extensions automatically
+  let g:coc_global_extensions = [
+       \'coc-pyright'
+  \]
+
+
+'''

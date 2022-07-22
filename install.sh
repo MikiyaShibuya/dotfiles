@@ -13,22 +13,22 @@ ln -nfs $PWD/vimrc $HOME/.vimrc
 
 # config for nvim
 mkdir -p  $HOME/.config/nvim
-ln -nfs $PWD/init.vim $HOME/.config/nvim/init.vim
+ln -nfs $PWD/nvim/init.vim $HOME/.config/nvim/init.vim
 
 # git, tmux, zshrc setting
-ln -nfs $PWD/gitconfig $HOME/.gitconfig
-ln -nfs $PWD/tmux.conf $HOME/.tmux.conf
-ln -nfs $PWD/zshrc $HOME/.zshrc
+ln -nfs $PWD/shell/gitconfig $HOME/.gitconfig
+ln -nfs $PWD/tmux/tmux.conf $HOME/.tmux.conf
+ln -nfs $PWD/shell/zshrc $HOME/.zshrc
 if [ $OS = 'Mac' ]; then
-    ln -nfs $PWD/p10k_mac.zsh $HOME/.p10k.zsh
+    ln -nfs $PWD/shell/p10k_mac.zsh $HOME/.p10k.zsh
 elif [ $OS = 'Linux' ]; then
-    ln -nfs $PWD/p10k_ubuntu.zsh $HOME/.p10k.zsh
+    ln -nfs $PWD/shell/p10k_ubuntu.zsh $HOME/.p10k.zsh
 fi
 
 # dein & coc settings for nvim
-ln -nfs $PWD/dein.toml $HOME/.config/nvim/dein.toml
-ln -nfs $PWD/dein_lazy.toml $HOME/.config/nvim/dein_lazy.toml
-ln -nfs $PWD/coc-settings.json $HOME/.config/nvim/coc-settings.json
+ln -nfs $PWD/nvim/dein.toml $HOME/.config/nvim/dein.toml
+ln -nfs $PWD/nvim/dein_lazy.toml $HOME/.config/nvim/dein_lazy.toml
+ln -nfs $PWD/nvim/coc-settings.json $HOME/.config/nvim/coc-settings.json
 
 # Dein installation
 if [ ! -d "$HOME/.cache/dein" ]
