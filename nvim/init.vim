@@ -64,14 +64,6 @@ let g:solarized_contrast="high"
 let g:solarized_visibility="high"
 
 
-set background=dark
-highlight clear SignColumn
-
-highlight Pmenu ctermbg=233 ctermfg=241
-highlight PmenuSel ctermbg=233 ctermfg=166
-highlight Search ctermbg=166 ctermfg=233
-
-
 " ======== defx ========
 " see dein.toml
 
@@ -116,6 +108,38 @@ nnoremap <expr>h <SID>Accelerate("\<Left>", "3\<Left>")
 nnoremap <expr>l <SID>Accelerate("\<Right>", "3\<Right>")
 
 
+" ======== color setting ========
+
+" Override background color
+set background=dark
+highlight clear SignColumn
+
+highlight Pmenu ctermbg=233 ctermfg=241
+highlight PmenuSel ctermbg=233 ctermfg=166
+highlight Search ctermbg=166 ctermfg=233
+
+
+" Set lighter color for in-active pane
+let g:InactiveBackGround = '236'
+
+execute ('hi NormalNC ctermbg='.g:InactiveBackGround)
+execute ('hi NontextNC ctermbg='.g:InactiveBackGround)
+execute ('hi SpecialkeyNC ctermbg='.g:InactiveBackGround)
+execute ('hi EndOfBufferNC ctermbg='.g:InactiveBackGround)
+
+augroup ChangeBackGround
+autocmd!
+autocmd FocusGained * hi Normal ctermbg=234
+autocmd FocusGained * hi NonText ctermbg=234
+autocmd FocusGained * hi SpecialKey ctermbg=234
+autocmd FocusGained * hi EndOfBuffer ctermbg=none
+
+autocmd FocusLost * execute('hi Normal ctermbg='.g:InactiveBackGround)
+autocmd FocusLost * execute('hi NonText ctermbg='.g:InactiveBackGround)
+autocmd FocusLost * execute('hi SpecialKey ctermbg='.g:InactiveBackGround)
+autocmd FocusLost * execute('hi EndOfBuffer ctermbg='.g:InactiveBackGround)
+augroup end
+
 " ======== key bind ========
 
 " Tabs
@@ -123,6 +147,11 @@ nnoremap <Tab> gt
 nnoremap <S-Tab> gT
 nnoremap <Leader>t :tabnew<CR>
 
+" Move window by Shift-hjkl
+nmap <silent> <S-h> :wincmd h<CR>
+nmap <silent> <S-j> :wincmd j<CR>
+nmap <silent> <S-k> :wincmd k<CR>
+nmap <silent> <S-l> :wincmd l<CR>
 
 
 " ======== general options ========
