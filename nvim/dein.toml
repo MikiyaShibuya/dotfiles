@@ -2,13 +2,14 @@
 [[plugins]]
 repo = 'vim-airline/vim-airline'
 hook_add='''
-  let g:airline_theme = 'powerlineish'
+  let g:airline_theme = 'deus'
   let g:airline_powerline_fonts = 1
   let g:airline#extensions#tabline#enabled = 1
   let g:airline#extensions#tabline#buffer_nr_show = 1
   let g:airline#extensions#branch#enabled = 1
   let g:airline#extensions#hunks#enabled=0
   let g:airline_section_a = airline#section#create(['mode', 'crypt'])
+  let g:airline_skip_empty_sections = 1
 
   let g:airline#extensions#virtualenv#enabled = 0
   if !exists('g:airline_symbols')
@@ -18,8 +19,8 @@ hook_add='''
   let g:airline_symbols.paste = '∥'
   let g:airline_symbols.whitespace = 'Ξ'
 
-  let g:airline#extensions#tabline#left_sep = ''
-  let g:airline#extensions#tabline#left_alt_sep = ''
+  let g:airline#extensions#tabline#left_sep = ''
+  let g:airline#extensions#tabline#left_alt_sep = '|'
   let g:airline_left_sep = ''
   let g:airline_left_alt_sep = ''
   let g:airline_right_sep = ''
@@ -52,7 +53,7 @@ repo = 'neoclide/coc.nvim'
 rev = 'release'
 on_i = 1
 merged = '0'
-hook_source = 'call coil398#init#coc#hook_source()'
+#hook_source = 'call coil398#init#coc#hook_source()'
 hook_add = '''
   nmap <silent> <C-]> <Plug>(coc-definition)
   nmap <silent> <C-t> <Plug>(coc-references)
@@ -187,3 +188,14 @@ autocmd FileType defx call s:defx_my_settings()
     nnoremap <silent><buffer><expr> cd defx#do_action('change_vim_cwd')
   endfunction
 '''
+
+# Show color preview
+[[plugins]]
+repo = 'gorodinskiy/vim-coloresque'
+
+[[plugins]]
+repo = 'kyazdani42/nvim-web-devicons'
+
+[[plugins]]
+repo = 'akinsho/bufferline.nvim'
+depends = ['kyazdani42/nvim-web-devicons']

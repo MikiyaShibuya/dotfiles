@@ -14,7 +14,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # Install neovim and python
-RUN add-apt-repository ppa:neovim-ppa/unstable -y \
+RUN add-apt-repository ppa:neovim-ppa/stable -y \
   && add-apt-repository ppa:deadsnakes/ppa -y \
   && apt-get update \
   && apt-get install -y neovim python3.9 \
@@ -28,7 +28,7 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x -o /tmp/nodesource_setup.sh \
   && bash /tmp/nodesource_setup.sh \
   && apt-get install -y nodejs
 
-RUN sudo npm install -g pyright
+RUN sudo npm install -g neovim pyright
 
 # === SSH server setup begin === \
 # Enable ssh login into docker container \
@@ -47,7 +47,7 @@ RUN apt-get update \
 # User setting
 RUN useradd -s /bin/zsh -m $USER
 RUN su $USER -c "mkdir /home/$USER/dotfiles"
-RUN usermod -aG sudo shibuya
+RUN usermod -aG sudo $USER
 
 COPY .key/id_rsa.pub /root/.ssh/authorized_keys
 COPY --chown=$UID:$GID .key/id_rsa.pub /home/$USER/.ssh/authorized_keys
