@@ -37,6 +37,16 @@ repo = 'vim-airline/vim-airline-themes.git'
 repo = 'ryanoasis/vim-devicons'
 
 
+# ======== appearance ========
+
+[[plugins]]
+repo = 'ntpeters/vim-better-whitespace'
+
+
+[[plugins]]
+repo = "tpope/vim-fugitive"
+
+
 # ======== gitgutter for showing changes ========
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
@@ -49,32 +59,10 @@ let g:gitgutter_override_sign_column_highlight = 0
 # Type :CocConfig to open config
 [[plugins]]
 repo = 'neoclide/coc.nvim'
-rev = 'release'
+rev = '0fd56dd'
 on_i = 1
 merged = '0'
-hook_source = 'call coil398#init#coc#hook_source()'
-hook_add = '''
-  nmap <silent> <C-]> <Plug>(coc-definition)
-  nmap <silent> <C-t> <Plug>(coc-references)
-
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-  function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-  endfunction
-
-  inoremap <silent><expr> <Tab>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<Tab>" :
-        \ coc#refresh()
-
-  " Install extensions automatically
-  let g:coc_global_extensions = [
-       \'coc-pyright'
-  \]
-
-
-'''
+hook_add = '''exec 'source ' . g:rc_dir . 'coc-hook-add.vim' '''
 
 # ======== defx, defx-git, defx-icons ========
 [[plugins]]

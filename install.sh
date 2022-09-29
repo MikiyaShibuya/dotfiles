@@ -26,9 +26,10 @@ elif [ $OS = 'Linux' ]; then
 fi
 
 # dein & coc settings for nvim
-ln -nfs $PWD/nvim/dein.toml $HOME/.config/nvim/dein.toml
-ln -nfs $PWD/nvim/dein_lazy.toml $HOME/.config/nvim/dein_lazy.toml
-ln -nfs $PWD/nvim/coc-settings.json $HOME/.config/nvim/coc-settings.json
+ln -nfs $PWD/nvim/dein.toml $HOME/.config/nvim/
+ln -nfs $PWD/nvim/dein_lazy.toml $HOME/.config/nvim/
+ln -nfs $PWD/nvim/coc-settings.json $HOME/.config/nvim/
+ln -nfs $PWD/nvim/coc-hook-add.vim $HOME/.config/nvim/
 
 # Dein installation
 if [ ! -d "$HOME/.cache/dein" ]

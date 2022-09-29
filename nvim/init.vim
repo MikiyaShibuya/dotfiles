@@ -5,9 +5,8 @@
 " $ curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > /tmp/installer.sh
 " $ sh /tmp/installer.sh ~/.cache/dein
 
-if &compatible
-  set nocompatible
-endif
+let g:rc_dir = expand('~/.config/nvim/')
+
 " Add the dein installation directory into runtimepath
 set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
 
@@ -166,8 +165,8 @@ set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8
 
-" BOM format
-set bomb
+" Remove BOM
+set nobomb
 
 " Set tapstop
 set smartindent
@@ -176,8 +175,8 @@ set softtabstop=0
 set expandtab
 set shiftwidth=2
 
-" Save backup as a copy
-set backupcopy=yes
+" Don't save backup swap
+set noswapfile
 
 " Show 3 lines over/below cursor
 set scrolloff=3
@@ -187,6 +186,9 @@ set autoread
 
 " Ignore case in command completion
 set ignorecase
+
+" Mouse available
+set mouse=a
 
 " ======== other settings ========
 
