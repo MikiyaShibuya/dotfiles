@@ -39,12 +39,17 @@ repo = 'ryanoasis/vim-devicons'
 
 # ======== appearance ========
 
+# Indicate white spaces
 [[plugins]]
 repo = 'ntpeters/vim-better-whitespace'
 
-
+# Git utils
 [[plugins]]
 repo = "tpope/vim-fugitive"
+
+# Syntax highlight for various languages
+[[plugins]]
+repo = 'sheerun/vim-polyglot'
 
 
 # ======== gitgutter for showing changes ========
