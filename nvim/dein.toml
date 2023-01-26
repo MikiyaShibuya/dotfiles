@@ -64,7 +64,8 @@ let g:gitgutter_override_sign_column_highlight = 0
 # Type :CocConfig to open config
 [[plugins]]
 repo = 'neoclide/coc.nvim'
-rev = '0fd56dd'
+# rev = '0fd56dd'
+rev = '1d3c525' # v0.0.82
 on_i = 1
 merged = '0'
 hook_add = '''exec 'source ' . g:rc_dir . 'coc-hook-add.vim' '''

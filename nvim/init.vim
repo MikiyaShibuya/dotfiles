@@ -190,6 +190,8 @@ set ignorecase
 " Mouse available
 set mouse=a
 
+set backupcopy=no
+
 " ======== other settings ========
 
 " Remember cursor position
