@@ -71,6 +71,7 @@ let g:solarized_visibility="high"
 " https://vi.stackexchange.com/questions/5667/escape-return-value-key-in-mapping-function
 let base_time = 0
 let last_time = 0
+let last_key = ""
 
 " Normally, returns arg1
 " When a key has been pressed while long time, returns arg2
@@ -90,10 +91,16 @@ function! s:Accelerate(arg1, arg2)
   endif
   let t = (t1 * 1000 + t2)*4
 
-  if t > g:last_time + 100 "reset basetime if the key is  released
+  if t > g:last_time + 100 "reset basetime if the key is released
       let g:base_time = t
   endif
+  if g:last_key != a:arg1
+    let g:base_time = t
+  endif
   let g:last_time = t
+
+  let g:last_key = a:arg1
+
   if g:last_time > g:base_time + 100 "accelerate
     return a:arg2
   endif
