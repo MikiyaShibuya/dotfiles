@@ -10,5 +10,5 @@
 [core]
 	editor = nvim
     excludesfile = ~/.gitignore_global
-#[pager]
-#    diff = diff-highlight | less
+[pager]
+    diff = diff-highlight | less
