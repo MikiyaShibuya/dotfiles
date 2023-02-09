@@ -159,6 +159,8 @@ nmap <silent> <S-j> :wincmd j<CR>
 nmap <silent> <S-k> :wincmd k<CR>
 nmap <silent> <S-l> :wincmd l<CR>
 
+" Keep register when paste
+xnoremap <expr> p 'pgv"'.v:register.'y`>'
 
 " ======== general options ========
 " Show line number
@@ -217,6 +219,9 @@ let &t_SI.="\e[5 q"
 let &t_EI.="\e[1 q"
 let &t_te.="\e[0 q"
 
+" for coc-spell-checker
+vmap <leader>a <Plug>(coc-codeaction-selected)
+nmap <leader>a <Plug>(coc-codeaction-selected)
 
 " ======== remote plugin auto install ========
 runtime! plugin/rplugin.vim

@@ -60,6 +60,13 @@ repo = 'ntpeters/vim-better-whitespace'
 [[plugins]]
 repo = "tpope/vim-fugitive"
 
+[[plugins]]
+repo = "APZelos/blamer.nvim"
+hook_add='''
+  let g:blamer_enabled = 1
+  let g:blamer_delay = 500
+'''
+
 # Syntax highlight for various languages
 [[plugins]]
 repo = 'sheerun/vim-polyglot'

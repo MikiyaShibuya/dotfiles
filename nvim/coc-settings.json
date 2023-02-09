@@ -40,5 +40,22 @@
     "python.formatting.blackPath": "~/.local/bin/black",
     "coc.preferences.formatOnType": true,
     "coc.preferences.formatOnSaveFiletypes": ["py"],
-    "coc.preferences.jumpCommand": "tab drop"
+    "coc.preferences.jumpCommand": "tab drop",
+    "cSpell.userWords": [
+      "Avatank",
+      "MILLI",
+      "Omni",
+      "Relocalization",
+      "Relocalizer",
+      "curr",
+      "omgl",
+      "omgm",
+      "rcode",
+      "relocalize",
+      "relocalizing",
+      "rosmaster",
+      "rospy",
+      "rostime",
+      "thres"
+    ]
 }
