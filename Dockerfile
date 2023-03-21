@@ -13,22 +13,21 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Install neovim and python
+# Install neovim
 RUN add-apt-repository ppa:neovim-ppa/unstable -y \
   && add-apt-repository ppa:deadsnakes/ppa -y \
   && apt-get update \
-  && apt-get install -y neovim python3.9 \
+  && apt-get install -y neovim \
   && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* \
-\
-  && python3 -m pip install neovim pynvim
+  && rm -rf /var/lib/apt/lists/*
 
 # Install node \
-RUN curl -sL https://deb.nodesource.com/setup_16.x -o /tmp/nodesource_setup.sh \
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x -o /tmp/nodesource_setup.sh \
   && bash /tmp/nodesource_setup.sh \
-  && apt-get install -y nodejs
-
-RUN sudo npm install -g pyright
+  && apt-get install -y nodejs \
+  && npm install -g neovim \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # === SSH server setup begin === \
 # Enable ssh login into docker container \

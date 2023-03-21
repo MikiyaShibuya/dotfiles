@@ -1,9 +1,9 @@
 
 " ======== dein ======== "
 
-" Dein installation
-" $ curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > /tmp/installer.sh
-" $ sh /tmp/installer.sh ~/.cache/dein
+" Ward off unexpected things that your distro might have made, as
+" well as sanely reset options when re-sourcing .vimrc
+set nocompatible
 
 let g:rc_dir = expand('~/.config/nvim/')
 
@@ -215,3 +215,4 @@ let &t_te.="\e[0 q"
 runtime! plugin/rplugin.vim
 silent! UpdateRemotePlugins
 
+let g:python3_host_prog = $PYENV_ROOT.'/versions/neovim/bin/python'
