@@ -4,10 +4,13 @@ services:
     build:
       args:
         - USER=$USER
+        - GID=$GID
+        - UID=$UID
       context: .
-    volumes:
-      - $PWD:/home/$USER/dotfiles
     ports:
       - 2222:2222
+    volumes:
+      - /etc/shadow:/etc/shadow:ro
+      - .keys:/keys
     privileged: true
     tty: true

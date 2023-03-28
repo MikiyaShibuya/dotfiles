@@ -72,20 +72,4 @@ then
     git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 fi
 
-export PATH="$PATH:$HOME/.local/bin"
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
-# Install virtualenv
-if [ ! -d "$HOME/.pyenv/plugins/pyenv-virtualenv" ]
-then
-    git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
-fi
-
-#  Install neovim into python and node
-eval "$(pyenv virtualenv-init -)"
-
-pyenv virtualenv system neovim
-~/.pyenv/versions/neovim/bin/python -m pip install neovim
-
+python3 -m pip install neovim
