@@ -8,7 +8,7 @@
     graph-curr = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --date=format:'%Y-%m-%d %H:%M'
 
 [core]
-	editor = nvim
+    editor = nvim -c \"set fenc=utf-8\"
     excludesfile = ~/.gitignore_global
-#[pager]
-#    diff = diff-highlight | less
+[pager]
+    diff = diff-highlight | less

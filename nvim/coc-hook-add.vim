@@ -23,7 +23,6 @@ let g:coc_global_extensions = [
     \ 'coc-docker',
     \ 'coc-markdownlint',
     \ 'coc-json',
-    \ 'coc-xml',
     \ 'coc-yaml',
     \ 'coc-spell-checker',
     \ 'coc-snippets',

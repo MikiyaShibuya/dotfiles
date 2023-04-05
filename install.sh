@@ -17,7 +17,15 @@ elif [ $OS = 'Linux' ]; then
 fi
 
 # git, tmux, zshrc setting
+mkdir -p $HOME/.local/bin
 ln -nfs $PWD/shell/gitconfig $HOME/.gitconfig
+if [ $OS = 'Mac' ]; then
+    ln -nfs /opt/homebrew/share/git-core/contrib/diff-highlight/diff-highlight $HOME/.local/bin
+elif [ $OS = 'Linux' ]; then
+    ln -nfs /usr/share/doc/git/contrib/diff-highlight/diff-highlight $HOME/.local/bin
+    sudo chmod +x ~/.local/bin/diff-highlight
+fi
+
 ln -nfs $PWD/tmux/tmux.conf $HOME/.tmux.conf
 ln -nfs $PWD/shell/zshrc $HOME/.zshrc
 if [ $OS = 'Mac' ]; then
