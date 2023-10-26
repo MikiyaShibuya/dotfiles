@@ -122,6 +122,7 @@ highlight clear SignColumn
 
 highlight Pmenu ctermbg=233 ctermfg=241
 highlight PmenuSel ctermbg=233 ctermfg=166
+highlight CocMenuSel ctermfg=166
 highlight Search ctermbg=166 ctermfg=233
 
 
@@ -199,7 +200,7 @@ set ignorecase
 " Mouse available
 set mouse=a
 
-set backupcopy=no
+" set backupcopy=no
 
 " ======== other settings ========
 
