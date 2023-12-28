@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Override home directory
+if [[ "$1" != "" ]]; then
+    HOME=$1
+fi
+
 # Determine OS
 if [ "$(uname)" = 'Darwin' ]; then
     OS='Mac'
