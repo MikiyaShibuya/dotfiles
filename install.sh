@@ -24,9 +24,10 @@ else
 fi
 
 
-# Diff highlight
+# Setup gitconfig and diff-highlight
+ln -nfs $PWD/shell/gitconfig $HOME/.gitconfig
 if [ -z $SKIP_SUDO ]; then
-    sudo shell/setup_diff_highlight.sh
+    sudo shell/setup_diff_highlight.sh ~
 fi
 
 ln -nfs $PWD/tmux/tmux.conf $HOME/.tmux.conf

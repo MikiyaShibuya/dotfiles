@@ -9,8 +9,11 @@ else
     OS=''
 fi
 
+if [ "$1" ]; then
+    HOME=$1
+fi
+
 mkdir -p $HOME/.local/bin
-ln -nfs $PWD/shell/gitconfig $HOME/.gitconfig
 if [ "$OS" = 'Mac' ]; then
     ln -nfs /opt/homebrew/share/git-core/contrib/diff-highlight/diff-highlight $HOME/.local/bin
 elif [ "$OS" = 'Linux' ]; then
