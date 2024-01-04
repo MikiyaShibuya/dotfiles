@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Override home directory
-if [[ "$1" != "" ]]; then
-    HOME=$1
+if [ "$1" = "--skip-sudo" ]; then
+    SKIP_SUDO=true
 fi
 
 # Determine OS
@@ -25,26 +25,8 @@ fi
 
 
 # Diff highlight
-mkdir -p $HOME/.local/bin
-ln -nfs $PWD/shell/gitconfig $HOME/.gitconfig
-if [ $OS = 'Mac' ]; then
-    ln -nfs /opt/homebrew/share/git-core/contrib/diff-highlight/diff-highlight $HOME/.local/bin
-elif [ $OS = 'Linux' ]; then
-    # Install diff-highlight if there is no binary
-    DIFF_HIGHLIGHT_DIR=/usr/share/doc/git/contrib/diff-highlight
-    if [ ! -f $DIFF_HIGHLIGHT_DIR/diff-highlight ]; then
-        echo "No diff-highlight installed"
-        if [ ! -f $DIFF_HIGHLIGHT_DIR/Makefile ]; then
-            echo "No diff-highlight files, cloning"
-            git clone --depth 1 https://github.com/git/git.git /tmp/git
-            sudo cp -r /tmp/git/contrib/diff-highlight/* $DIFF_HIGHLIGHT_DIR
-        fi
-        cd $DIFF_HIGHLIGHT_DIR
-        sudo make
-        cd -
-    fi
-    ln -nfs /usr/share/doc/git/contrib/diff-highlight/diff-highlight $HOME/.local/bin
-    sudo chmod +x ~/.local/bin/diff-highlight
+if [ -z $SKIP_SUDO ]; then
+    sudo shell/setup_diff_highlight.sh
 fi
 
 ln -nfs $PWD/tmux/tmux.conf $HOME/.tmux.conf
@@ -64,7 +46,9 @@ if [ $OS = 'Mac' ]; then
     brew install node
 elif [ $OS = 'Linux' ]; then
     if [ $ARCH = 'x86_64' ]; then
-        sudo dpkg -i nvim/installer/neovim_v0.9.5-dev-g130bfe22c_amd64.deb
+        if [ -z $SKIP_SUDO ]; then
+            sudo dpkg -i nvim/installer/neovim_v0.9.5-dev-g130bfe22c_amd64.deb
+        fi
     else
         echo "========"
         echo ""
@@ -80,7 +64,7 @@ if [ ! -d "$HOME/.cache/dein" ]
 then
     echo "Dein have not been initialized. Installing..."
     curl https://raw.githubusercontent.com/Shougo/dein-installer.vim/main/installer.sh > /tmp/installer.sh
-    sh /tmp/installer.sh ~/.cache/dein --use-neovim-config
+    sh /tmp/installer.sh $HOME/.cache/dein --use-neovim-config
     echo "Dein installation complete."
 fi
 
@@ -101,15 +85,15 @@ ln -nfs $PWD/nvim/coc-hook-add.vim $HOME/.config/nvim/
 if [ ! -d "$HOME/powerlevel10k" ]
 then
     echo "powerlevel10k have not been initialized. Installing..."
-    git clone --depth 1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+    git clone --depth 1 https://github.com/romkatv/powerlevel10k.git $HOME/powerlevel10k
     echo "powerlevel10k installation complete."
 fi
 
 # Install fzf if it is not exist
 if [ ! -d "$HOME/.fzf" ]
 then
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    yes | ~/.fzf/install
+    git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
+    yes | $HOME/.fzf/install
 fi
 
 
@@ -127,7 +111,7 @@ fi
 # Install pyenv
 if [ ! -d "$HOME/.pyenv" ]
 then
-    git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+    git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
 fi
 
 python3 -m pip install neovim
