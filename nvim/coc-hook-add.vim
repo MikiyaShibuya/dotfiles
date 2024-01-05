@@ -18,7 +18,7 @@ inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<S-TAB>" " "\<C-h
 
 " Install extensions automatically
 let g:coc_global_extensions = [
-    \ 'coc-pyright',
+    \ 'coc-pyright@1.1.316',
     \ 'coc-vimlsp',
     \ 'coc-docker',
     \ 'coc-markdownlint',
