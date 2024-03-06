@@ -9,7 +9,7 @@ RUN apt-get update \
   && apt-get install -y sudo git htop wget curl tmux zsh locales-all \
     software-properties-common python3-pip \
     libreadline-dev libffi-dev libncurses-dev \
-    libssl-dev liblzma-dev \
+    libssl-dev liblzma-dev libbz2-dev libsqlite3-dev \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 

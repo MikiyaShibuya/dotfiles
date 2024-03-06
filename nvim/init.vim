@@ -220,9 +220,9 @@ let &t_SI.="\e[5 q"
 let &t_EI.="\e[1 q"
 let &t_te.="\e[0 q"
 
-" for coc-spell-checker; hit "\aw" to show menu
-vmap <leader>a <Plug>(coc-codeaction-selected)
-nmap <leader>a <Plug>(coc-codeaction-selected)
+" for coc-spell-checker; hit "\a" to show menu
+vmap <leader>a <Plug>(coc-codeaction-selected)<CR>
+nmap <leader>a <Plug>(coc-codeaction-selected)<CR>
 
 " ======== remote plugin auto install ========
 runtime! plugin/rplugin.vim
