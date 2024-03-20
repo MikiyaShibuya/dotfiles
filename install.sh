@@ -30,7 +30,7 @@ fi
 ln -nfs $PWD/shell/gitconfig $HOME/.gitconfig
 if [ -z $SKIP_SUDO ]; then
     echo Setting up diff-highlight
-    sudo shell/setup_diff_highlight.sh ~
+    sudo shell/setup_diff_highlight.sh $USER
 fi
 
 ln -nfs $PWD/tmux/tmux.conf $HOME/.tmux.conf

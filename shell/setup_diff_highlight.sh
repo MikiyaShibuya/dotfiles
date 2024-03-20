@@ -10,10 +10,11 @@ else
 fi
 
 if [ "$1" ]; then
-    HOME=$1
+    USER=$1
+    HOME=/home/$USER
 fi
 
-mkdir -p $HOME/.local/bin
+su $USER -c "mkdir -p $HOME/.local/bin"
 if [ "$OS" = 'Mac' ]; then
     ln -nfs /opt/homebrew/share/git-core/contrib/diff-highlight/diff-highlight $HOME/.local/bin
 elif [ "$OS" = 'Linux' ]; then
