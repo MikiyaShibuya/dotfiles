@@ -1,1 +1,2 @@
-.keys/dotfiles_ssh
+docker/.keys/dotfiles_ssh
+docker/disk/zsh-history

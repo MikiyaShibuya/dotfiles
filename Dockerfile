@@ -13,11 +13,8 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Install neovim & node
-RUN wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb \
-  && apt-get install ./nvim-linux64.deb \
-  && rm ./nvim-linux64.deb \
-  && curl -fsSL https://deb.nodesource.com/setup_18.x -o /tmp/nodesource_setup.sh \
+# Install node
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x -o /tmp/nodesource_setup.sh \
   && bash /tmp/nodesource_setup.sh \
   && apt-get install -y nodejs \
   && npm config set prefix '~/.local/' \
@@ -51,8 +48,6 @@ USER $USER
 WORKDIR /home/$USER/.ssh
 RUN ssh-keygen -f dotfiles_ssh -t rsa -b 4096 \
   && mv dotfiles_ssh.pub /home/$USER/.ssh/authorized_keys
-# COPY .key/id_rsa.pub /root/.ssh/authorized_keys
-# COPY --chown=$UID:$GID .key/id_rsa.pub /home/$USER/.ssh/authorized_keys
 
 # repository
 COPY --chown=$UID:$GID . /home/$USER/dotfiles
@@ -63,7 +58,7 @@ RUN cd /home/$USER/dotfiles/ && zsh install.sh
 ENV LANG=en_US.UTF-8
 ENV USER=$USER
 
-COPY entrypoint.sh /tmp/entrypoint.sh
+COPY docker/entrypoint.sh /tmp/entrypoint.sh
 USER root
 CMD /tmp/entrypoint.sh
 

@@ -8,8 +8,10 @@ fi
 # Determine OS
 if [ "$(uname)" = 'Darwin' ]; then
     OS='Mac'
+    echo Installing for MacOS
 elif [ "$(expr substr $(uname -s) 1 5)" = 'Linux' ]; then
     OS='Linux'
+    echo Installing for Linux
 else
     OS=''
 fi
@@ -27,6 +29,7 @@ fi
 # Setup gitconfig and diff-highlight
 ln -nfs $PWD/shell/gitconfig $HOME/.gitconfig
 if [ -z $SKIP_SUDO ]; then
+    echo Setting up diff-highlight
     sudo shell/setup_diff_highlight.sh ~
 fi
 
@@ -48,7 +51,12 @@ if [ $OS = 'Mac' ]; then
 elif [ $OS = 'Linux' ]; then
     if [ $ARCH = 'x86_64' ]; then
         if [ -z $SKIP_SUDO ]; then
-            sudo dpkg -i nvim/installer/neovim_v0.9.5-dev-g130bfe22c_amd64.deb
+            echo Installing neovim for x64-86
+            sudo tar -C /tmp -xzf nvim/installer/nvim-linux64.tar.gz
+            sudo cp -r /tmp/nvim-linux64/bin /usr/local
+            sudo cp -r /tmp/nvim-linux64/lib /usr/local
+            sudo cp -r /tmp/nvim-linux64/share /usr/local
+            sudo cp -r /tmp/nvim-linux64/man/* /usr/local/man
         fi
     else
         echo "========"
