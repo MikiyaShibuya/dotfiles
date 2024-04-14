@@ -19,7 +19,12 @@ fi
 
 su $USER -c "mkdir -p $HOME/.local/bin"
 if [ "$OS" = 'Mac' ]; then
-    ln -nfs /opt/homebrew/share/git-core/contrib/diff-highlight/diff-highlight $HOME/.local/bin
+    DIFF_HIGHLIGHT_DIR=/opt/homebrew/share/git-core/contrib/diff-highlight
+    if [ ! -f $DIFF_HIGHLIGHT_DIR/diff-highlight ]; then
+        echo "There is no diff-highlight, installing..."
+        brew install git
+    fi
+    ln -nfs $DIFF_HIGHLIGHT_DIR/diff-highlight $HOME/.local/bin
 elif [ "$OS" = 'Linux' ]; then
     # Install diff-highlight if there is no binary
     DIFF_HIGHLIGHT_DIR=/usr/share/doc/git/contrib/diff-highlight
