@@ -50,33 +50,50 @@ RUN if [ -z "$(getent group $GID)" ]; then \
     groupadd -g $GID $USER; \
   fi \
   && if [ -z "$(getent passwd $USER)" ]; then \
-    useradd -u $UID -g $GID -s /bin/zsh -m $USER; \
-    echo $USER:password | chpasswd; \
+    useradd -u $UID -g $GID -s /bin/zsh -m $USER \
+    && echo $USER:password | chpasswd \
+    && adduser shibuya sudo; \
   fi \
   && su $USER -c "mkdir /home/$USER/dotfiles"
 
-# Copy repository
-COPY --chown=$UID:$GID . /home/$USER/dotfiles
+# repository
+COPY --chown=$UID:$GID install.sh /home/$USER/dotfiles/install.sh
+COPY --chown=$UID:$GID nvim /home/$USER/dotfiles/nvim
+COPY --chown=$UID:$GID shell /home/$USER/dotfiles/shell
+COPY --chown=$UID:$GID tmux /home/$USER/dotfiles/tmux
+COPY --chown=$UID:$GID tmux_scripts /home/$USER/dotfiles/tmux_scripts
 WORKDIR /home/$USER/dotfiles
-RUN dpkg -i nvim/installer/neovim_v0.9.5-dev-g130bfe22c_amd64.deb \
-  && shell/setup_diff_highlight.sh $USER
+
+# Installation that requires sudo
+RUN cd /home/$USER/dotfiles/ \
+  && shell/setup_diff_highlight.sh $USER \
+  && tar -C /tmp -xzf nvim/installer/nvim-linux64.tar.gz \
+  && cp -r /tmp/nvim-linux64/bin /usr/local \
+  && cp -r /tmp/nvim-linux64/lib /usr/local \
+  && cp -r /tmp/nvim-linux64/share /usr/local \
+  && cp -r /tmp/nvim-linux64/man/* /usr/local/man
 
 USER $USER
 
 # SSH key setting
-WORKDIR /home/$USER/.ssh
-RUN ssh-keygen -f dotfiles_ssh -t rsa -b 4096 \
-  && mv dotfiles_ssh.pub /home/$USER/.ssh/authorized_keys
+# WORKDIR /home/$USER/.ssh
+# RUN ssh-keygen -f dotfiles_ssh -t rsa -b 4096 \
+#   && mv dotfiles_ssh.pub /home/$USER/.ssh/authorized_keys
 
-WORKDIR /home/$USER/dotfiles
-
-RUN cd /home/$USER/dotfiles/ \
-  && zsh install.sh --skip-sudo
+RUN mkdir -p /home/$USER/host-disk \
+  && mkdir -p /home/$USER/.config \
+  && mkdir -p /home/$USER/.config/nvim \
+  && mkdir -p /home/$USER/.config/nvim/colors \
+  && git clone https://github.com/altercation/vim-colors-solarized.git /tmp/solarized \
+  && cp /tmp/solarized/colors/solarized.vim /home/$USER/.config/nvim/colors/ \
+  && cd /home/$USER/dotfiles/ \
+  &&  ./install.sh --skip-sudo
 
 ENV LANG=en_US.UTF-8
 ENV USER=$USER
 
 COPY docker/entrypoint.sh /tmp/entrypoint.sh
 USER root
+
 CMD /tmp/entrypoint.sh
 

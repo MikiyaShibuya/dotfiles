@@ -12,7 +12,7 @@ services:
       - 2222:2222
     volumes:
       - ./docker/.keys:/keys
-      - ./docker/disk:/home/$USER/host-disk
+      - ./docker/container-disk:/home/$USER/host-disk
       - .:/home/$USER/dotfiles
     privileged: true
     tty: true

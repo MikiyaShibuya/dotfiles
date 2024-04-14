@@ -1,2 +1,3 @@
 docker/.keys/dotfiles_ssh
-docker/disk/zsh-history
+docker/container-disk/*
+!docker/container-disk/.gitkeep
