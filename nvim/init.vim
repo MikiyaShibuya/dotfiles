@@ -124,6 +124,7 @@ highlight Pmenu ctermbg=233 ctermfg=241
 highlight PmenuSel ctermbg=233 ctermfg=166
 highlight CocMenuSel ctermfg=166
 highlight Search ctermbg=166 ctermfg=233
+highlight CopilotSuggestion ctermfg=067 guifg=#585858
 
 
 " Set lighter color for in-active pane

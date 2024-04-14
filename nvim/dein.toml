@@ -72,6 +72,9 @@ hook_add='''
 repo = 'sheerun/vim-polyglot'
 
 
+[[plugins]]
+repo = 'github/copilot.vim'
+
 # ======== gitgutter for showing changes ========
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
