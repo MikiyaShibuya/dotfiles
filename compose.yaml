@@ -4,14 +4,13 @@ services:
     build:
       args:
         - USER=$USER
-        - G=$GID
-        - U=$UID
+        - GID=$G
+        - UID=$U
+        - PASSWORD=password
       context: .
     ports:
       - 2222:2222
     volumes:
-      - /etc/shadow:/etc/shadow:ro
-      - /etc/group:/etc/group:ro
       - ./docker/.keys:/keys
       - ./docker/disk:/home/$USER/host-disk
       - .:/home/$USER/dotfiles

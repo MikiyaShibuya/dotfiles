@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM --platform=amd64 ubuntu:22.04
 
 ARG USER=docker
 
@@ -13,11 +13,17 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Install node
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh \
+RUN \
+# Install Node 20 \
+     curl -fsSL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh \
   && bash /tmp/nodesource_setup.sh \
   && apt-get install -y nodejs \
   && npm config set prefix '~/.local/' \
+# Install Neovim \
+#   && wget https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-linux64.tar.gz \
+#   && apt-get install ./nvim-linux64.deb \
+#   && rm ./nvim-linux64.deb \
+# Clean up \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
@@ -36,10 +42,17 @@ RUN apt-get update \
 
 
 # User setting
-ARG GID=1000
-ARG UID=1000
-RUN groupadd -g $GID $USER \
-  && useradd -u $UID -g $GID -s /bin/zsh -m $USER \
+ARG GID
+ARG UID
+ARG PASSWORD
+
+RUN if [ -z "$(getent group $GID)" ]; then \
+    groupadd -g $GID $USER; \
+  fi \
+  && if [ -z "$(getent passwd $USER)" ]; then \
+    useradd -u $UID -g $GID -s /bin/zsh -m $USER; \
+    echo $USER:password | chpasswd; \
+  fi \
   && su $USER -c "mkdir /home/$USER/dotfiles"
 
 # Copy repository
