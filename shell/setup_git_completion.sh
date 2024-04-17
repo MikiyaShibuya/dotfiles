@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Exit when some error happened
+set -e
 
 # Description
 echo "" >> ~/.bashrc

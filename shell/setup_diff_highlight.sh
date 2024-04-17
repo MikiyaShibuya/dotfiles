@@ -1,5 +1,8 @@
 #!/bin/bash
-#
+
+# Exit when some error happened
+set -e
+
 # Determine OS
 if [ "$(uname)" = 'Darwin' ]; then
     OS='Mac'

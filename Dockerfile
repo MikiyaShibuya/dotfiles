@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ARG USER=docker
 
@@ -14,7 +14,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # Install node
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x -o /tmp/nodesource_setup.sh \
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh \
   && bash /tmp/nodesource_setup.sh \
   && apt-get install -y nodejs \
   && npm config set prefix '~/.local/' \
@@ -42,6 +42,12 @@ RUN groupadd -g $GID $USER \
   && useradd -u $UID -g $GID -s /bin/zsh -m $USER \
   && su $USER -c "mkdir /home/$USER/dotfiles"
 
+# Copy repository
+COPY --chown=$UID:$GID . /home/$USER/dotfiles
+WORKDIR /home/$USER/dotfiles
+RUN dpkg -i nvim/installer/neovim_v0.9.5-dev-g130bfe22c_amd64.deb \
+  && shell/setup_diff_highlight.sh $USER
+
 USER $USER
 
 # SSH key setting
@@ -49,11 +55,10 @@ WORKDIR /home/$USER/.ssh
 RUN ssh-keygen -f dotfiles_ssh -t rsa -b 4096 \
   && mv dotfiles_ssh.pub /home/$USER/.ssh/authorized_keys
 
-# repository
-COPY --chown=$UID:$GID . /home/$USER/dotfiles
 WORKDIR /home/$USER/dotfiles
 
-RUN cd /home/$USER/dotfiles/ && zsh install.sh
+RUN cd /home/$USER/dotfiles/ \
+  && zsh install.sh --skip-sudo
 
 ENV LANG=en_US.UTF-8
 ENV USER=$USER

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit when some error happened
+set -e
+
 # Override home directory
 if [ "$1" = "--skip-sudo" ]; then
     SKIP_SUDO=true
@@ -73,6 +76,7 @@ if [ ! -d "$HOME/.cache/dein" ]
 then
     echo "Dein have not been initialized. Installing..."
     curl https://raw.githubusercontent.com/Shougo/dein-installer.vim/main/installer.sh > /tmp/installer.sh
+    mkdir -p $HOME/.cache
     sh /tmp/installer.sh $HOME/.cache/dein --use-neovim-config
     echo "Dein installation complete."
 fi

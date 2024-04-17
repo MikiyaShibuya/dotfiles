@@ -4,8 +4,8 @@ services:
     build:
       args:
         - USER=$USER
-        - GID=$GID
-        - UID=$UID
+        - G=$GID
+        - U=$UID
       context: .
     ports:
       - 2222:2222
