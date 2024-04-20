@@ -57,11 +57,8 @@ RUN if [ -z "$(getent group $GID)" ]; then \
   && su $USER -c "mkdir /home/$USER/dotfiles"
 
 # repository
-COPY --chown=$UID:$GID install.sh /home/$USER/dotfiles/install.sh
-COPY --chown=$UID:$GID nvim /home/$USER/dotfiles/nvim
 COPY --chown=$UID:$GID shell /home/$USER/dotfiles/shell
-COPY --chown=$UID:$GID tmux /home/$USER/dotfiles/tmux
-COPY --chown=$UID:$GID tmux_scripts /home/$USER/dotfiles/tmux_scripts
+COPY --chown=$UID:$GID nvim/installer /home/$USER/dotfiles/nvim/installer
 WORKDIR /home/$USER/dotfiles
 
 # Installation that requires sudo
@@ -75,17 +72,12 @@ RUN cd /home/$USER/dotfiles/ \
 
 USER $USER
 
-# SSH key setting
-# WORKDIR /home/$USER/.ssh
-# RUN ssh-keygen -f dotfiles_ssh -t rsa -b 4096 \
-#   && mv dotfiles_ssh.pub /home/$USER/.ssh/authorized_keys
-
+COPY --chown=$UID:$GID install.sh /home/$USER/dotfiles/install.sh
+COPY --chown=$UID:$GID nvim /home/$USER/dotfiles/nvim
+COPY --chown=$UID:$GID tmux /home/$USER/dotfiles/tmux
+COPY --chown=$UID:$GID tmux_scripts /home/$USER/dotfiles/tmux_scripts
 RUN mkdir -p /home/$USER/host-disk \
   && mkdir -p /home/$USER/.config \
-  && mkdir -p /home/$USER/.config/nvim \
-  && mkdir -p /home/$USER/.config/nvim/colors \
-  && git clone https://github.com/altercation/vim-colors-solarized.git /tmp/solarized \
-  && cp /tmp/solarized/colors/solarized.vim /home/$USER/.config/nvim/colors/ \
   && cd /home/$USER/dotfiles/ \
   &&  ./install.sh --skip-sudo
 

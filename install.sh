@@ -76,26 +76,19 @@ elif [ $OS = 'Linux' ]; then
     fi
 fi
 
-# Dein installation
-if [ ! -d "$HOME/.cache/dein" ]
-then
-    echo "Dein have not been initialized. Installing..."
-    curl https://raw.githubusercontent.com/Shougo/dein-installer.vim/main/installer.sh > /tmp/installer.sh
-    mkdir -p $HOME/.cache
-    sh /tmp/installer.sh $HOME/.cache/dein --use-neovim-config
-    echo "Dein installation complete."
-fi
+# # Dein installation
+# if [ ! -d "$HOME/.cache/dein" ]
+# then
+#     echo "Dein have not been initialized. Installing..."
+#     curl https://raw.githubusercontent.com/Shougo/dein-installer.vim/main/installer.sh > /tmp/installer.sh
+#     mkdir -p $HOME/.cache
+#     sh /tmp/installer.sh $HOME/.cache/dein --use-neovim-config
+#     echo "Dein installation complete."
+# fi
 
 # config for nvim
-mkdir -p  $HOME/.config/nvim
-ln -nfs $PWD/nvim/init.vim $HOME/.config/nvim/init.vim
-
-# dein & coc settings for nvim
-ln -nfs $PWD/nvim/dein.toml $HOME/.config/nvim/
-ln -nfs $PWD/nvim/dein_lazy.toml $HOME/.config/nvim/
-ln -nfs $PWD/nvim/coc-settings.json $HOME/.config/nvim/
-ln -nfs $PWD/nvim/coc-hook-add.vim $HOME/.config/nvim/
-
+mkdir -p  $HOME/.config
+ln -nfs $PWD/new_nvim $HOME/.config/nvim
 
 #### Zsh Configuration ####
 
