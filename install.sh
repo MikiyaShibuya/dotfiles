@@ -41,7 +41,8 @@ if [ -z $SKIP_SUDO ]; then
     sudo shell/setup_diff_highlight.sh $USER
 fi
 
-ln -nfs $PWD/tmux/tmux.conf $HOME/.tmux.conf
+mkdir -p $HOME/.config/tmux
+ln -nfs $PWD/tmux/tmux.conf $HOME/.config/tmux/tmux.conf
 ln -nfs $PWD/shell/zshrc $HOME/.zshrc
 if [ $OS = 'Mac' ]; then
     ln -nfs $PWD/shell/p10k_mac.zsh $HOME/.p10k.zsh
