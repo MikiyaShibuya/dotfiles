@@ -3,9 +3,14 @@
 # Exit when some error happened
 set -e
 
-# Override home directory
+# Check root/user mode 
 if [ "$1" = "--skip-sudo" ]; then
     SKIP_SUDO=true
+else
+    if [ `id -u` -ne 0 ]; then
+        echo Please run installer as root user or set --skip-sudo option.
+        exit
+    fi
 fi
 
 # Determine OS
