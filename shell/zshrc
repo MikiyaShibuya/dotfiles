@@ -93,6 +93,7 @@ eval "$(pyenv init -)"
 # eval "$(pyenv virtualenv-init -)"
 
 # ======== SSH Agent ========
+if [ ! -d $HOME/.ssh ]; then mkdir $HOME/.ssh; fi
 agent="$HOME/.ssh/agent"
 if [ -S "$SSH_AUTH_SOCK" ]; then
     case $SSH_AUTH_SOCK in
