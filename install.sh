@@ -62,8 +62,8 @@ elif [[ $OS = Linux && $ARCH = x86_64 ]]; then
     su $USER -c 'mkdir -p /home/$USER/.local'
 
     curl -fsSL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh
-    bash /tmp/nodesource_setup.sh \
-    apt-get install -y nodejs \
+    bash /tmp/nodesource_setup.sh
+    apt-get install -y nodejs
     su $USER -c 'npm config set prefix ~/.local/'
 
     echo Installing neovim for x64-86
