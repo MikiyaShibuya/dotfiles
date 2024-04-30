@@ -5,7 +5,8 @@ ARG USER=docker
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
-  && apt-get install -y openssh-server zsh sudo locales-all \
+  && apt-get install --no-install-recommends -y \
+    openssh-server zsh sudo locales-all \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
@@ -44,4 +45,3 @@ ENV USER=$USER
 
 COPY docker/entrypoint.sh /tmp/entrypoint.sh
 CMD /tmp/entrypoint.sh
-

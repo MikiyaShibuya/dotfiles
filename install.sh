@@ -52,19 +52,19 @@ if [[ $OS = Mac ]]; then
 elif [[ $OS = Linux && $ARCH = x86_64 ]]; then
 
     apt-get update
-    apt-get install -y \
-        git build-essential curl python3-pip tmux htop \
-        iputils-ping software-properties-common
+    apt-get install --no-install-recommends -y \
+        git build-essential curl tmux htop less \
+        python3-pip iputils-ping software-properties-common
 
     echo Setting up diff-highlight
     shell/setup_diff_highlight.sh $USER
 
-    su $USER -c 'mkdir -p /home/$USER/.local'
+    su $USER -c "mkdir -p /home/$USER/.local"
 
     curl -fsSL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh
-    bash /tmp/nodesource_setup.sh \
-    apt-get install -y nodejs \
-    su $USER -c 'npm config set prefix ~/.local/'
+    bash /tmp/nodesource_setup.sh
+    apt-get install --no-install-recommends -y nodejs
+    su $USER -c "npm config set prefix ~/.local/"
 
     echo Installing neovim for x64-86
     tar -C /tmp -xzf nvim/installer/nvim-linux64.tar.gz
@@ -83,5 +83,5 @@ fi
 
 
 # Finally, conduct installation under user permission
-su $USER -c './install_as_user.sh'
+su $USER -c "./install_as_user.sh"
 
