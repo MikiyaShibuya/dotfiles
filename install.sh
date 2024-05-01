@@ -52,7 +52,7 @@ if [[ $OS = Mac ]]; then
 elif [[ $OS = Linux && $ARCH = x86_64 ]]; then
 
     apt-get update
-    apt-get install -y \
+    apt-get install --no-install-recommends -y \
         git build-essential curl python3-pip tmux htop \
         iputils-ping software-properties-common
 
@@ -61,9 +61,19 @@ elif [[ $OS = Linux && $ARCH = x86_64 ]]; then
 
     su $USER -c 'mkdir -p /home/$USER/.local'
 
-    curl -fsSL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh
-    bash /tmp/nodesource_setup.sh
-    apt-get install -y nodejs
+    INSTALL_NODE_20="
+    curl -fsSL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh &&
+    bash /tmp/nodesource_setup.sh &&
+    apt-get install --no-install-recommends -y nodejs
+    "
+
+    INSTALL_NODE_16="
+    curl -fsSL https://deb.nodesource.com/setup_16.x -o /tmp/nodesource_setup.sh &&
+    bash /tmp/nodesource_setup.sh &&
+    apt-get install --no-install-recommends -y nodejs
+    "
+
+    eval $INSTALL_NODE_20 || eval $INSTALL_NODE_16
     su $USER -c 'npm config set prefix ~/.local/'
 
     echo Installing neovim for x64-86
@@ -85,3 +95,6 @@ fi
 # Finally, conduct installation under user permission
 su $USER -c './as_user_install.sh'
 
+# Use ~/.tmux.conf instead of  ~/.config/tmux/tmux.conf for Tmux < 3.1
+apt-get satisfy "tmux (>= 3.1)" >& /dev/null \
+    || su $USER -c "ln -nfs /home/$USER/.config/tmux/tmux.conf /home/$USER/.tmux.conf"

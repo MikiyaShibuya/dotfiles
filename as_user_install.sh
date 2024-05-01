@@ -90,4 +90,6 @@ then
     git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
 fi
 
+python3 -m pip install --upgrade pip
+python3 -m pip install setuptools
 python3 -m pip install neovim
