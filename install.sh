@@ -25,6 +25,7 @@ if [[ "$(uname)" = Darwin ]]; then
 elif [ "$(expr substr $(uname -s) 1 5)" = 'Linux' ]; then
     OS='Linux'
     echo Installing for Linux
+    MAJOR_VERSION=$(echo $(lsb_release -r) | sed -e 's/.*\ \([0-9]*\)\..*/\1/g')
 else
     OS=''
 fi
@@ -61,27 +62,28 @@ elif [[ $OS = Linux && $ARCH = x86_64 ]]; then
 
     su $USER -c 'mkdir -p /home/$USER/.local'
 
-    INSTALL_NODE_20="
-    curl -fsSL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh &&
-    bash /tmp/nodesource_setup.sh &&
+    echo Installing NodeJS
+    NODE_VERSION=20
+    if (( MAJOR_VERSION <= 18 )); then
+        NODE_VERSION=16
+    fi
+    curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x \
+        -o /tmp/nodesource_setup.sh
+    bash /tmp/nodesource_setup.sh
     apt-get install --no-install-recommends -y nodejs
-    "
-
-    INSTALL_NODE_16="
-    curl -fsSL https://deb.nodesource.com/setup_16.x -o /tmp/nodesource_setup.sh &&
-    bash /tmp/nodesource_setup.sh &&
-    apt-get install --no-install-recommends -y nodejs
-    "
-
-    eval $INSTALL_NODE_20 || eval $INSTALL_NODE_16
     su $USER -c 'npm config set prefix ~/.local/'
 
     echo Installing neovim for x64-86
-    tar -C /tmp -xzf nvim/installer/nvim-linux64.tar.gz
-    su $USER -c 'cp -r /tmp/nvim-linux64/bin /home/$USER/.local && \
-      cp -r /tmp/nvim-linux64/lib /home/$USER/.local && \
-      cp -r /tmp/nvim-linux64/share /home/$USER/.local && \
-      cp -r /tmp/nvim-linux64/man/* /home/$USER/.local/man'
+    if (( MAJOR_VERSION > 18 )); then
+        dpkg -i nvim/installer/neovim_v0.9.5-dev-g130bfe22c_amd64.deb
+    else
+        tar -C /tmp -xzf nvim/installer/nvim-linux64.tar.gz
+        su $USER -c 'cp -r /tmp/nvim-linux64/bin /home/$USER/.local && \
+          cp -r /tmp/nvim-linux64/lib /home/$USER/.local && \
+          cp -r /tmp/nvim-linux64/share /home/$USER/.local && \
+          cp -r /tmp/nvim-linux64/man/* /home/$USER/.local/man'
+    fi
+
 else
     echo "========"
     echo ""
