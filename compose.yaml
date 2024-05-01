@@ -6,7 +6,7 @@ services:
         - USER=$USER
         - GID=$G
         - UID=$U
-        - PASSWORD=password
+        - PASSWORD=0000
         - UBUNTU_VERSION=22.04
       context: .
     ports:

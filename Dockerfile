@@ -26,7 +26,7 @@ RUN if [ -z "$(getent group $GID)" ]; then \
   fi \
   && if [ -z "$(getent passwd $USER)" ]; then \
     useradd -u $UID -g $GID -s /bin/zsh -m $USER \
-    && echo $USER:password | chpasswd \
+    && echo $USER:$PASSWORD | chpasswd \
     && adduser shibuya sudo; \
   fi
 
