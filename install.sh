@@ -83,5 +83,5 @@ fi
 
 
 # Finally, conduct installation under user permission
-su $USER -c './install_as_user.sh'
+su $USER -c './as_user_install.sh'
 
