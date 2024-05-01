@@ -50,52 +50,49 @@ if [[ $OS = Mac ]]; then
 
     brew install node
     brew install neovim
-elif [[ $OS = Linux && $ARCH = x86_64 ]]; then
+elif [[ $OS = Linux ]]; then
 
     apt-get update
     apt-get install --no-install-recommends -y \
-        git build-essential curl python3-pip tmux htop \
-        iputils-ping software-properties-common
+        git build-essential curl tmux htop less \
+        python3-pip iputils-ping software-properties-common
 
     echo Setting up diff-highlight
     shell/setup_diff_highlight.sh $USER
 
-    su $USER -c 'mkdir -p /home/$USER/.local'
+    su $USER -c "mkdir -p /home/$USER/.local"
 
-    echo Installing NodeJS
     NODE_VERSION=20
     if (( MAJOR_VERSION <= 18 )); then
         NODE_VERSION=16
     fi
+    echo "Installing NodeJS(${NODE_VERSION})"
     curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x \
         -o /tmp/nodesource_setup.sh
     bash /tmp/nodesource_setup.sh
     apt-get install --no-install-recommends -y nodejs
-    su $USER -c 'npm config set prefix ~/.local/'
+    su $USER -c "npm config set prefix ~/.local/"
 
-    echo Installing neovim for x64-86
-    if (( MAJOR_VERSION > 18 )); then
-        dpkg -i nvim/installer/neovim_v0.9.5-dev-g130bfe22c_amd64.deb
+    if [[ $ARCH = x86_64 ]]; then
+        echo Installing neovim for x64-86
+        if (( MAJOR_VERSION > 18 )); then
+            dpkg -i nvim/installer/neovim_v0.9.5-dev-g130bfe22c_amd64.deb
+        else
+            tar -C /tmp -xzf nvim/installer/nvim-linux64.tar.gz
+            su $USER -c 'cp -r /tmp/nvim-linux64/bin /home/$USER/.local && \
+              cp -r /tmp/nvim-linux64/lib /home/$USER/.local && \
+              cp -r /tmp/nvim-linux64/share /home/$USER/.local && \
+              cp -r /tmp/nvim-linux64/man/* /home/$USER/.local/man'
+        fi
     else
-        tar -C /tmp -xzf nvim/installer/nvim-linux64.tar.gz
-        su $USER -c 'cp -r /tmp/nvim-linux64/bin /home/$USER/.local && \
-          cp -r /tmp/nvim-linux64/lib /home/$USER/.local && \
-          cp -r /tmp/nvim-linux64/share /home/$USER/.local && \
-          cp -r /tmp/nvim-linux64/man/* /home/$USER/.local/man'
+        echo Installing neovim for arm64
+        dpkg -i nvim/installer/neovim_v0.9.5-1_arm64.deb
     fi
-
-else
-    echo "========"
-    echo ""
-    echo "    Currently, neovim is not installed automatically for $ARCH archtecture."
-    echo "    Please install neovim manually."
-    echo ""
-    echo "========"
 fi
 
 
 # Finally, conduct installation under user permission
-su $USER -c './as_user_install.sh'
+su $USER -c "./as_user_install.sh"
 
 # Use ~/.tmux.conf instead of  ~/.config/tmux/tmux.conf for Tmux < 3.1
 apt-get satisfy "tmux (>= 3.1)" >& /dev/null \
