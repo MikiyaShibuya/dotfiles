@@ -1,4 +1,5 @@
-FROM --platform=amd64 ubuntu:22.04
+ARG UBUNTU_VERSION
+FROM ubuntu:${UBUNTU_VERSION}
 
 ARG USER=docker
 
