@@ -85,8 +85,16 @@ elif [[ $OS = Linux ]]; then
               cp -r /tmp/nvim-linux64/man/* /home/$USER/.local/man'
         fi
     else
-        echo Installing neovim for arm64
-        dpkg -i nvim/installer/neovim_v0.9.5-1_arm64.deb
+        if (( MAJOR_VERSION >= 22 )); then
+            echo Installing neovim for arm64 jammy
+            dpkg -i nvim/installer/neovim_v0.9.5-1-jammy_arm64.deb
+        elif (( MAJOR_VERSION >= 20 )); then
+            echo Installing neovim for arm64 focal
+            dpkg -i nvim/installer/neovim_v0.9.5-1-focal_arm64.deb
+        else
+            echo Installing neovim older than focal for arm64 is not supported
+            sleep 5
+        fi
     fi
 fi
 
