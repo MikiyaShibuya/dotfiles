@@ -75,8 +75,10 @@ elif [[ $OS = Linux ]]; then
 
     if [[ $ARCH = x86_64 ]]; then
         echo Installing neovim for x64-86
-        if (( MAJOR_VERSION > 18 )); then
-            dpkg -i nvim/installer/neovim_v0.9.5-1_amd64.deb
+        if (( MAJOR_VERSION >= 22 )); then
+            dpkg -i nvim/installer/neovim_v0.9.5-1-jammy_amd64.deb
+        elif (( MAJOR_VERSION >= 20 )); then
+            dpkg -i nvim/installer/neovim_v0.9.5-1-focal_amd64.deb
         else
             tar -C /tmp -xzf nvim/installer/nvim-linux64.tar.gz
             su $USER -c 'cp -r /tmp/nvim-linux64/bin /home/$USER/.local && \
