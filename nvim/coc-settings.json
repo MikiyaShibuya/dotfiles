@@ -65,5 +65,7 @@
       "undistort",
       "undistorter",
       "uvicorn"
-    ]
+    ],
+    "https.rejectUnauthorized": false,
+    "http.proxyStrictSSL": false
 }
