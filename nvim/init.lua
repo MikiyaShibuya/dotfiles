@@ -11,7 +11,32 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+
+-- #### Key Config ####
 local opt = vim.opt
+opt.number = true
+opt.virtualedit = "onemore"
+opt.encoding = "utf-8"
+
+-- Tab settings
+opt.smartindent = true
+opt.tabstop = 2
+opt.softtabstop = 0
+opt.shiftwidth = 2
+opt.expandtab = true
+
+-- Don't swap
+opt.swapfile = false
+
+-- Show few lines top and bottom
+opt.scrolloff = 5
+
+opt.autoread = true
+
+opt.ignorecase = true
+
+opt.mouse = "a"
+
 
 require("lazy").setup({
   "williamboman/mason.nvim",
