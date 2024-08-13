@@ -34,25 +34,26 @@ mkdir -p $HOME/.config/tmux
 ln -nfs $PWD/tmux/tmux.conf $HOME/.config/tmux/tmux.conf
 ln -nfs $PWD/shell/zshrc $HOME/.zshrc
 
-# Dein installation
-if [ ! -d "$HOME/.cache/dein" ]
-then
-    echo "Dein have not been initialized. Installing..."
-    curl https://raw.githubusercontent.com/Shougo/dein-installer.vim/main/installer.sh > /tmp/installer.sh
-    mkdir -p $HOME/.cache
-    sh /tmp/installer.sh $HOME/.cache/dein --use-neovim-config
-    echo "Dein installation complete."
-fi
+# # Dein installation
+# if [ ! -d "$HOME/.cache/dein" ]
+# then
+#     echo "Dein have not been initialized. Installing..."
+#     curl https://raw.githubusercontent.com/Shougo/dein-installer.vim/main/installer.sh > /tmp/installer.sh
+#     mkdir -p $HOME/.cache
+#     sh /tmp/installer.sh $HOME/.cache/dein --use-neovim-config
+#     echo "Dein installation complete."
+# fi
 
 # Configure nvim
-mkdir -p  $HOME/.config
-ln -nfs $PWD/nvim/init.vim $HOME/.config/nvim/init.vim
+mkdir -p  $HOME/.config/nvim
+# ln -nfs $PWD/nvim/init.vim $HOME/.config/nvim/init.vim
+ln -nfs $PWD/nvim/init.lua $HOME/.config/nvim/init.lua
 
 # dein & coc settings for nvim
-ln -nfs $PWD/nvim/dein.toml $HOME/.config/nvim/
-ln -nfs $PWD/nvim/dein_lazy.toml $HOME/.config/nvim/
-ln -nfs $PWD/nvim/coc-settings.json $HOME/.config/nvim/
-ln -nfs $PWD/nvim/coc-hook-add.vim $HOME/.config/nvim/
+# ln -nfs $PWD/nvim/dein.toml $HOME/.config/nvim/
+# ln -nfs $PWD/nvim/dein_lazy.toml $HOME/.config/nvim/
+# ln -nfs $PWD/nvim/coc-settings.json $HOME/.config/nvim/
+# ln -nfs $PWD/nvim/coc-hook-add.vim $HOME/.config/nvim/
 
 
 # Install fzf if it is not exist
