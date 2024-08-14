@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   dotfiles:
     build:
@@ -10,7 +9,7 @@ services:
         - UBUNTU_VERSION=22.04
       context: .
     ports:
-      - 2222:2222
+      - :${SSH_PORT:-2222}:2222
     volumes:
       - ./docker/.keys:/keys
       - ./docker/container-disk:/home/$USER/host-disk

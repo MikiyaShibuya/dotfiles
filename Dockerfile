@@ -1,4 +1,4 @@
-ARG UBUNTU_VERSION
+ARG UBUNTU_VERSION=22.04
 FROM ubuntu:${UBUNTU_VERSION}
 
 ARG USER=docker
@@ -9,7 +9,7 @@ RUN apt-get update \
   && apt-get install --no-install-recommends -y \
     # Essential libraries \
     sudo cmake unzip curl build-essential \
-    zsh openssh-server locales-all \
+    zsh openssh-server locales-all lsb-release \
     # For neovim \
     ninja-build gettext \
   && apt-get clean \
