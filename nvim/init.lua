@@ -1,3 +1,5 @@
+require "core"
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -11,19 +13,19 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({
-  "williamboman/mason.nvim",
-  "williamboman/mason-lspconfig.nvim",
-  "neovim/nvim-lspconfig",
-  "github/copilot.vim",
-  "altercation/vim-colors-solarized",
-  -- "folke/tokyonight.nvim",
-  -- "glepnir/zephyr-nvim",
-  -- "joshdick/onedark.vim",
-  -- "EdenEast/nightfox.nvim",
-})
+-- require("lazy").setup({
+--   "williamboman/mason.nvim",
+--   "williamboman/mason-lspconfig.nvim",
+--   "neovim/nvim-lspconfig",
+--   "github/copilot.vim",
+--   -- "altercation/vim-colors-solarized",
+--   -- "folke/tokyonight.nvim",
+--   -- "glepnir/zephyr-nvim",
+--   -- "joshdick/onedark.vim",
+--   -- "EdenEast/nightfox.nvim",
+-- })
 
-vim.cmd.colorscheme("solarized")
+-- vim.cmd.colorscheme("solarized")
 -- vim.cmd.colorscheme("tokyonight-moon")
 -- vim.cmd.colorscheme("zephyr")
 -- vim.cmd.colorscheme("onedark")
@@ -32,14 +34,14 @@ vim.cmd.colorscheme("solarized")
 
 
 -- This must be set before colorscheme
-vim.o.termguicolors = false
+-- vim.o.termguicolors = false
+-- 
+-- vim.g.solarized_termcolors = 256
+-- vim.g.solarized_visibility = "high"
+-- vim.g.solarized_contrast = "high"
+-- vim.cmd.colorscheme("solarized")
 
-vim.g.solarized_termcolors = 256
-vim.g.solarized_visibility = "high"
-vim.g.solarized_contrast = "high"
-vim.cmd.colorscheme("solarized")
-
-vim.opt.background = "dark"
+-- vim.opt.background = "dark"
 
 
 -- #### Key Config ####
@@ -82,7 +84,6 @@ local function fast_cursor(key, n_repeat)
     -- get current time
     local current_time = vim.loop.hrtime() / 1e6
 
-
     if current_time > vim.g.last_time + 100 then
       vim.g.base_time = current_time
     end
@@ -101,10 +102,10 @@ local function fast_cursor(key, n_repeat)
     end
   end
 end
-vim.keymap.set("n", "k", fast_cursor("k", 3), default_opts)
-vim.keymap.set("n", "j", fast_cursor("j", 3), default_opts)
-vim.keymap.set("n", "h", fast_cursor("h", 3), default_opts)
-vim.keymap.set("n", "l", fast_cursor("l", 3), default_opts)
+keymap.set("n", "k", fast_cursor("gk", 3), default_opts)
+keymap.set("n", "j", fast_cursor("gj", 3), default_opts)
+keymap.set("n", "h", fast_cursor("h", 3), default_opts)
+keymap.set("n", "l", fast_cursor("l", 3), default_opts)
 
 
 -- Highlight yank
