@@ -34,10 +34,32 @@ lspconfig.basedpyright.setup({
           reportUnknownParameterType = false,
           reportUnknownVariableType = false,
           reportUnknownMemberType = false,
+          reportUnusedCallResult = false,
+          reportUnknownArgumentType = false,
+          reportImplicitOverride = false,
+          reportUnnecessaryIsInstance = false,
+          reportUnreachable = 'warning',
+          reportAny = false,
+          reportUnnecessaryComparison = false,
+          reportMissingTypeArgument = false,
         },
       }
     }
   }
 })
 
+-- Enable inlay hint
 vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+
+-- Disable virtual text
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics,
+  {
+    virtual_text = false,
+    signs = true,
+    update_in_insert = false,
+    underline = true,
+  }
+)
+-- Show diagnostics on cursor hold
+vim.cmd[[autocmd CursorHold * lua vim.diagnostic.open_float({scope="line"})]]
