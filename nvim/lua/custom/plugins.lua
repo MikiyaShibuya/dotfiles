@@ -4,6 +4,7 @@ local plugins = {
     opts = {
       ensure_installed = {
         "basedpyright",
+        "typescript-language-server",
       }
     }
   },

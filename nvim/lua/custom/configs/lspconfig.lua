@@ -48,6 +48,12 @@ lspconfig.basedpyright.setup({
   }
 })
 
+lspconfig.tsserver.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = {"javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx"},
+})
+
 -- Enable inlay hint
 vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 
