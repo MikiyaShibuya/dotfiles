@@ -38,6 +38,7 @@ ln -nfs $PWD/shell/zshrc $HOME/.zshrc
 mkdir -p  $HOME/.config/nvim
 ln -nfs $PWD/nvim/init.lua $HOME/.config/nvim/init.lua
 ln -nfs $PWD/nvim/lua $HOME/.config/nvim/lua
+nvim --headless "+Lazy! sync" +qa
 
 # Install fzf if it is not exist
 if [ ! -d "$HOME/.fzf" ]
