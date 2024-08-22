@@ -73,6 +73,8 @@ fi
 if [[ ! -d "$HOME/powerlevel10k" ]]; then
     echo "powerlevel10k have not been initialized. Installing..."
     git clone --depth 1 https://github.com/romkatv/powerlevel10k.git $HOME/powerlevel10k
+    export XDG_CACHE_HOME=$HOME/.cache/p10k
+    $HOME/powerlevel10k/gitstatus/install
     echo "powerlevel10k installation complete."
 fi
 
