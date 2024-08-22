@@ -107,3 +107,4 @@ su $USER -c "./as_user_install.sh"
 # Use ~/.tmux.conf instead of  ~/.config/tmux/tmux.conf for Tmux < 3.1
 apt-get satisfy "tmux (>= 3.1)" >& /dev/null \
     || su $USER -c "ln -nfs /home/$USER/.config/tmux/tmux.conf /home/$USER/.tmux.conf"
+su $USER -c "~/.tmux/plugins/tpm/scripts/install_plugins.sh"
