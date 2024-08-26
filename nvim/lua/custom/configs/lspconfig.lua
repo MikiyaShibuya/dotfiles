@@ -42,6 +42,9 @@ lspconfig.basedpyright.setup({
           reportAny = false,
           reportUnnecessaryComparison = false,
           reportMissingTypeArgument = false,
+          reportUnusedParameter = 'warning',
+          reportUnusedImport = 'warning',
+          reportConstantRedefinition = 'warning',
         },
       }
     }
