@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [[ "$USE_DEBUG" == "1" ]]; then
+    set -x
+fi
+
 if [[ `id -u` == 0 ]]; then
     echo Error: Run as NON-ROOT user
     exit 1
@@ -38,7 +42,7 @@ ln -nfs $PWD/shell/zshrc $HOME/.zshrc
 mkdir -p  $HOME/.config/nvim
 ln -nfs $PWD/nvim/init.lua $HOME/.config/nvim/init.lua
 ln -nfs $PWD/nvim/lua $HOME/.config/nvim/lua
-nvim --headless "+Lazy! sync" +qa
+nvim --headless "+Lazy! sync" +qa | true
 
 # Install fzf if it is not exist
 if [ ! -d "$HOME/.fzf" ]

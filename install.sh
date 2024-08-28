@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [[ "$USE_DEBUG" == "1" ]]; then
+    set -x
+fi
+
 if [[ `id -u` -ne 0 ]]; then
     echo Error: Run as ROOT
     exit 1
