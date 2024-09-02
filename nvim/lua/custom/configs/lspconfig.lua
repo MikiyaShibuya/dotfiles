@@ -70,5 +70,13 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     underline = true,
   }
 )
--- Show diagnostics on cursor hold
-vim.cmd[[autocmd CursorHold * lua vim.diagnostic.open_float({scope="line"})]]
+
+-- Show diagnostics on cursor hold; no focusable, only show at cursor
+-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#show-line-diagnostics-automatically-in-hover-window
+vim.o.updatetime = 250
+vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+  group = vim.api.nvim_create_augroup("float_diagnostic", { clear = true }),
+  callback = function ()
+    vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})
+  end
+})
