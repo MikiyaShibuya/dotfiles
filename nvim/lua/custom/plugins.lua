@@ -5,6 +5,7 @@ local plugins = {
       ensure_installed = {
         "basedpyright",
         "typescript-language-server",
+        "lua-language-server",
       }
     }
   },
