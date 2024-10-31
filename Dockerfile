@@ -1,5 +1,5 @@
-ARG UBUNTU_VERSION=22.04
-FROM ubuntu:${UBUNTU_VERSION}
+ARG UBUNTU_CODENAME=jammy
+FROM ubuntu:${UBUNTU_CODENAME}
 
 ARG USER=docker
 
@@ -24,14 +24,17 @@ RUN sed -i 's/#Port 22/Port 2222/' /etc/ssh/sshd_config \
 # User setting
 ARG GID
 ARG UID
-ARG PASSWORD
+ARG PASS
 
-RUN if [ -z "$(getent group $GID)" ]; then \
+RUN if [ "$(getent passwd $UID)" != "" ]; then \
+    userdel -r "$(getent passwd $UID | awk -F: '{print $1}')"; \
+  fi \
+  && if [ -z "$(getent group $GID)" ]; then \
     groupadd -g $GID $USER; \
   fi \
   && if [ -z "$(getent passwd $USER)" ]; then \
     useradd -u $UID -g $GID -s /bin/zsh -m $USER \
-    && echo $USER:$PASSWORD | chpasswd \
+    && echo $USER:$PASS | chpasswd \
     && adduser shibuya sudo; \
   fi
 
@@ -48,5 +51,5 @@ ENV LANG=en_US.UTF-8
 ENV USER=$USER
 
 COPY docker/entrypoint.sh /tmp/entrypoint.sh
-CMD /tmp/entrypoint.sh
+CMD ["/tmp/entrypoint.sh"]
 
