@@ -57,8 +57,8 @@ if [[ $OS = Mac ]]; then
     echo Setting up diff-highlight
     shell/setup_diff_highlight.sh $USER
 
-    brew install node
-    brew install neovim
+    su $USER -c "brew install node"
+    su $USER -c "brew install neovim"
 elif [[ $OS = Linux ]]; then
 
     apt-get update
@@ -67,7 +67,7 @@ elif [[ $OS = Linux ]]; then
         python3-pip iputils-ping software-properties-common
 
     echo Setting up diff-highlight
-    shell/setup_diff_highlight.sh $USER
+    shell/setup_diff_highlight.sh
 
     su $USER -c "mkdir -p /home/$USER/.local"
 
@@ -114,6 +114,7 @@ fi
 su $USER -c "./as_user_install.sh"
 
 # Use ~/.tmux.conf instead of  ~/.config/tmux/tmux.conf for Tmux < 3.1
+USER_HOME=$(eval echo ~$USER)
 apt-get satisfy "tmux (>= 3.1)" >& /dev/null \
-    || su $USER -c "ln -nfs /home/$USER/.config/tmux/tmux.conf /home/$USER/.tmux.conf"
+    || su $USER -c "ln -nfs $USER_HOME/.config/tmux/tmux.conf $USER_HOME/.tmux.conf"
 su $USER -c "~/.tmux/plugins/tpm/scripts/install_plugins.sh"

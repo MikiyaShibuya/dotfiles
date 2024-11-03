@@ -17,7 +17,9 @@ else
     OS=''
 fi
 
-su $USER -c "mkdir -p /home/$USER/.local/bin"
+
+USER_HOME=$(eval echo ~$USER)
+su $USER -c "mkdir -p $USER_HOME/.local/bin"
 if [ "$OS" = 'Mac' ]; then
     DIFF_HIGHLIGHT_DIR=/opt/homebrew/share/git-core/contrib/diff-highlight
     if [ ! -f $DIFF_HIGHLIGHT_DIR/diff-highlight ]; then
@@ -39,6 +41,6 @@ elif [ "$OS" = 'Linux' ]; then
         make
         cd -
     fi
-    su $USER -c 'ln -nfs /usr/share/doc/git/contrib/diff-highlight/diff-highlight /home/$USER/.local/bin'
-    chmod +x /home/$USER/.local/bin/diff-highlight
+    su $USER -c 'ln -nfs /usr/share/doc/git/contrib/diff-highlight/diff-highlight $USER_HOME/.local/bin'
+    chmod +x $USER_HOME/.local/bin/diff-highlight
 fi
