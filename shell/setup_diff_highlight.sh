@@ -41,6 +41,6 @@ elif [ "$OS" = 'Linux' ]; then
         make
         cd -
     fi
-    su $USER -c 'ln -nfs /usr/share/doc/git/contrib/diff-highlight/diff-highlight $USER_HOME/.local/bin'
+    su $USER -c "ln -nfs /usr/share/doc/git/contrib/diff-highlight/diff-highlight $USER_HOME/.local/bin"
     chmod +x $USER_HOME/.local/bin/diff-highlight
 fi

@@ -63,7 +63,7 @@ elif [[ $OS = Linux ]]; then
 
     apt-get update
     apt-get install --no-install-recommends -y \
-        git build-essential curl tmux htop less \
+        git build-essential curl tmux htop less zsh \
         python3-pip iputils-ping software-properties-common
 
     echo Setting up diff-highlight

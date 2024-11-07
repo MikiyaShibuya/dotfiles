@@ -31,6 +31,8 @@ fi
 
 # Link gitconfig
 # ln -nfs $PWD/shell/gitconfig $HOME/.gitconfig
+touch $HOME/.gitconfig
+grep -q "Custom preference" $HOME/.gitconfig || cat shell/gitconfig >> $HOME/.gitconfig
 
 # Install tmux and zsh settigns
 mkdir -p $HOME/.config/tmux

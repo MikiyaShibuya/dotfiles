@@ -1,6 +1,4 @@
-[user]
-    name = MikiyaShibuya
-    email = mikiya.mail4univ@gmail.com
+# Custom preference
 [core]
     editor = nvim -c \"set fenc=utf-8\"
     excludesfile = ~/.gitignore_global
