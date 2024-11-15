@@ -6,7 +6,11 @@ local capabilities = config.capabilities
 local lspconfig = require("lspconfig")
 
 lspconfig.basedpyright.setup({
-  on_attach = on_attach,
+  -- on_attach = on_attach,
+  on_attach = function(client, bufnr)
+    on_attach(client, bufnr)
+    vim.lsp.inlay_hint.enable(true, { bufnr = 0 })
+  end,
   capabilities = capabilities,
   filetypes = {"python"},
   settings = {
@@ -58,7 +62,7 @@ lspconfig.ts_ls.setup({
 })
 
 -- Enable inlay hint
-vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+vim.lsp.inlay_hint.enable(true, { bufnr = 0 })
 
 -- Disable virtual text
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
