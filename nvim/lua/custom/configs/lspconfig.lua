@@ -49,6 +49,7 @@ lspconfig.basedpyright.setup({
           reportUnusedParameter = 'warning',
           reportUnusedImport = 'warning',
           reportConstantRedefinition = 'warning',
+          reportUnannotatedClassAttribute = false,
         },
       }
     }
