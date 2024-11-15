@@ -221,6 +221,17 @@ M.lspconfig = {
       "Diagnostic setloclist",
     },
 
+    ["<leader>H"] = {
+      function()
+        if vim.lsp.inlay_hint.is_enabled({ bufnr = 0 }) then
+          vim.lsp.inlay_hint.enable(false, { bufnr = 0 })
+        else
+          vim.lsp.inlay_hint.enable(true, { bufnr = 0 })
+        end
+      end,
+      "Toggle inlay hint"
+    },
+
     ["<leader>wa"] = {
       function()
         vim.lsp.buf.add_workspace_folder()
