@@ -111,3 +111,9 @@ elif [ -S $agent ]; then
 else
     # echo "no ssh-agent"
 fi
+
+export GIT_AUTHOR_EMAIL=mikiya.mail4univ@gmail.com
+export GIT_AUTHOR_NAME=MikiyaShibuya
+export GIT_COMMITTER_EMAIL=$GIT_AUTHOR_EMAIL
+export GIT_COMMITTER_NAME=$GIT_AUTHOR_NAME
+
