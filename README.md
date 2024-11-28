@@ -5,7 +5,7 @@ dotfiles
 Run one-liner to setup dotfiles.  
 This repo will be cloned to `~/.local/share/dotfiles`.  
 ```bash
-curl -fsL https://raw.githubusercontent.com/MikiyaShibuya/dotfiles/refs/heads/master/setup_dotfiles.sh | sudo bash -s --
+curl -fsL https://raw.githubusercontent.com/MikiyaShibuya/dotfiles/refs/heads/master/setup_dotfiles.sh | bash -s --
 ```
 (Opional) Change to zsh.  
 ```bash

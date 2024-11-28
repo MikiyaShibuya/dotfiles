@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # Determine OS
 if [ "$(uname)" = 'Darwin' ]; then
@@ -8,18 +9,19 @@ else
     OS=''
 fi
 
-unlink $HOME/.gitconfig
-unlink $HOME/.tmux.conf
-unlink $HOME/.zshrc
+USER_HOME=$(eval echo ~$USER)
+unlink $USER_HOME/.gitconfig
+unlink $USER_HOME/.tmux.conf
+unlink $USER_HOME/.zshrc
 
 if [ $OS = 'Mac' ]; then
-    unlink $HOME/.p10k.zsh
+    unlink $USER_HOME/.p10k.zsh
 elif [ $OS = 'Linux' ]; then
-    unlink $HOME/.p10k.zsh
+    unlink $USER_HOME/.p10k.zsh
 fi
 
-unlink $HOME/.config/nvim/init.vim
-unlink $HOME/.config/nvim/dein.toml
-unlink $HOME/.config/nvim/dein_lazy.toml
-unlink $HOME/.config/nvim/coc-settings.json
-unlink $HOME/.config/nvim/coc-hook-add.vim
+unlink $USER_HOME/.config/nvim/init.vim
+unlink $USER_HOME/.config/nvim/dein.toml
+unlink $USER_HOME/.config/nvim/dein_lazy.toml
+unlink $USER_HOME/.config/nvim/coc-settings.json
+unlink $USER_HOME/.config/nvim/coc-hook-add.vim
