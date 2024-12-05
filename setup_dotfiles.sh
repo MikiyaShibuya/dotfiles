@@ -12,7 +12,10 @@ mkdir -p $HOMEDIR/.local/share
 cd $HOMEDIR/.local/share
 
 if [ -d dotfiles ]; then
-  echo "Uninstalling previous installed dotfiles"
+  echo ""
+  echo "======================================="
+  echo "  Dotfiles already installed"
+  echo "  Uninstalling previous dotfiles"
   cd dotfiles
   if [ -f uninstall.sh ]; then
     ./uninstall.sh | true
@@ -21,7 +24,13 @@ if [ -d dotfiles ]; then
   rm -r dotfiles
 fi
 
+echo ""
+echo "======================================="
+echo "  Installing dotfiles"
 git clone $REPO_URL --depth=1
 cd dotfiles
 
 sudo USER=$USER ./install.sh
+
+echo ""
+echo "  ** Installation complete **"
