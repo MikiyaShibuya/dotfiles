@@ -6,7 +6,7 @@ services:
         - GID=$G
         - UID=$U
         - PASS=0000
-        - UBUNTU_VERSION=22.04
+        - UBUNTU_CODENAME=${UBUNTU_CODENAME:-jammy}
       context: .
     ports:
       - :${SSH_PORT:-2222}:2222

@@ -64,7 +64,7 @@ elif [[ $OS = Linux ]]; then
     apt-get update
     apt-get install --no-install-recommends -y \
         git build-essential curl tmux htop less zsh \
-        python3-pip python3.10-venv iputils-ping software-properties-common
+        python3-pip python3-venv iputils-ping software-properties-common
 
     echo Setting up diff-highlight
     shell/setup_diff_highlight.sh

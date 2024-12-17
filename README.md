@@ -13,6 +13,15 @@ sudo chsh $USER -s /bin/zsh
 ```
 That's all.
 
+## Test in container
+```bash
+U=`id -u` G=`id -g` docker-compose up --build
+```
+To use Ubuntu noble
+```bash
+U=`id -u` G=`id -g` UBUNTU_CODENAME=noble docker-compose up --build
+```
+
 ## Setup SSH-Agent sudo auth
 You can execute sudo command with no password required by authenticating with ssh key.  
 Add your pubkey to `~/.ssh/authorized_keys` and run the following command to enable this feature.  
