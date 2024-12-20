@@ -29,9 +29,8 @@ else
     OS=''
 fi
 
-# Setup gitconfig and diff-highlight
-ln -nfs $PWD/shell/gitconfig $HOME/.gitconfig
-
+# Link gitconfig
+# ln -nfs $PWD/shell/gitconfig $HOME/.gitconfig
 
 # Install tmux and zsh settigns
 mkdir -p $HOME/.config/tmux
@@ -45,12 +44,14 @@ ln -nfs $PWD/nvim/lua $HOME/.config/nvim/lua
 nvim --headless "+Lazy! sync" +qa | true
 
 # Install fzf if it is not exist
-if [ ! -d "$HOME/.fzf" ]
-then
+if [ ! -d "$HOME/.fzf" ]; then
     git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
     yes | $HOME/.fzf/install
 fi
-
+# Place zsh setup it not yet
+if [ ! -f "$HOME/.fzf.zsh" ]; then
+    yes | zsh -c "$HOME/.fzf/install"
+fi
 
 # Install powerlevel10k
 if [[ $OS = Mac ]]; then
@@ -68,7 +69,7 @@ if [[ ! -d "$HOME/powerlevel10k" ]]; then
 fi
 
 
-# Install tqm, tmux plugin manager
+# Install tqm (tmux plugin manager)
 if [[ ! -e $HOME/.tmux ]];then
     mkdir -p $HOME/.tmux/plugins
     git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
