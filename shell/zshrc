@@ -38,6 +38,7 @@ compinit
 
 # Display cursor in completion
 zstyle ':completion:*:processes' menu yes select=2
+setopt magic_equal_subst
 
 # setup kubectl completion
 if type kubectl > /dev/null; then
