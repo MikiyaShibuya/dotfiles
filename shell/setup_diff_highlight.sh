@@ -26,7 +26,7 @@ if [ "$OS" = 'Mac' ]; then
         echo "There is no diff-highlight, installing..."
         su $USER -c 'brew install git'
     fi
-    su $USER -c 'ln -nfs $DIFF_HIGHLIGHT_DIR/diff-highlight ~/.local/bin'
+    su $USER -c "ln -nfs $DIFF_HIGHLIGHT_DIR/diff-highlight ~/.local/bin"
 elif [ "$OS" = 'Linux' ]; then
     # Install diff-highlight if there is no binary
     DIFF_HIGHLIGHT_DIR=/usr/share/doc/git/contrib/diff-highlight

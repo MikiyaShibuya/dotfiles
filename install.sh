@@ -55,7 +55,7 @@ fi
 if [[ $OS = Mac ]]; then
 
     echo Setting up diff-highlight
-    shell/setup_diff_highlight.sh $USER
+    shell/setup_diff_highlight.sh
 
     su $USER -c "brew install node"
     su $USER -c "brew install neovim"
