@@ -63,6 +63,14 @@ lspconfig.ts_ls.setup({
   filetypes = {"javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx"},
 })
 
+lspconfig.clangd.setup({
+  on_attach = function(client, bufnr)
+    client.server_capabilities.signatureHelpProvider = false
+    on_attach(client, bufnr)
+  end,
+  capabilities = capabilities
+})
+
 -- Enable inlay hint
 vim.lsp.inlay_hint.enable(true, { bufnr = 0 })
 

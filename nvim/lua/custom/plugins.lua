@@ -3,6 +3,7 @@ local plugins = {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
+        "clangd",
         "basedpyright",
         "typescript-language-server",
         "lua-language-server",
