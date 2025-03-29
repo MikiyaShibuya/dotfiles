@@ -1,3 +1,4 @@
+.DS_Store
 docker/.keys/dotfiles_ssh
 docker/container-disk/*
 !docker/container-disk/.gitkeep
