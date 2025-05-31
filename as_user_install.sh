@@ -34,16 +34,15 @@ fi
 touch $HOME/.gitconfig
 grep -q "Custom preference" $HOME/.gitconfig || cat shell/gitconfig >> $HOME/.gitconfig
 
-# Install tmux and zsh settigns
-mkdir -p $HOME/.config/tmux
-ln -nfs $PWD/tmux/tmux.conf $HOME/.config/tmux/tmux.conf
-ln -nfs $PWD/shell/zshrc $HOME/.zshrc
-
 # Configure nvim
 mkdir -p  $HOME/.config/nvim
 ln -nfs $PWD/nvim/init.lua $HOME/.config/nvim/init.lua
 ln -nfs $PWD/nvim/lua $HOME/.config/nvim/lua
 nvim --headless "+Lazy! sync" +qa | true
+
+
+# ==== ZSH Setting ====
+ln -nfs $PWD/shell/zshrc $HOME/.zshrc
 
 # Install fzf if it is not exist
 if [ ! -d "$HOME/.fzf" ]; then
@@ -70,6 +69,15 @@ if [[ ! -d "$HOME/powerlevel10k" ]]; then
     echo "powerlevel10k installation complete."
 fi
 
+mkdir -p $HOME/.zsh
+if [ ! -d "$HOME/.zsh/zsh-autosuggestions" ]; then
+  git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions $HOME/.zsh/zsh-autosuggestions
+fi
+
+
+# ==== TMUX Setting ====
+mkdir -p $HOME/.config/tmux
+ln -nfs $PWD/tmux/tmux.conf $HOME/.config/tmux/tmux.conf
 
 # Install tqm (tmux plugin manager)
 if [[ ! -e $HOME/.tmux ]];then

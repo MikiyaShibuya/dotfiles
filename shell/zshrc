@@ -76,6 +76,13 @@ then
     source ~/.fzf.zsh
 fi
 
+# ======== ZSH AUTO SUGGESTION ========
+if [ -f "$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ]
+then
+  source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+  bindkey '^[[Z' autosuggest-accept # Shift+Tab
+fi
+
 # ======== OS related configuration ========
 
 if [ "$(uname)" = 'Darwin' ]; then
