@@ -51,7 +51,9 @@ opt.virtualedit = "onemore"
 opt.encoding = "utf-8"
 
 -- Tab settings
-opt.smartindent = true
+-- smartindent makes comment indents incorrectly 2025/0531
+-- opt.smartindent = true
+opt.autoindent = true
 opt.tabstop = 2
 opt.softtabstop = 0
 opt.shiftwidth = 2
