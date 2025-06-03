@@ -1,0 +1,19 @@
+name: Docker Test Container Build
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build-test-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker test image
+        run: |
+          U=1000 G=1000 docker compose build
+        working-directory: ./
