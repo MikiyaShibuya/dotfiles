@@ -6,13 +6,15 @@ services:
         - GID=$G
         - UID=$U
         - PASS=0000
-        - UBUNTU_CODENAME=${UBUNTU_CODENAME:-jammy}
+        - UBUNTU_CODENAME=${UBUNTU_CODENAME:-noble}
       context: .
     ports:
-      - :${SSH_PORT:-2222}:2222
+      - ${SSH_PORT:-2222}:${SSH_PORT:-2222}
+    environment:
+      - SSH_PORT=${SSH_PORT:-2222}
     volumes:
       - ./docker/.keys:/keys
       - ./docker/container-disk:/home/$USER/host-disk
-      - .:/home/$USER/dotfiles
+      - .:/home/$USER/.local/share/dotfiles:ro
     privileged: true
     tty: true

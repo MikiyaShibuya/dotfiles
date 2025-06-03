@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit when some error happened
+set -e
+
 if [[ "$USE_DEBUG" == "1" ]]; then
     set -x
 fi
@@ -19,9 +22,6 @@ if [[ "$USER" = root ]]; then
     exit 1
 fi
 
-# Exit when some error happened
-set -e
-
 # Determine OS
 if [[ "$(uname)" = Darwin ]]; then
     OS='Mac'
@@ -29,13 +29,17 @@ if [[ "$(uname)" = Darwin ]]; then
 elif [ "$(expr substr $(uname -s) 1 5)" = 'Linux' ]; then
     OS='Linux'
     echo Installing for Linux
-    MAJOR_VERSION=$(echo $(lsb_release -r) | sed -e 's/.*\ \([0-9]*\)\..*/\1/g')
+    . /etc/os-release
+    DISTRO=$ID
+    MAJOR_VERSION=$(echo $VERSION_ID | cut -d '.' -f 1)
 else
-    OS=''
+    echo "Error: Unsupported OS: $(uname)"
+    exit 1
 fi
 
 echo ========================================
 echo OS: $OS
+[ "$DISTRO" != "" ] && echo DISTRO: $DISTRO
 echo MAJOR_VERSION: $MAJOR_VERSION
 echo ========================================
 
@@ -45,7 +49,8 @@ if [[ "$(uname -m)" = x86_64 ]]; then
 elif [[ "$(uname -m)" = arm64 ]]; then
     ARCH='arm64'
 else
-    ARCH=''
+    echo "Error: Unsupported architecture: $(uname -m)"
+    exit 1
 fi
 
 
@@ -53,21 +58,18 @@ fi
 
 # Install neovim
 if [[ $OS = Mac ]]; then
-
-    echo Setting up diff-highlight
-    shell/setup_diff_highlight.sh
-
+    echo "Installing neovim"
     su $USER -c "brew install node"
     su $USER -c "brew install neovim"
-elif [[ $OS = Linux ]]; then
 
-    apt-get update
+
+elif [[ $OS = Linux ]]; then
+    echo "Installing requirements"
+    apt-get update > /dev/null
     apt-get install --no-install-recommends -y \
         git build-essential curl tmux htop less zsh \
-        python3-pip python3-venv iputils-ping software-properties-common
-
-    echo Setting up diff-highlight
-    shell/setup_diff_highlight.sh
+        python3-pip python3-venv iputils-ping software-properties-common \
+        > /dev/null
 
     su $USER -c "mkdir -p /home/$USER/.local"
 
@@ -78,8 +80,8 @@ elif [[ $OS = Linux ]]; then
     echo "Installing NodeJS(${NODE_VERSION})"
     curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x \
         -o /tmp/nodesource_setup.sh
-    bash /tmp/nodesource_setup.sh
-    apt-get install --no-install-recommends -y nodejs
+    bash /tmp/nodesource_setup.sh > /dev/null
+    apt-get install --no-install-recommends -y nodejs > /dev/null
     su $USER -c "npm config set prefix ~/.local/"
 
     if [[ $ARCH = x86_64 ]]; then
@@ -109,8 +111,10 @@ elif [[ $OS = Linux ]]; then
     fi
 fi
 
+# Install diff-highlight if not installed
+shell/setup_diff_highlight.sh
 
-# Finally, conduct installation under user permission
+# Installation under user permission
 su $USER -c "./as_user_install.sh"
 
 # Use ~/.tmux.conf instead of  ~/.config/tmux/tmux.conf for Tmux < 3.1

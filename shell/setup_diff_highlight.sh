@@ -23,24 +23,27 @@ su $USER -c "mkdir -p $USER_HOME/.local/bin"
 if [ "$OS" = 'Mac' ]; then
     DIFF_HIGHLIGHT_DIR=/opt/homebrew/share/git-core/contrib/diff-highlight
     if [ ! -f $DIFF_HIGHLIGHT_DIR/diff-highlight ]; then
-        echo "There is no diff-highlight, installing..."
+        echo "Installing diff-highlight..."
         su $USER -c 'brew install git'
+    else
+        echo "diff-highlight already installed"
     fi
     su $USER -c "ln -nfs $DIFF_HIGHLIGHT_DIR/diff-highlight ~/.local/bin"
 elif [ "$OS" = 'Linux' ]; then
     # Install diff-highlight if there is no binary
     DIFF_HIGHLIGHT_DIR=/usr/share/doc/git/contrib/diff-highlight
     if [ ! -f $DIFF_HIGHLIGHT_DIR/diff-highlight ]; then
-        echo "No diff-highlight installed"
+        echo "Installing diff-highlight..."
         if [ ! -f $DIFF_HIGHLIGHT_DIR/Makefile ]; then
-            echo "No diff-highlight files, cloning"
-            git clone --depth 1 https://github.com/git/git.git /tmp/git
+            git clone -q --depth 1 https://github.com/git/git.git /tmp/git
             cp -r /tmp/git/contrib/diff-highlight/* $DIFF_HIGHLIGHT_DIR
         fi
         cd $DIFF_HIGHLIGHT_DIR
-        make
-        cd -
+        make > /dev/null
+        cd - > /dev/null
+    else
+        echo "diff-highlight already installed"
     fi
-    su $USER -c "ln -nfs /usr/share/doc/git/contrib/diff-highlight/diff-highlight $USER_HOME/.local/bin"
+    su $USER -c "ln -nfs $DIFF_HIGHLIGHT_DIR/diff-highlight $USER_HOME/.local/bin"
     chmod +x $USER_HOME/.local/bin/diff-highlight
 fi
