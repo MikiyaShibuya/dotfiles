@@ -13,7 +13,6 @@ services:
     environment:
       - SSH_PORT=${SSH_PORT:-2222}
     volumes:
-      - ./docker/.keys:/keys
       - ./docker/container-disk:/home/$USER/host-disk
       - .:/home/$USER/.local/share/dotfiles:ro
     privileged: true
