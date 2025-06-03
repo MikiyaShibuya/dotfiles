@@ -9,10 +9,10 @@ su $USER -c "touch /home/$USER/host-disk/zsh-history"
 ln -sfn /home/$USER/host-disk/zsh-history /home/$USER/.zsh-history
 
 su $USER -c "mkdir -p /home/$USER/host-disk/p10k"
-ln -sfn /home/$USER/host-disk/p10k /home/shibuya/.cache/p10k
+ln -sfn /home/$USER/host-disk/p10k /home/$USER/.cache/p10k
 
 su $USER -c "mkdir -p /home/$USER/host-disk/github-copilot"
-ln -sfn /home/$USER/host-disk/github-copilot /home/shibuya/.config/github-copilot
+ln -sfn /home/$USER/host-disk/github-copilot /home/$USER/.config/github-copilot
 
 
 # SSH server setup

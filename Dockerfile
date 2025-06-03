@@ -31,7 +31,7 @@ RUN apt-get update > /dev/null && \
     if [ -z "$(getent passwd $USER)" ]; then \
       useradd -u $UID -g $GID -s /bin/zsh -m $USER && \
       echo $USER:$PASS | chpasswd && \
-      adduser shibuya sudo; \
+      adduser $USER sudo; \
     fi && \
     \
     # Make directory to copy this repository \
