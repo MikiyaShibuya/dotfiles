@@ -50,8 +50,19 @@ elif [[ $OS = Linux ]]; then
 fi
 
 # Install zsh
-grep -q "source $PWD/shell/zshrc" $HOME/.zshrc &> /dev/null || \
-  echo "source $PWD/shell/zshrc" >> $HOME/.zshrc
+if [[ -h $HOME/.zshrc ]]; then
+  unlink $HOME/.zshrc
+  touch $HOME/.zshrc
+fi
+
+SOURCE_LINE="source $PWD/shell/zshrc"
+ZSHRC_PATH="$HOME/.zshrc"
+if ! grep -qxF "$SOURCE_LINE" $ZSHRC_PATH; then
+  echo "# ======== Include dotfiles config ========" >> $ZSHRC_PATH
+  echo $SOURCE_LINE >> $ZSHRC_PATH
+  echo "# ========" >> $ZSHRC_PATH
+  echo "" >> $ZSHRC_PATH
+fi
 zsh $HOME/.zshrc
 
 
