@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #--- Setup ssh agen auth with one-liner ---
-# curl -fsL https://raw.githubusercontent.com/MikiyaShibuya/dotfiles/refs/heads/master/shell/setup_ssh_agent_auth.sh  | sudo bash -s -- ~/.ssh/authorized_keys
+# curl -fsL https://raw.githubusercontent.com/MikiyaShibuya/dotfiles/refs/heads/main/shell/setup_ssh_agent_auth.sh  | sudo bash -s -- ~/.ssh/authorized_keys
 
 if [[ `id -u` -ne 0 ]]; then
   echo Error: Run as ROOT
