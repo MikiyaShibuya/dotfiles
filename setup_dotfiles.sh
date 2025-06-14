@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# curl -fsL https://raw.githubusercontent.com/MikiyaShibuya/dotfiles/refs/heads/master/setup_dotfiles.sh | bash -s --
+# curl -fsL https://raw.githubusercontent.com/MikiyaShibuya/dotfiles/refs/heads/main/setup_dotfiles.sh | bash -s --
 
 set -e
 
