@@ -51,6 +51,7 @@ lspconfig.basedpyright.setup({
           reportConstantRedefinition = 'warning',
           reportUnannotatedClassAttribute = false,
           reportExplicitAny = 'warning',
+          reportUnknownLambdaType = false,
         },
       }
     }
