@@ -21,6 +21,13 @@ local plugins = {
   {
     "github/copilot.vim",
     lazy = false,
+    config = function()
+      -- Disable Copilot's default tab mapping
+      vim.g.copilot_no_tab_map = true
+      -- Set up Shift-Tab to accept Copilot suggestions
+      local keymap = vim.keymap
+      keymap.set("i", "<S-Tab>", "copilot#Accept('<CR>')", { expr = true, silent = true, script = true, replace_keycodes = false })
+    end,
   },
 }
 
