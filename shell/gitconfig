@@ -1,4 +1,4 @@
-# Custom preference
+#### Custom preference begin ####
 [core]
     editor = nvim -c \"set fenc=utf-8\"
     excludesfile = ~/.gitignore_global
@@ -10,3 +10,9 @@
 
 [pager]
     diff = diff-highlight | less
+
+# [user]
+#     name = 
+#     email = 
+
+#### Custom preference end ####
