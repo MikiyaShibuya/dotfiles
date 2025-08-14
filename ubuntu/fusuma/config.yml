@@ -1,4 +1,9 @@
 swipe:
+  # Key codes
+  #   LEFTALT=56
+  #   LEFTCTL=29
+  #   LEFT=105
+  #   RIGHT=106
   3:
     # key codes for ydotools:
     # /usr/include/linux/input-event-codes.h
