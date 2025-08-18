@@ -17,9 +17,9 @@ That's all.
 ```bash
 U=`id -u` G=`id -g` docker compose up --build
 ```
-To use Ubuntu noble
+To use other than Ubuntu noble
 ```bash
-U=`id -u` G=`id -g` UBUNTU_CODENAME=noble docker compose up --build
+U=`id -u` G=`id -g` UBUNTU_CODENAME=jammy docker compose up --build
 ```
 
 ## Setup SSH-Agent sudo auth
