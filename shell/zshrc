@@ -2,8 +2,7 @@
 
 # Guard from multiple sourcing
 if [[ -n "${ZSHRC_SOURCE_GUARD:-}" ]]; then
-  echo "WARN: detected custom zshrc sourced multiple times. Remove it from ~/.zshrc"
-  exit 0
+  return 0
 fi
 ZSHRC_SOURCE_GUARD=1
 
