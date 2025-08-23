@@ -1,0 +1,23 @@
+#!/bin/sh
+
+BRIGHTNESS_PATH="/sys/class/backlight/intel_backlight/brightness"
+ACTUAL_BRIGHTNESS_PATH="/sys/class/backlight/intel_backlight/actual_brightness"
+LOG_PATH="/var/log/reset_backlight_when_unlock.log"
+N_MAX=10
+
+case "$1" in
+  post)
+    BRIGHTNESS=$(cat $BRIGHTNESS_PATH)
+
+    for i in $(seq 1 $N_MAX); do
+      ACTUAL_BRIGHTNESS=$(cat $ACTUAL_BRIGHTNESS_PATH)
+      if [ "$BRIGHTNESS" = "$ACTUAL_BRIGHTNESS" ]; then
+        echo "Brightness has set to $BRIGHTNESS ($i tries, $(date))" >> $LOG_PATH
+        break
+      else
+        echo $BRIGHTNESS > $BRIGHTNESS_PATH
+        sleep 0.05
+      fi
+    done
+    ;;
+esac
