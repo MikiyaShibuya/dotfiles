@@ -5,6 +5,10 @@ This script will reset the brightness to the value before suspend.
 
 ## Install
 ```
-sudo cp reset-backlight-when-unlock /etc/systemd/system-sleep/reset-backlight-when-unlock
-sudo chown root:root /etc/systemd/system-sleep/reset-backlight-when-unlock
+sudo ln -s $PWD/monitor-unlock.sh /usr/local/bin/monitor-unlock.sh
+sudo ln -s $PWD/monitor-unlock.service /etc/systemd/system/monitor-unlock.service
+sudo systemctl enable --now monitor-unlock.service
 ```
+
+
+
