@@ -33,6 +33,8 @@
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
     os_icon                 # os identifier
+    docker
+    ros
     dir                     # current directory
     vcs                     # git status
     # =========================[ Line #2 ]=========================
@@ -1704,6 +1706,28 @@
   # User-defined prompt segments can be customized the same way as built-in segments.
   # typeset -g POWERLEVEL9K_EXAMPLE_FOREGROUND=208
   # typeset -g POWERLEVEL9K_EXAMPLE_VISUAL_IDENTIFIER_EXPANSION='⭐'
+
+  function prompt_docker() {
+    if [ -f /.dockerenv ]; then
+      p10k segment -f '#0db7ed' -b 1 -i ' '
+      return
+    fi
+  }
+
+  function instant_prompt_docker() {
+    prompt_docker
+  }
+
+  function prompt_ros() {
+    if [ -n "$ROS_DISTRO" ]; then
+      p10k segment -f 208 -b 1 -i "󰭆 ${ROS_CONTAINER_LABEL}"
+      return
+    fi
+  }
+
+  function instant_prompt_ros() {
+    prompt_ros
+  }
 
   # Transient prompt works similarly to the builtin transient_rprompt option. It trims down prompt
   # when accepting a command line. Supported values:
