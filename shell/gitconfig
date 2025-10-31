@@ -4,9 +4,12 @@
     excludesfile = ~/.gitignore_global
 
 [alias]
-    old-graph = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=short
+    # only current branch
+    g = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --date=format:'%Y-%m-%d %H:%M'
+
+    # show all branches
     graph = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=format:'%Y-%m-%d %H:%M'
-    graph-curr = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --date=format:'%Y-%m-%d %H:%M'
+    ga = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=format:'%Y-%m-%d %H:%M'
 
 [pager]
     diff = diff-highlight | less
