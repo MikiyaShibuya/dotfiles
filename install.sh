@@ -73,7 +73,7 @@ elif [[ $OS = Linux ]]; then
         python3-pip python3-venv iputils-ping software-properties-common \
         > /dev/null
 
-    su $USER -c "mkdir -p /home/$USER/.local"
+    su $USER -c 'mkdir -p $HOME/.local'
 
     NODE_VERSION=20
     if (( MAJOR_VERSION <= 18 )); then
@@ -96,10 +96,10 @@ elif [[ $OS = Linux ]]; then
             dpkg -i nvim/installer/neovim_v0.11.2-1-focal_amd64.deb
         else
             tar -C /tmp -xzf nvim/installer/nvim-linux64.tar.gz
-            su $USER -c 'cp -r /tmp/nvim-linux64/bin /home/$USER/.local && \
-              cp -r /tmp/nvim-linux64/lib /home/$USER/.local && \
-              cp -r /tmp/nvim-linux64/share /home/$USER/.local && \
-              cp -r /tmp/nvim-linux64/man/* /home/$USER/.local/man'
+            su $USER -c 'cp -r /tmp/nvim-linux64/bin $HOME/.local && \
+              cp -r /tmp/nvim-linux64/lib $HOME/.local && \
+              cp -r /tmp/nvim-linux64/share $HOME/.local && \
+              cp -r /tmp/nvim-linux64/man/* $HOME/.local/man'
         fi
     else
         if (( MAJOR_VERSION >= 22 )); then
