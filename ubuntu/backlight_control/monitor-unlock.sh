@@ -10,13 +10,23 @@ N_MAX=10
 gdbus monitor -y -d org.freedesktop.login1 |
 while read -r line; do
 
+  RESET_BRIGHTNESS=0
+
   # Example line when the PC back from idle:
   # /org/freedesktop/login1/session/_33: org.freedesktop.DBus.Properties.PropertiesChanged ('org.freedesktop.login1.Session', {'IdleHint': <false>, ...
-
   if echo "$line" | grep -q "PropertiesChanged" \
-    && echo "$line" | grep -q "org.freedesktop.login1.Session" \
-    && echo "$line" | grep -q "'IdleHint': <false>"; then
+    && echo "$line" | grep -q "org.freedesktop.login1.Session"; then
+    RESET_BRIGHTNESS=1
+  fi
 
+  # /org/freedesktop/login1: org.freedesktop.DBus.Properties.PropertiesChanged ('org.freedesktop.login1.Manager', {'BlockInhibited': <'handle-power-key:handle-suspend-key:handle-hibernate-key:handle-lid-switch'>}, @as [])
+  if echo "$line" | grep -q "PropertiesChanged" \
+    && echo "$line" | grep -q "org.freedesktop.login1.Manager" \
+    && echo "$line" | grep -q "'BlockInhibited': <'handle-power-key:handle-suspend-key:handle-hibernate-key:handle-lid-switch'>"; then
+    RESET_BRIGHTNESS=1
+  fi
+
+  if [ $RESET_BRIGHTNESS -eq 1 ]; then
     BRIGHTNESS=$(cat $BRIGHTNESS_PATH)
 
     for i in $(seq 1 $N_MAX); do
