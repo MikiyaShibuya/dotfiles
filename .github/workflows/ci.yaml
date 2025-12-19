@@ -9,10 +9,23 @@ on:
 jobs:
   build-container:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ubuntu_codename: [bionic, focal, jammy, noble]
+        include:
+          - ubuntu_codename: bionic
+            ubuntu_version: "18.04"
+          - ubuntu_codename: focal
+            ubuntu_version: "20.04"
+          - ubuntu_codename: jammy
+            ubuntu_version: "22.04"
+          - ubuntu_codename: noble
+            ubuntu_version: "24.04"
+    name: Ubuntu ${{ matrix.ubuntu_version }} (${{ matrix.ubuntu_codename }})
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Build Docker test image
         run: |
-          U=1000 G=1000 docker compose build
+          U=1000 G=1000 UBUNTU_CODENAME=${{ matrix.ubuntu_codename }} docker compose build
         working-directory: ./

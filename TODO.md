@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] x86_64でのubuntu18, 20, 22, 24での動作確認を行うCIを実装
+- [x] x86_64でのubuntu18, 20, 22, 24での動作確認を行うCIを実装
 - [ ] 各バージョンでneovimが起動するかを確認する
 - [ ] Dockerfile, compose.yamlのパスをdockerディレクトリに変更
 - [ ] GNU Stowを使ったsymlink管理への移行を検討
