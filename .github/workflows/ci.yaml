@@ -8,7 +8,7 @@ on:
       - claude-work
 
 jobs:
-  build-container:
+  build-amd64:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -20,7 +20,7 @@ jobs:
             ubuntu_version: "22.04"
           - ubuntu_codename: noble
             ubuntu_version: "24.04"
-    name: Ubuntu ${{ matrix.ubuntu_version }} (${{ matrix.ubuntu_codename }})
+    name: Ubuntu ${{ matrix.ubuntu_version }} (amd64)
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -46,3 +46,45 @@ jobs:
         run: |
           docker run --rm dotfiles-test:${{ matrix.ubuntu_codename }} nvim --version
           docker run --rm dotfiles-test:${{ matrix.ubuntu_codename }} nvim --headless -c 'echo "Neovim OK"' -c 'qa'
+
+  build-arm64:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ubuntu_codename: [focal, jammy, noble]
+        include:
+          - ubuntu_codename: focal
+            ubuntu_version: "20.04"
+          - ubuntu_codename: jammy
+            ubuntu_version: "22.04"
+          - ubuntu_codename: noble
+            ubuntu_version: "24.04"
+    name: Ubuntu ${{ matrix.ubuntu_version }} (arm64)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Docker test image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: linux/arm64
+          push: false
+          load: true
+          tags: dotfiles-test:${{ matrix.ubuntu_codename }}-arm64
+          build-args: |
+            USER=testuser
+            UID=1000
+            GID=1000
+            PASS=0000
+            UBUNTU_CODENAME=${{ matrix.ubuntu_codename }}
+          cache-from: type=gha,scope=${{ matrix.ubuntu_codename }}-arm64
+          cache-to: type=gha,mode=max,scope=${{ matrix.ubuntu_codename }}-arm64
+      - name: Verify Neovim starts
+        run: |
+          docker run --rm dotfiles-test:${{ matrix.ubuntu_codename }}-arm64 nvim --version
+          docker run --rm dotfiles-test:${{ matrix.ubuntu_codename }}-arm64 nvim --headless -c 'echo "Neovim OK"' -c 'qa'
