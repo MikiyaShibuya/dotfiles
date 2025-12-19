@@ -7,13 +7,14 @@ services:
         - UID=$U
         - PASS=0000
         - UBUNTU_CODENAME=${UBUNTU_CODENAME:-noble}
-      context: .
+      context: ..
+      dockerfile: docker/Dockerfile
     ports:
       - ${SSH_PORT:-2222}:${SSH_PORT:-2222}
     environment:
       - SSH_PORT=${SSH_PORT:-2222}
     volumes:
-      - ./docker/container-disk:/home/$USER/host-disk
-      - .:/home/$USER/.local/share/dotfiles:ro
+      - ./container-disk:/home/$USER/host-disk
+      - ..:/home/$USER/.local/share/dotfiles:ro
     privileged: true
     tty: true
