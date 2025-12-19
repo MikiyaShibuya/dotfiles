@@ -69,22 +69,16 @@ elif [[ $OS = Linux ]]; then
     echo "Installing requirements"
     apt-get update > /dev/null
     apt-get install --no-install-recommends -y \
-        git build-essential curl tmux htop less zsh \
+        git build-essential curl unzip tmux htop less zsh \
         python3-pip python3-venv iputils-ping software-properties-common \
         > /dev/null
 
-    su $USER -c 'mkdir -p $HOME/.local'
+    su $USER -c 'mkdir -p $HOME/.local/bin'
 
-    NODE_VERSION=20
-    if (( MAJOR_VERSION <= 20 )); then
-        NODE_VERSION=18
-    fi
-    echo "Installing NodeJS(${NODE_VERSION})"
-    curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x \
-        -o /tmp/nodesource_setup.sh
-    bash /tmp/nodesource_setup.sh > /dev/null
-    apt-get install --no-install-recommends -y nodejs > /dev/null
-    su $USER -c "npm config set prefix ~/.local/"
+    # Install fnm (Fast Node Manager) and Node.js
+    echo "Installing fnm and NodeJS"
+    su $USER -c 'curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$HOME/.local/share/fnm" --skip-shell'
+    su $USER -c 'export PATH="$HOME/.local/share/fnm:$PATH" && eval "$(fnm env)" && fnm install 22 && fnm default 22'
 
     if [[ $ARCH = x86_64 ]]; then
         echo Installing neovim for x64-86
