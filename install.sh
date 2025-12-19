@@ -76,8 +76,8 @@ elif [[ $OS = Linux ]]; then
     su $USER -c 'mkdir -p $HOME/.local'
 
     NODE_VERSION=20
-    if (( MAJOR_VERSION <= 18 )); then
-        NODE_VERSION=16
+    if (( MAJOR_VERSION <= 20 )); then
+        NODE_VERSION=18
     fi
     echo "Installing NodeJS(${NODE_VERSION})"
     curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x \
