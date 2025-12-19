@@ -92,6 +92,11 @@ vim.o.updatetime = 250
 vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
   group = vim.api.nvim_create_augroup("float_diagnostic", { clear = true }),
   callback = function ()
+    -- Skip if in command-line mode (e.g., during search) or visual mode
+    local mode = vim.api.nvim_get_mode().mode
+    if mode:match("[cCtv]") then
+      return
+    end
     vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})
   end
 })
