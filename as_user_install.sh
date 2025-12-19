@@ -36,7 +36,7 @@ grep -q "Custom preference" $HOME/.gitconfig &> /dev/null || \
 mkdir -p  $HOME/.config/nvim
 ln -nfs $PWD/nvim/init.lua $HOME/.config/nvim/init.lua
 ln -nfs $PWD/nvim/lua $HOME/.config/nvim/lua
-nvim --headless "+Lazy! sync" +qa &> /dev/null | true
+nvim --headless "+Lazy! sync" +qa &> /dev/null || true
 
 
 # ==== ZSH Setting ====
