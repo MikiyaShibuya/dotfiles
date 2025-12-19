@@ -14,8 +14,8 @@
 [pager]
     diff = diff-highlight | less
 
-# [user]
-#     name = 
-#     email = 
+# Load local config for sensitive info (user.name, user.email, signing keys, etc.)
+[include]
+    path = ~/.gitconfig.local
 
 #### Custom preference end ####
