@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Exit when some error happened
-set -e
+# Exit on error, undefined variable, or pipe failure
+set -euo pipefail
 
-if [[ "$USE_DEBUG" == "1" ]]; then
+if [[ "${USE_DEBUG:-}" == "1" ]]; then
     set -x
 fi
 
@@ -12,7 +12,7 @@ if [[ `id -u` -ne 0 ]]; then
     exit 1
 fi
 
-if [[ -z "$USER" ]]; then
+if [[ -z "${USER:-}" ]]; then
     echo Error: Run with USER=[user name]
     exit 1
 fi
@@ -39,8 +39,8 @@ fi
 
 echo ========================================
 echo OS: $OS
-[ "$DISTRO" != "" ] && echo DISTRO: $DISTRO
-echo MAJOR_VERSION: $MAJOR_VERSION
+[[ -n "${DISTRO:-}" ]] && echo DISTRO: $DISTRO
+[[ -n "${MAJOR_VERSION:-}" ]] && echo MAJOR_VERSION: $MAJOR_VERSION
 echo ========================================
 
 # Determine chip archtecture

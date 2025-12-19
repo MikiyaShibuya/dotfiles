@@ -1,22 +1,21 @@
 #!/bin/bash
 
-if [[ "$USE_DEBUG" == "1" ]]; then
+# Exit on error, undefined variable, or pipe failure
+set -euo pipefail
+
+if [[ "${USE_DEBUG:-}" == "1" ]]; then
     set -x
 fi
 
-if [[ `id -u` == 0 ]]; then
+if [[ $(id -u) == 0 ]]; then
     echo Error: Run as NON-ROOT user
     exit 1
 fi
 
-if [[ "$USER" == root ]]; then
+if [[ "${USER:-}" == root ]]; then
     echo Error: Run as NON-ROOT user
     exit 1
 fi
-
-
-# Exit when some error happened
-set -e
 
 # Determine OS
 if [[ "$(uname)" = Darwin ]]; then
