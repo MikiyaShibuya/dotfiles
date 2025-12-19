@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - dev
+      - claude-work
 
 jobs:
   build-container:
