@@ -90,6 +90,6 @@ fi
 
 export PIP_BREAK_SYSTEM_PACKAGES=1
 PIP_INSTALL_CMD="pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org"
-python3 -m $PIP_INSTALL_CMD --upgrade pip
+python3 -m $PIP_INSTALL_CMD pip
 python3 -m $PIP_INSTALL_CMD setuptools
 python3 -m $PIP_INSTALL_CMD neovim

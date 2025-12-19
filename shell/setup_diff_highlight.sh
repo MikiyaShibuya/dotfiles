@@ -35,6 +35,7 @@ elif [ "$OS" = 'Linux' ]; then
     if [ ! -f $DIFF_HIGHLIGHT_DIR/diff-highlight ]; then
         echo "Installing diff-highlight..."
         if [ ! -f $DIFF_HIGHLIGHT_DIR/Makefile ]; then
+            rm -rf /tmp/git
             git clone -q --depth 1 https://github.com/git/git.git /tmp/git
             cp -r /tmp/git/contrib/diff-highlight/* $DIFF_HIGHLIGHT_DIR
         fi

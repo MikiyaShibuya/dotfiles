@@ -77,10 +77,12 @@ elif [[ $OS = Linux ]]; then
 
     # Install fnm (Fast Node Manager) and Node.js
     echo "Installing fnm and NodeJS"
-    su $USER -c 'curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$HOME/.local/share/fnm" --skip-shell'
+    su $USER -c 'if [[ ! -d "$HOME/.local/share/fnm" ]]; then curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$HOME/.local/share/fnm" --skip-shell; fi'
     su $USER -c 'export PATH="$HOME/.local/share/fnm:$PATH" && eval "$(fnm env)" && fnm install 22 && fnm default 22'
 
-    if [[ $ARCH = x86_64 ]]; then
+    if command -v nvim &>/dev/null; then
+        echo "neovim is already installed: $(nvim --version | head -1)"
+    elif [[ $ARCH = x86_64 ]]; then
         echo Installing neovim for x64-86
         if (( MAJOR_VERSION >= 24 )); then
             dpkg -i nvim/installer/neovim_v0.11.2-1-noble_amd64.deb
