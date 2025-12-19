@@ -128,6 +128,12 @@ export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
+# ======== fnm (Fast Node Manager) ========
+if [[ -d "$HOME/.local/share/fnm" ]]; then
+    export PATH="$HOME/.local/share/fnm:$PATH"
+    eval "$(fnm env --use-on-cd)"
+fi
+
 # ======== SSH Agent ========
 if [ ! -d $HOME/.ssh ]; then mkdir $HOME/.ssh; fi
 agent="$HOME/.ssh/agent"
