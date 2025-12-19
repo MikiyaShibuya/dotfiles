@@ -32,6 +32,8 @@ jobs:
           context: .
           file: docker/Dockerfile
           push: false
+          load: true
+          tags: dotfiles-test:${{ matrix.ubuntu_codename }}
           build-args: |
             USER=testuser
             UID=1000
@@ -40,3 +42,7 @@ jobs:
             UBUNTU_CODENAME=${{ matrix.ubuntu_codename }}
           cache-from: type=gha,scope=${{ matrix.ubuntu_codename }}
           cache-to: type=gha,mode=max,scope=${{ matrix.ubuntu_codename }}
+      - name: Verify Neovim starts
+        run: |
+          docker run --rm dotfiles-test:${{ matrix.ubuntu_codename }} nvim --version
+          docker run --rm dotfiles-test:${{ matrix.ubuntu_codename }} nvim --headless -c 'echo "Neovim OK"' -c 'qa'
