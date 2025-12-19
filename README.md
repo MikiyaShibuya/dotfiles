@@ -1,30 +1,66 @@
 dotfiles
 ==
 
+Personal dotfiles for macOS and Ubuntu Linux.
+
+## What's Included
+
+| Category | Tools |
+|----------|-------|
+| Shell | Zsh, Powerlevel10k, fzf, zsh-autosuggestions |
+| Editor | Neovim (NvChad), LSP, Copilot |
+| Terminal | Tmux (catppuccin theme) |
+| Node.js | fnm (Fast Node Manager) |
+| Python | pyenv |
+| Ubuntu | keyd (keyboard remapping), fusuma (gestures) |
+| macOS | Karabiner-Elements, iTerm2 |
+
 ## Installation
-Run one-liner to setup dotfiles.  
-This repo will be cloned to `~/.local/share/dotfiles`.  
+
+Run one-liner to setup dotfiles.
+This repo will be cloned to `~/.local/share/dotfiles`.
 ```bash
 curl -fsL https://raw.githubusercontent.com/MikiyaShibuya/dotfiles/refs/heads/main/setup_dotfiles.sh | bash -s --
 ```
-(Opional) Change to zsh.  
+(Optional) Change default shell to zsh.
 ```bash
-sudo chsh $USER -s /bin/zsh  
+sudo chsh $USER -s /bin/zsh
 ```
-That's all.
 
-## Test in container
+## Supported Platforms
+
+- Ubuntu 20.04 (focal), 22.04 (jammy), 24.04 (noble)
+- macOS (Intel / Apple Silicon)
+
+## Test in Container
+
 ```bash
 U=`id -u` G=`id -g` docker compose up --build
 ```
-To use other than Ubuntu noble
+To use other Ubuntu versions:
 ```bash
 U=`id -u` G=`id -g` UBUNTU_CODENAME=jammy docker compose up --build
 ```
 
+## Directory Structure
+
+```
+.
+├── shell/          # Zsh, git config, powerlevel10k
+├── nvim/           # Neovim configuration (NvChad)
+├── tmux/           # Tmux configuration
+├── ubuntu/         # Ubuntu-specific tools (keyd, fusuma)
+├── karabiner/      # macOS keyboard remapping
+├── iterm2/         # iTerm2 profile
+├── docker/         # Container entrypoint
+├── install.sh      # Main installer (run as root)
+└── as_user_install.sh  # User-level setup
+```
+
 ## Setup SSH-Agent sudo auth
-You can execute sudo command with no password required by authenticating with ssh key.  
-Add your pubkey to `~/.ssh/authorized_keys` and run the following command to enable this feature.  
+
+Execute sudo commands without password by authenticating with SSH key.
+Add your pubkey to `~/.ssh/authorized_keys` and run:
 ```bash
-curl -fsL https://raw.githubusercontent.com/MikiyaShibuya/dotfiles/refs/heads/main/shell/setup_ssh_agent_auth.sh  | sudo bash -s -- ~/.ssh/authorized_keys
+curl -fsL https://raw.githubusercontent.com/MikiyaShibuya/dotfiles/refs/heads/main/shell/setup_ssh_agent_auth.sh | sudo bash -s -- ~/.ssh/authorized_keys
 ```
