@@ -14,12 +14,12 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LC_ALL=en_US.UTF-8 \
     USER=$USER
 
-RUN apt-get update > /dev/null && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update > /dev/null && \
     apt-get install -y --no-install-recommends \
       openssh-server locales-all sudo \
       > /dev/null && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
     \
     # Add user and group \
     if [ "$(getent passwd $UID)" != "" ]; then \
@@ -43,9 +43,11 @@ COPY --chown=$UID:$GID . /home/$USER/.local/share/dotfiles
 
 # Install preferences
 WORKDIR /home/$USER/.local/share/dotfiles
-RUN ./install.sh && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    --mount=type=cache,target=/root/.cache/pip \
+    --mount=type=cache,target=/home/$USER/.cache/pip,uid=$UID,gid=$GID \
+    ./install.sh
 
 COPY docker/entrypoint.sh /tmp/entrypoint.sh
 CMD ["/tmp/entrypoint.sh"]
