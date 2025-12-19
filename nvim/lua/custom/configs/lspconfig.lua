@@ -1,17 +1,5 @@
-local config = require("plugins.configs.lspconfig")
-
-local on_attach = config.on_attach
-local capabilities = config.capabilities
-
-local lspconfig = require("lspconfig")
-
-lspconfig.basedpyright.setup({
-  -- on_attach = on_attach,
-  on_attach = function(client, bufnr)
-    on_attach(client, bufnr)
-    vim.lsp.inlay_hint.enable(true, { bufnr = 0 })
-  end,
-  capabilities = capabilities,
+-- basedpyright server configuration
+vim.lsp.config("basedpyright", {
   filetypes = {"python"},
   settings = {
     pyright = {
@@ -58,22 +46,37 @@ lspconfig.basedpyright.setup({
   }
 })
 
-lspconfig.ts_ls.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
+vim.lsp.enable("basedpyright")
+
+-- ts_ls server configuration
+vim.lsp.config("ts_ls", {
   filetypes = {"javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx"},
 })
 
-lspconfig.clangd.setup({
-  on_attach = function(client, bufnr)
-    client.server_capabilities.signatureHelpProvider = false
-    on_attach(client, bufnr)
-  end,
-  capabilities = capabilities
-})
+vim.lsp.enable("ts_ls")
 
--- Enable inlay hint
-vim.lsp.inlay_hint.enable(true, { bufnr = 0 })
+-- clangd server configuration
+vim.lsp.config("clangd", {})
+
+vim.lsp.enable("clangd")
+
+-- Server-specific LspAttach handlers
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("custom_lsp_attach", { clear = true }),
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+
+    -- Enable inlay hints for basedpyright
+    if client.name == "basedpyright" then
+      vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
+    end
+
+    -- Disable signature help for clangd (nvchad handles it separately)
+    if client.name == "clangd" then
+      client.server_capabilities.signatureHelpProvider = false
+    end
+  end,
+})
 
 -- Disable virtual text
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
