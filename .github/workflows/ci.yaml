@@ -12,10 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ubuntu_codename: [bionic, focal, jammy, noble]
+        ubuntu_codename: [focal, jammy, noble]
         include:
-          - ubuntu_codename: bionic
-            ubuntu_version: "18.04"
           - ubuntu_codename: focal
             ubuntu_version: "20.04"
           - ubuntu_codename: jammy
