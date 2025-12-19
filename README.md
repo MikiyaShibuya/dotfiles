@@ -35,10 +35,12 @@ sudo chsh $USER -s /bin/zsh
 ## Test in Container
 
 ```bash
+cd docker
 U=`id -u` G=`id -g` docker compose up --build
 ```
 To use other Ubuntu versions:
 ```bash
+cd docker
 U=`id -u` G=`id -g` UBUNTU_CODENAME=jammy docker compose up --build
 ```
 
@@ -49,10 +51,12 @@ U=`id -u` G=`id -g` UBUNTU_CODENAME=jammy docker compose up --build
 ├── shell/          # Zsh, git config, powerlevel10k
 ├── nvim/           # Neovim configuration (NvChad)
 ├── tmux/           # Tmux configuration
-├── ubuntu/         # Ubuntu-specific tools (keyd, fusuma)
-├── karabiner/      # macOS keyboard remapping
-├── iterm2/         # iTerm2 profile
-├── docker/         # Container entrypoint
+├── linux/
+│   └── ubuntu/     # Ubuntu-specific (keyd, fusuma)
+├── macos/
+│   ├── karabiner/  # Keyboard remapping
+│   └── iterm2/     # iTerm2 profile
+├── docker/         # Dockerfile, compose.yaml
 ├── install.sh      # Main installer (run as root)
 └── as_user_install.sh  # User-level setup
 ```
