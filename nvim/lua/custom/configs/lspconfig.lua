@@ -71,10 +71,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
       vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
     end
 
-    -- Disable signature help for clangd (nvchad handles it separately)
-    if client.name == "clangd" then
-      client.server_capabilities.signatureHelpProvider = false
-    end
   end,
 })
 
