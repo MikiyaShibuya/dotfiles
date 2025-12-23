@@ -34,8 +34,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- Load keymappings
     utils.load_mappings("lspconfig", { buffer = bufnr })
 
-    -- Signature help
-    if client.server_capabilities.signatureHelpProvider then
+    -- Signature help (skip for clangd - it returns boolean instead of table)
+    if client.server_capabilities.signatureHelpProvider
+       and type(client.server_capabilities.signatureHelpProvider) == "table"
+       and client.name ~= "clangd" then
       require("nvchad.signature").setup(client)
     end
 
