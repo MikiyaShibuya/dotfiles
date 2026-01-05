@@ -2,16 +2,39 @@ local wezterm = require 'wezterm'
 local config = {}
 local act = wezterm.action
 
+-- タブタイトルのカスタマイズ（SSH接続先を表示）
+wezterm.on('format-tab-title', function(tab, tabs, panes, cfg, hover, max_width)
+  local pane = tab.active_pane
+  local title = tab.tab_title
+  if #title == 0 then
+    title = pane.title
+  end
+
+  -- フォアグラウンドプロセス情報を取得
+  local info = pane:get_foreground_process_info()
+  if info and info.name == 'ssh' and info.argv then
+    -- ssh の引数からホスト名を抽出（最後の引数）
+    local host = info.argv[#info.argv]
+    if host and not host:match('^%-') then
+      title = '🖥 ' .. host
+    end
+  end
+
+  return { { Text = ' ' .. title .. ' ' } }
+end)
+
 -- Wayland有効化
 config.enable_wayland = true
 
--- フォント（日本語フォールバック付き、太め）
--- Noto Monoを使用（dimの合成が効く）
+-- フォント（Nerd Font + 日本語フォールバック）
 config.font = wezterm.font_with_fallback {
-  'Noto Mono',
+  'MesloLGS Nerd Font Propo',
   'Noto Sans Mono CJK JP',
 }
 config.font_size = 10.0
+
+-- アイコングリフの表示を改善
+config.allow_square_glyphs_to_overflow_width = 'WhenFollowedBySpace'
 
 config.colors = {
   foreground = '#FFFFFF',
@@ -46,7 +69,7 @@ config.keys = {
   { key = '6', mods = 'ALT', action = act.ActivateTab(5) },
   { key = '7', mods = 'ALT', action = act.ActivateTab(6) },
   { key = '8', mods = 'ALT', action = act.ActivateTab(7) },
-  { key = '9', mods = 'ALT', action = act.ActivateTab(8) },
+  { key = '9', mods = 'ALT', action = act.ActivateTab(-1) },
 
   -- ズーム
   { key = '+', mods = 'CTRL|SHIFT', action = act.IncreaseFontSize },
