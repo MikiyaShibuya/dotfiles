@@ -70,6 +70,10 @@ zsh $HOME/.zshrc
 mkdir -p $HOME/.config/tmux
 ln -nfs $PWD/tmux/tmux.conf $HOME/.config/tmux/tmux.conf
 
+# ==== WezTerm Setting ====
+mkdir -p $HOME/.config/wezterm
+ln -nfs $PWD/wezterm/wezterm.lua $HOME/.config/wezterm/wezterm.lua
+
 # Install tqm (tmux plugin manager)
 if [[ ! -e $HOME/.tmux ]];then
     mkdir -p $HOME/.tmux/plugins
