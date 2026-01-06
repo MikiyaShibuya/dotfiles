@@ -16,9 +16,3 @@ unlink $USER_HOME/.zshrc
 unlink $USER_HOME/.config/nvim/init.lua
 unlink $USER_HOME/.config/nvim/lua
 
-if [ $OS = 'Mac' ]; then
-    unlink $USER_HOME/.p10k.zsh
-elif [ $OS = 'Linux' ]; then
-    unlink $USER_HOME/.p10k.zsh
-fi
-

@@ -41,13 +41,6 @@ nvim --headless "+Lazy! sync" +qa &> /dev/null || true
 
 # ==== ZSH Setting ====
 
-# Place p10k(prompt) configuration
-if [[ $OS = Mac ]]; then
-    ln -nfs $PWD/shell/p10k_mac.zsh $HOME/.p10k.zsh
-elif [[ $OS = Linux ]]; then
-    ln -nfs $PWD/shell/p10k_ubuntu.zsh $HOME/.p10k.zsh
-fi
-
 # Install zsh
 if [[ -h $HOME/.zshrc ]]; then
   unlink $HOME/.zshrc
