@@ -146,3 +146,36 @@ elif [ -S $agent ]; then
     export SSH_AUTH_SOCK=$agent
 fi
 
+# ======== WezTerm SSH Tab Title ========
+if [[ "$TERM_PROGRAM" == "WezTerm" ]]; then
+  ssh() {
+    # コマンドライン引数から -p オプションを探す
+    local port_arg=""
+    local i=1
+    while [[ $i -le $# ]]; do
+      local arg="${@[$i]}"
+      if [[ "$arg" == "-p" ]]; then
+        port_arg="${@[$((i+1))]}"
+        break
+      elif [[ "$arg" =~ ^-p(.+)$ ]]; then
+        port_arg="${match[1]}"
+        break
+      fi
+      ((i++))
+    done
+
+    # ssh -G でホスト名を取得
+    local config=$(command ssh -G "$@" 2>/dev/null)
+    local host=$(echo "$config" | awk '/^host / {print $2}')
+    # .local サフィックスを削除
+    host="${host%.local}"
+
+    # コマンドラインで -p が指定された場合のみポートを表示
+    local title="$host"
+    [[ -n "$port_arg" ]] && title="$host:$port_arg"
+    [[ -n "$host" ]] && printf '\033]1;🖥 %s\007' "$title"
+    command ssh "$@"
+    printf '\033]1;\007'
+  }
+fi
+

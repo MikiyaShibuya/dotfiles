@@ -2,26 +2,6 @@ local wezterm = require 'wezterm'
 local config = {}
 local act = wezterm.action
 
--- タブタイトルのカスタマイズ（SSH接続先を表示）
-wezterm.on('format-tab-title', function(tab, tabs, panes, cfg, hover, max_width)
-  local pane = tab.active_pane
-  local title = tab.tab_title
-  if #title == 0 then
-    title = pane.title
-  end
-
-  -- フォアグラウンドプロセス情報を取得
-  local info = pane:get_foreground_process_info()
-  if info and info.name == 'ssh' and info.argv then
-    -- ssh の引数からホスト名を抽出（最後の引数）
-    local host = info.argv[#info.argv]
-    if host and not host:match('^%-') then
-      title = '🖥 ' .. host
-    end
-  end
-
-  return { { Text = ' ' .. title .. ' ' } }
-end)
 
 -- Wayland有効化
 config.enable_wayland = true
@@ -75,6 +55,10 @@ config.keys = {
   { key = '+', mods = 'CTRL|SHIFT', action = act.IncreaseFontSize },
   { key = '-', mods = 'CTRL', action = act.DecreaseFontSize },
   { key = '0', mods = 'CTRL', action = act.ResetFontSize },
+
+  -- Alt+Left/Right(戻る/進む)を無視
+  { key = 'LeftArrow', mods = 'ALT', action = act.Nop },
+  { key = 'RightArrow', mods = 'ALT', action = act.Nop },
 }
 
 return config
