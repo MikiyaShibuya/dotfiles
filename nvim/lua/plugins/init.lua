@@ -30,19 +30,6 @@ local default_plugins = {
   },
 
   {
-    "NvChad/nvim-colorizer.lua",
-    event = "User FilePost",
-    config = function(_, opts)
-      require("colorizer").setup(opts)
-
-      -- execute colorizer as soon as possible
-      vim.defer_fn(function()
-        require("colorizer").attach_to_buffer(0)
-      end, 0)
-    end,
-  },
-
-  {
     "nvim-tree/nvim-web-devicons",
     opts = function()
       return { override = require "nvchad.icons.devicons" }
@@ -50,20 +37,6 @@ local default_plugins = {
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "devicons")
       require("nvim-web-devicons").setup(opts)
-    end,
-  },
-
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    version = "2.20.7",
-    event = "User FilePost",
-    opts = function()
-      return require("plugins.configs.others").blankline
-    end,
-    config = function(_, opts)
-      require("core.utils").load_mappings "blankline"
-      dofile(vim.g.base46_cache .. "blankline")
-      require("indent_blankline").setup(opts)
     end,
   },
 
@@ -242,13 +215,6 @@ local default_plugins = {
     end,
   },
 
-  -- Markdown Preview
-  {
-    "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    ft = { "markdown" },
-    build = function() vim.fn["mkdp#util#install"]() end,
-  },
 }
 
 local config = require("core.utils").load_config()
