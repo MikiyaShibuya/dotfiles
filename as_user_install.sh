@@ -67,6 +67,11 @@ ln -nfs $PWD/tmux/tmux.conf $HOME/.config/tmux/tmux.conf
 mkdir -p $HOME/.config/wezterm
 ln -nfs $PWD/wezterm/wezterm.lua $HOME/.config/wezterm/wezterm.lua
 
+# ==== Claude Code Setting ====
+mkdir -p $HOME/.claude
+ln -nfs $PWD/claude/settings.json $HOME/.claude/settings.json
+ln -nfs $PWD/claude/CLAUDE.md $HOME/.claude/CLAUDE.md
+
 # Install tqm (tmux plugin manager)
 if [[ ! -e $HOME/.tmux ]];then
     mkdir -p $HOME/.tmux/plugins
