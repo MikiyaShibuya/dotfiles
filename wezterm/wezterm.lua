@@ -16,6 +16,9 @@ config.font_size = 10.0
 -- アイコングリフの表示を改善
 config.allow_square_glyphs_to_overflow_width = 'WhenFollowedBySpace'
 
+-- ダブルクリック時の単語選択境界文字（デフォルト + <>を追加）
+config.selection_word_boundary = " \t\n{}[]()\"'`<>"
+
 config.colors = {
   foreground = '#FFFFFF',
 }
