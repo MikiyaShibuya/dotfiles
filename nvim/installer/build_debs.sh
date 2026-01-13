@@ -52,17 +52,6 @@ build_deb() {
     echo "Platform: $platform"
     echo "========================================"
 
-    # Remove old versions for this distro/arch
-    local old_files
-    old_files=$(ls -1 "$OUTPUT_DIR"/neovim_v*-${distro_name}_${deb_arch}.deb 2>/dev/null || true)
-    if [[ -n "$old_files" ]]; then
-        echo "Removing old versions:"
-        echo "$old_files" | while read -r f; do
-            echo "  - $(basename "$f")"
-            rm -f "$f"
-        done
-    fi
-
     docker run --rm --platform "$platform" \
         -v "$OUTPUT_DIR:/output" \
         -e VERSION="$version" \
@@ -72,6 +61,9 @@ build_deb() {
         -e HOST_GID="$(id -g)" \
         "$image" bash -c '
 set -euo pipefail
+
+export DEBIAN_FRONTEND=noninteractive
+export TZ=Etc/UTC
 
 echo "Installing build dependencies..."
 apt-get update
@@ -105,6 +97,16 @@ echo "Created: $OUTPUT_NAME"
 
     if [[ -f "$OUTPUT_DIR/$output_name" ]]; then
         echo "Successfully created: $output_name"
+        # Remove old versions for this distro/arch after successful build
+        local old_files
+        old_files=$(ls -1 "$OUTPUT_DIR"/neovim_v*-${distro_name}_${deb_arch}.deb 2>/dev/null | grep -v "$output_name" || true)
+        if [[ -n "$old_files" ]]; then
+            echo "Removing old versions:"
+            echo "$old_files" | while read -r f; do
+                echo "  - $(basename "$f")"
+                rm -f "$f"
+            done
+        fi
     else
         echo "Error: Failed to create $output_name"
         return 1
