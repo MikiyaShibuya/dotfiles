@@ -22,6 +22,16 @@ This repo will be cloned to `~/.local/share/dotfiles`.
 ```bash
 curl -fsL https://raw.githubusercontent.com/MikiyaShibuya/dotfiles/refs/heads/main/setup_dotfiles.sh | bash -s --
 ```
+
+### Manual Installation
+
+If you prefer to clone the repository manually:
+```bash
+git clone https://github.com/MikiyaShibuya/dotfiles.git ~/.local/share/dotfiles
+cd ~/.local/share/dotfiles
+sudo ./install.sh
+```
+
 (Optional) Change default shell to zsh.
 ```bash
 sudo chsh $USER -s /bin/zsh
