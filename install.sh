@@ -96,16 +96,14 @@ elif [[ $OS = Linux ]]; then
     su $USER -c 'if [[ ! -d "$HOME/.local/share/fnm" ]]; then curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$HOME/.local/share/fnm" --skip-shell; fi'
     su $USER -c 'export PATH="$HOME/.local/share/fnm:$PATH" && eval "$(fnm env)" && fnm install 22 && fnm default 22'
 
-    if command -v nvim &>/dev/null; then
-        echo "neovim is already installed: $(nvim --version | head -1)"
-    elif [[ $ARCH = x86_64 ]]; then
-        echo Installing neovim for x64-86
+    if [[ $ARCH = x86_64 ]]; then
+        echo Installing neovim for x86_64
         if (( MAJOR_VERSION >= 24 )); then
-            dpkg -i "$SCRIPT_DIR/nvim/installer/neovim_v0.11.2-1-noble_amd64.deb"
+            dpkg -i "$SCRIPT_DIR"/nvim/installer/neovim_v*-noble_amd64.deb
         elif (( MAJOR_VERSION >= 22 )); then
-            dpkg -i "$SCRIPT_DIR/nvim/installer/neovim_v0.11.2-1-jammy_amd64.deb"
+            dpkg -i "$SCRIPT_DIR"/nvim/installer/neovim_v*-jammy_amd64.deb
         elif (( MAJOR_VERSION >= 20 )); then
-            dpkg -i "$SCRIPT_DIR/nvim/installer/neovim_v0.11.2-1-focal_amd64.deb"
+            dpkg -i "$SCRIPT_DIR"/nvim/installer/neovim_v*-focal_amd64.deb
         else
             tar -C /tmp -xzf "$SCRIPT_DIR/nvim/installer/nvim-linux64.tar.gz"
             su $USER -c 'cp -r /tmp/nvim-linux64/bin $HOME/.local && \
@@ -114,12 +112,13 @@ elif [[ $OS = Linux ]]; then
               cp -r /tmp/nvim-linux64/man/* $HOME/.local/man'
         fi
     else
-        if (( MAJOR_VERSION >= 22 )); then
-            echo Installing neovim for arm64 jammy
-            dpkg -i "$SCRIPT_DIR/nvim/installer/neovim_v0.10.1-1-jammy_arm64.deb"
+        echo Installing neovim for arm64
+        if (( MAJOR_VERSION >= 24 )); then
+            dpkg -i "$SCRIPT_DIR"/nvim/installer/neovim_v*-noble_arm64.deb
+        elif (( MAJOR_VERSION >= 22 )); then
+            dpkg -i "$SCRIPT_DIR"/nvim/installer/neovim_v*-jammy_arm64.deb
         elif (( MAJOR_VERSION >= 20 )); then
-            echo Installing neovim for arm64 focal
-            dpkg -i "$SCRIPT_DIR/nvim/installer/neovim_v0.9.5-1-focal_arm64.deb"
+            dpkg -i "$SCRIPT_DIR"/nvim/installer/neovim_v*-focal_arm64.deb
         else
             echo Installing neovim older than focal for arm64 is not supported
             sleep 5
