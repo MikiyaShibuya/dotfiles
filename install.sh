@@ -1,4 +1,17 @@
 #!/bin/bash
+#
+# install.sh - Main installer for dotfiles
+#
+# Usage: sudo ./install.sh
+#
+# Requirements:
+#   - Must be run with sudo (uses SUDO_USER to determine target user)
+#   - Supported OS: Ubuntu 20.04+, macOS
+#
+# Environment variables:
+#   USE_DEBUG=1  Enable debug output (set -x)
+#   USER         Override target user (optional, defaults to SUDO_USER)
+#
 
 # Exit on error, undefined variable, or pipe failure
 set -euo pipefail
@@ -7,18 +20,21 @@ if [[ "${USE_DEBUG:-}" == "1" ]]; then
     set -x
 fi
 
-if [[ `id -u` -ne 0 ]]; then
-    echo Error: Run as ROOT
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+if [[ $(id -u) -ne 0 ]]; then
+    echo "Error: Run with sudo (e.g., sudo ./install.sh)"
     exit 1
 fi
 
-if [[ -z "${USER:-}" ]]; then
-    echo Error: Run with USER=[user name]
-    exit 1
+# Use SUDO_USER if USER is not explicitly set or is root
+if [[ -n "${SUDO_USER:-}" && ( -z "${USER:-}" || "${USER:-}" == "root" ) ]]; then
+    USER="$SUDO_USER"
 fi
 
-if [[ "$USER" = root ]]; then
-    echo "Error: Run with USER=[user name], not root (e.g. sudo USER=\$USER ./install.sh)"
+if [[ -z "${USER:-}" || "$USER" == "root" ]]; then
+    echo "Error: Could not determine target user. Run with sudo or set USER environment variable."
     exit 1
 fi
 
@@ -85,13 +101,13 @@ elif [[ $OS = Linux ]]; then
     elif [[ $ARCH = x86_64 ]]; then
         echo Installing neovim for x64-86
         if (( MAJOR_VERSION >= 24 )); then
-            dpkg -i nvim/installer/neovim_v0.11.2-1-noble_amd64.deb
+            dpkg -i "$SCRIPT_DIR/nvim/installer/neovim_v0.11.2-1-noble_amd64.deb"
         elif (( MAJOR_VERSION >= 22 )); then
-            dpkg -i nvim/installer/neovim_v0.11.2-1-jammy_amd64.deb
+            dpkg -i "$SCRIPT_DIR/nvim/installer/neovim_v0.11.2-1-jammy_amd64.deb"
         elif (( MAJOR_VERSION >= 20 )); then
-            dpkg -i nvim/installer/neovim_v0.11.2-1-focal_amd64.deb
+            dpkg -i "$SCRIPT_DIR/nvim/installer/neovim_v0.11.2-1-focal_amd64.deb"
         else
-            tar -C /tmp -xzf nvim/installer/nvim-linux64.tar.gz
+            tar -C /tmp -xzf "$SCRIPT_DIR/nvim/installer/nvim-linux64.tar.gz"
             su $USER -c 'cp -r /tmp/nvim-linux64/bin $HOME/.local && \
               cp -r /tmp/nvim-linux64/lib $HOME/.local && \
               cp -r /tmp/nvim-linux64/share $HOME/.local && \
@@ -100,10 +116,10 @@ elif [[ $OS = Linux ]]; then
     else
         if (( MAJOR_VERSION >= 22 )); then
             echo Installing neovim for arm64 jammy
-            dpkg -i nvim/installer/neovim_v0.10.1-1-jammy_arm64.deb
+            dpkg -i "$SCRIPT_DIR/nvim/installer/neovim_v0.10.1-1-jammy_arm64.deb"
         elif (( MAJOR_VERSION >= 20 )); then
             echo Installing neovim for arm64 focal
-            dpkg -i nvim/installer/neovim_v0.9.5-1-focal_arm64.deb
+            dpkg -i "$SCRIPT_DIR/nvim/installer/neovim_v0.9.5-1-focal_arm64.deb"
         else
             echo Installing neovim older than focal for arm64 is not supported
             sleep 5
@@ -112,13 +128,13 @@ elif [[ $OS = Linux ]]; then
 fi
 
 # Install diff-highlight if not installed
-shell/setup_diff_highlight.sh
+"$SCRIPT_DIR/shell/setup_diff_highlight.sh"
 
 # Installation under user permission
-su $USER -c "./as_user_install.sh"
+su "$USER" -c "DOTFILES_DIR='$SCRIPT_DIR' '$SCRIPT_DIR/as_user_install.sh'"
 
 # Use ~/.tmux.conf instead of  ~/.config/tmux/tmux.conf for Tmux < 3.1
-USER_HOME=$(eval echo ~$USER)
+USER_HOME=$(eval echo ~"$USER")
 apt-get satisfy "tmux (>= 3.1)" >& /dev/null \
-    || su $USER -c "ln -nfs $USER_HOME/.config/tmux/tmux.conf $USER_HOME/.tmux.conf"
-su $USER -c "~/.tmux/plugins/tpm/scripts/install_plugins.sh"
+    || su "$USER" -c "ln -nfs '$USER_HOME/.config/tmux/tmux.conf' '$USER_HOME/.tmux.conf'"
+su "$USER" -c "'$USER_HOME/.tmux/plugins/tpm/scripts/install_plugins.sh'"
