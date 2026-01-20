@@ -1,5 +1,8 @@
 {
   "alwaysThinkingEnabled": true,
+  "attribution": {
+    "commit": "Supported by Claude Opus 4.5"
+  },
   "permissions": {
     "allow": [
       "Bash(git:*)",
