@@ -1,0 +1,15 @@
+swipe:
+  # Key codes
+  #   LEFTALT=56
+  #   LEFTCTL=29
+  #   LEFT=105
+  #   RIGHT=106
+  3:
+    # key codes for ydotools:
+    # /usr/include/linux/input-event-codes.h
+    left:
+      command: 'ydotool key 56:1 105:1 105:0 56:0'
+      threshold: 0.35
+    right:
+      command: 'ydotool key 56:1 106:1 106:0 56:0'
+      threshold: 0.35

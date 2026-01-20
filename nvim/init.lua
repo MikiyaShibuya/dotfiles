@@ -1,49 +1,5 @@
 require "core"
 
--- local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
--- if not vim.loop.fs_stat(lazypath) then
---   vim.fn.system({
---     "git",
---     "clone",
---     "--filter=blob:none",
---     "https://github.com/folke/lazy.nvim.git",
---     "--branch=stable", -- latest stable release
---     lazypath,
---   })
--- end
--- vim.opt.rtp:prepend(lazypath)
-
--- require("lazy").setup({
---   "williamboman/mason.nvim",
---   "williamboman/mason-lspconfig.nvim",
---   "neovim/nvim-lspconfig",
---   "github/copilot.vim",
---   -- "altercation/vim-colors-solarized",
---   -- "folke/tokyonight.nvim",
---   -- "glepnir/zephyr-nvim",
---   -- "joshdick/onedark.vim",
---   -- "EdenEast/nightfox.nvim",
--- })
-
--- vim.cmd.colorscheme("solarized")
--- vim.cmd.colorscheme("tokyonight-moon")
--- vim.cmd.colorscheme("zephyr")
--- vim.cmd.colorscheme("onedark")
--- vim.cmd.colorscheme("carbonfox")
-
-
-
--- This must be set before colorscheme
--- vim.o.termguicolors = false
--- 
--- vim.g.solarized_termcolors = 256
--- vim.g.solarized_visibility = "high"
--- vim.g.solarized_contrast = "high"
--- vim.cmd.colorscheme("solarized")
-
--- vim.opt.background = "dark"
-
-
 -- #### Key Config ####
 local opt = vim.opt
 opt.number = true

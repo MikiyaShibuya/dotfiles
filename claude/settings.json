@@ -1,0 +1,17 @@
+{
+  "alwaysThinkingEnabled": true,
+  "attribution": {
+    "commit": "Supported by Claude Opus 4.5"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(tree:*)",
+      "Read(/home/mshibuya/**)"
+    ]
+  }
+}
