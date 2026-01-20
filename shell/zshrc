@@ -18,6 +18,13 @@ else
   exit 1
 fi
 
+# ======== G I T   U S E R   C H E C K ========
+
+if ! git config user.name > /dev/null 2>&1; then
+  echo "\033[33m警告: git user.name が設定されていません\033[0m"
+  echo "  設定例: ~/.gitconfig.local に [user] name = \"Your Name\" を追加"
+fi
+
 # ======== P O W E R L E V E L   1 0 k ========
 
 # Install powerlevel10k
