@@ -77,14 +77,14 @@ M.tabufline = {
     -- cycle through buffers
     ["<tab>"] = {
       function()
-        require("nvchad.tabufline").tabuflineNext()
+        require("nvchad.tabufline").next()
       end,
       "Goto next buffer",
     },
 
     ["<S-tab>"] = {
       function()
-        require("nvchad.tabufline").tabuflinePrev()
+        require("nvchad.tabufline").prev()
       end,
       "Goto prev buffer",
     },
@@ -299,28 +299,28 @@ M.telescope = {
   },
 }
 
-M.nvterm = {
+M.term = {
   plugin = true,
 
   t = {
     -- toggle in terminal mode
     ["<A-i>"] = {
       function()
-        require("nvterm.terminal").toggle "float"
+        require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
       end,
       "Toggle floating term",
     },
 
     ["<A-h>"] = {
       function()
-        require("nvterm.terminal").toggle "horizontal"
+        require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm" }
       end,
       "Toggle horizontal term",
     },
 
     ["<A-v>"] = {
       function()
-        require("nvterm.terminal").toggle "vertical"
+        require("nvchad.term").toggle { pos = "vsp", id = "vtoggleTerm" }
       end,
       "Toggle vertical term",
     },
@@ -330,21 +330,21 @@ M.nvterm = {
     -- toggle in normal mode
     ["<A-i>"] = {
       function()
-        require("nvterm.terminal").toggle "float"
+        require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
       end,
       "Toggle floating term",
     },
 
     ["<A-h>"] = {
       function()
-        require("nvterm.terminal").toggle "horizontal"
+        require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm" }
       end,
       "Toggle horizontal term",
     },
 
     ["<A-v>"] = {
       function()
-        require("nvterm.terminal").toggle "vertical"
+        require("nvchad.term").toggle { pos = "vsp", id = "vtoggleTerm" }
       end,
       "Toggle vertical term",
     },
@@ -352,14 +352,14 @@ M.nvterm = {
     -- new
     ["<leader>h"] = {
       function()
-        require("nvterm.terminal").new "horizontal"
+        require("nvchad.term").new { pos = "sp" }
       end,
       "New horizontal term",
     },
 
     ["<leader>v"] = {
       function()
-        require("nvterm.terminal").new "vertical"
+        require("nvchad.term").new { pos = "vsp" }
       end,
       "New vertical term",
     },
