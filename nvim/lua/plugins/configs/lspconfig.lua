@@ -34,18 +34,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- Load keymappings
     utils.load_mappings("lspconfig", { buffer = bufnr })
 
-    -- Signature help (skip for clangd - it returns boolean instead of table)
-    if client.server_capabilities.signatureHelpProvider
-       and type(client.server_capabilities.signatureHelpProvider) == "table"
-       and client.name ~= "clangd" then
-      require("nvchad.signature").setup(client)
-    end
-
-    -- Disable semantic tokens if configured
-    if not utils.load_config().ui.lsp_semantic_tokens
-       and client.supports_method "textDocument/semanticTokens" then
-      client.server_capabilities.semanticTokensProvider = nil
-    end
   end,
 })
 
