@@ -5,28 +5,28 @@ local default_plugins = {
   "nvim-lua/plenary.nvim",
 
   {
+    "NvChad/ui",
+    branch = "v3.0",
+    lazy = false,
+    config = function()
+      require "nvchad"
+      require("core.utils").load_mappings "term"
+      require("core.utils").load_mappings "tabufline"
+    end,
+  },
+
+  {
     "NvChad/base46",
-    branch = "v2.0",
+    branch = "v3.0",
+    lazy = true,
     build = function()
       require("base46").load_all_highlights()
     end,
   },
 
   {
-    "NvChad/ui",
-    branch = "v2.0",
-    lazy = false,
-  },
-
-  {
-    "zbirenbaum/nvterm",
-    init = function()
-      require("core.utils").load_mappings "nvterm"
-    end,
-    config = function(_, opts)
-      require "base46.term"
-      require("nvterm").setup(opts)
-    end,
+    "NvChad/volt",
+    lazy = true,
   },
 
   {
@@ -209,6 +209,10 @@ local default_plugins = {
       require("core.utils").load_mappings "whichkey"
     end,
     cmd = "WhichKey",
+    opts = {
+      -- Expand all groups by default
+      expand = function() return true end,
+    },
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "whichkey")
       require("which-key").setup(opts)
@@ -217,10 +221,11 @@ local default_plugins = {
 
 }
 
-local config = require("core.utils").load_config()
-
-if #config.plugins > 0 then
-  table.insert(default_plugins, { import = config.plugins })
+-- Load custom plugins
+local custom_plugins = require "custom.plugins"
+for _, plugin in ipairs(custom_plugins) do
+  table.insert(default_plugins, plugin)
 end
 
+local config = require("core.utils").load_config()
 require("lazy").setup(default_plugins, config.lazy_nvim)
