@@ -53,9 +53,9 @@ if [[ -n "${SUDO_USER:-}" ]]; then
     ln -nfs "$SCRIPT_DIR/keyd-application-mapper.service" "$USER_SYSTEMD_DIR/"
     chown -h "$SUDO_USER:$SUDO_USER" "$USER_SYSTEMD_DIR/keyd-application-mapper.service"
 
-    echo "Run the following as your user to enable the application mapper:"
-    echo "  systemctl --user daemon-reload"
-    echo "  systemctl --user enable --now keyd-application-mapper"
+    echo "Enabling keyd-application-mapper service for $SUDO_USER..."
+    USER_ID=$(id -u "$SUDO_USER")
+    runuser -u "$SUDO_USER" -- bash -c "export XDG_RUNTIME_DIR=/run/user/$USER_ID && systemctl --user daemon-reload && systemctl --user enable --now keyd-application-mapper"
 fi
 
 echo "Done! Keyd installed and running."

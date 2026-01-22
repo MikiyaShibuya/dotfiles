@@ -37,6 +37,18 @@ sudo ./install.sh
 sudo chsh $USER -s /bin/zsh
 ```
 
+### Optional Components
+
+Interactively install optional components (keyd, fusuma, ripgrep, etc.):
+```bash
+sudo ./install_optional.sh
+```
+
+To reinstall existing components:
+```bash
+sudo ./install_optional.sh -r
+```
+
 ## Supported Platforms
 
 - Ubuntu 20.04 (focal), 22.04 (jammy), 24.04 (noble)
@@ -68,6 +80,7 @@ U=`id -u` G=`id -g` UBUNTU_CODENAME=jammy docker compose up --build
 │   └── iterm2/     # iTerm2 profile
 ├── docker/         # Dockerfile, compose.yaml
 ├── install.sh      # Main installer (run as root)
+├── install_optional.sh  # Interactive optional component installer
 └── as_user_install.sh  # User-level setup
 ```
 
