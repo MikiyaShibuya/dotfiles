@@ -137,6 +137,8 @@ if [[ "$OS" == "Linux" && "${DISTRO:-}" == "ubuntu" ]]; then
     add_component "keyd" "keyd (keyboard remapping)"
     add_component "fusuma" "fusuma (touchpad gestures)"
     add_component "backlight_control" "Backlight control (resume fix)"
+    add_component "gnome_settings" "GNOME settings (keyboard repeat, keybindings)"
+    add_component "fontconfig" "Fonts + Fontconfig (Noto CJK, MesloLGS Nerd Font)"
 fi
 
 # Check status of each component
@@ -202,6 +204,25 @@ check_fusuma() {
 
 check_backlight_control() {
     check_path /usr/local/bin/monitor-unlock.sh
+}
+
+check_gnome_settings() {
+    # Check if GNOME settings are applied (run as target user)
+    local repeat_interval delay switch_windows switch_monitor
+    repeat_interval=$(su "$USER" -c "gsettings get org.gnome.desktop.peripherals.keyboard repeat-interval" 2>/dev/null || echo "")
+    delay=$(su "$USER" -c "gsettings get org.gnome.desktop.peripherals.keyboard delay" 2>/dev/null || echo "")
+    switch_windows=$(su "$USER" -c "gsettings get org.gnome.desktop.wm.keybindings switch-windows" 2>/dev/null || echo "")
+    switch_monitor=$(su "$USER" -c "gsettings get org.gnome.mutter.keybindings switch-monitor" 2>/dev/null || echo "")
+    [[ "$repeat_interval" == "10" || "$repeat_interval" == "uint32 10" ]] && \
+    [[ "$delay" == "200" || "$delay" == "uint32 200" ]] && \
+    [[ "$switch_windows" == "['<Ctrl>Tab']" ]] && \
+    [[ "$switch_monitor" == "@as []" || "$switch_monitor" == "[]" ]]
+}
+
+check_fontconfig() {
+    check_link "$USER_HOME/.config/fontconfig/fonts.conf" && \
+    check_path "$USER_HOME/.local/share/fonts/MesloLGSNerdFontPropo-Regular.ttf" && \
+    fc-list | grep -q "Noto Sans CJK JP" 2>/dev/null
 }
 
 # Check all components
@@ -478,6 +499,43 @@ install_fusuma() {
 install_backlight_control() {
     echo "Installing backlight control..."
     "$SCRIPT_DIR/linux/ubuntu/backlight_control/install.sh"
+    echo "  Done."
+}
+
+install_gnome_settings() {
+    echo "Applying GNOME settings..."
+    # Keyboard repeat settings
+    su "$USER" -c "gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval 10"
+    su "$USER" -c "gsettings set org.gnome.desktop.peripherals.keyboard delay 200"
+    # Window switching with Ctrl+Tab
+    su "$USER" -c "gsettings set org.gnome.desktop.wm.keybindings switch-windows \"['<Ctrl>Tab']\""
+    # Disable switch-monitor keybinding
+    su "$USER" -c "gsettings set org.gnome.mutter.keybindings switch-monitor '[]'"
+    echo "  Done."
+}
+
+install_fontconfig() {
+    echo "Installing fonts and configuring fontconfig..."
+    # Install Noto CJK fonts
+    apt-get update > /dev/null
+    apt-get install --no-install-recommends -y fonts-noto-cjk > /dev/null
+    # Install MesloLGS Nerd Font
+    local FONT_DIR="$USER_HOME/.local/share/fonts"
+    su "$USER" -c "mkdir -p '$FONT_DIR'"
+    if [[ ! -f "$FONT_DIR/MesloLGSNerdFontPropo-Regular.ttf" ]]; then
+        local NERD_FONT_VERSION="v3.3.0"
+        local NERD_FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/${NERD_FONT_VERSION}/Meslo.zip"
+        local TMP_DIR=$(mktemp -d)
+        curl -fsSL "$NERD_FONT_URL" -o "$TMP_DIR/Meslo.zip"
+        unzip -q "$TMP_DIR/Meslo.zip" -d "$TMP_DIR/Meslo"
+        su "$USER" -c "cp '$TMP_DIR'/Meslo/MesloLGSNerdFontPropo-*.ttf '$FONT_DIR/'"
+        rm -rf "$TMP_DIR"
+    fi
+    # Configure fontconfig
+    su "$USER" -c "mkdir -p '$USER_HOME/.config/fontconfig'"
+    su "$USER" -c "ln -nfs '$SCRIPT_DIR/linux/fontconfig/fonts.conf' '$USER_HOME/.config/fontconfig/fonts.conf'"
+    # Rebuild font cache
+    su "$USER" -c "fc-cache -f" 2>/dev/null || true
     echo "  Done."
 }
 
