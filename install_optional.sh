@@ -208,12 +208,16 @@ check_backlight_control() {
 
 check_gnome_settings() {
     # Check if GNOME settings are applied (run as target user)
+    local USER_ID DBUS_ADDR
+    USER_ID=$(id -u "$USER")
+    DBUS_ADDR="unix:path=/run/user/${USER_ID}/bus"
+
     local repeat_interval delay switch_windows switch_monitor touchpad_speed
-    repeat_interval=$(su "$USER" -c "gsettings get org.gnome.desktop.peripherals.keyboard repeat-interval" 2>/dev/null || echo "")
-    delay=$(su "$USER" -c "gsettings get org.gnome.desktop.peripherals.keyboard delay" 2>/dev/null || echo "")
-    switch_windows=$(su "$USER" -c "gsettings get org.gnome.desktop.wm.keybindings switch-windows" 2>/dev/null || echo "")
-    switch_monitor=$(su "$USER" -c "gsettings get org.gnome.mutter.keybindings switch-monitor" 2>/dev/null || echo "")
-    touchpad_speed=$(su "$USER" -c "gsettings get org.gnome.desktop.peripherals.touchpad speed" 2>/dev/null || echo "")
+    repeat_interval=$(su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings get org.gnome.desktop.peripherals.keyboard repeat-interval" 2>/dev/null || echo "")
+    delay=$(su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings get org.gnome.desktop.peripherals.keyboard delay" 2>/dev/null || echo "")
+    switch_windows=$(su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings get org.gnome.desktop.wm.keybindings switch-windows" 2>/dev/null || echo "")
+    switch_monitor=$(su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings get org.gnome.mutter.keybindings switch-monitor" 2>/dev/null || echo "")
+    touchpad_speed=$(su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings get org.gnome.desktop.peripherals.touchpad speed" 2>/dev/null || echo "")
     [[ "$repeat_interval" == "10" || "$repeat_interval" == "uint32 10" ]] && \
     [[ "$delay" == "200" || "$delay" == "uint32 200" ]] && \
     [[ "$switch_windows" == "['<Ctrl>Tab']" ]] && \
@@ -224,7 +228,7 @@ check_gnome_settings() {
 check_fontconfig() {
     check_link "$USER_HOME/.config/fontconfig/fonts.conf" && \
     check_path "$USER_HOME/.local/share/fonts/MesloLGSNerdFontPropo-Regular.ttf" && \
-    fc-list | grep -q "Noto Sans CJK JP" 2>/dev/null
+    [[ $(fc-list 2>/dev/null) == *"Noto Sans CJK JP"* ]]
 }
 
 # Check all components
@@ -506,15 +510,20 @@ install_backlight_control() {
 
 install_gnome_settings() {
     echo "Applying GNOME settings..."
+    # Get D-Bus session address for the target user
+    local USER_ID
+    USER_ID=$(id -u "$USER")
+    local DBUS_ADDR="unix:path=/run/user/${USER_ID}/bus"
+
     # Keyboard repeat settings
-    su "$USER" -c "gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval 10"
-    su "$USER" -c "gsettings set org.gnome.desktop.peripherals.keyboard delay 200"
+    su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval 10"
+    su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings set org.gnome.desktop.peripherals.keyboard delay 200"
     # Window switching with Ctrl+Tab
-    su "$USER" -c "gsettings set org.gnome.desktop.wm.keybindings switch-windows \"['<Ctrl>Tab']\""
+    su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings set org.gnome.desktop.wm.keybindings switch-windows \"['<Ctrl>Tab']\""
     # Disable switch-monitor keybinding
-    su "$USER" -c "gsettings set org.gnome.mutter.keybindings switch-monitor '[]'"
-    # Touchpad speed (WIP: value TBD)
-    su "$USER" -c "gsettings set org.gnome.desktop.peripherals.touchpad speed 0.5"
+    su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings set org.gnome.mutter.keybindings switch-monitor '[]'"
+    # Touchpad speed
+    su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings set org.gnome.desktop.peripherals.touchpad speed 0.5"
     echo "  Done."
 }
 
@@ -532,7 +541,9 @@ install_fontconfig() {
         local TMP_DIR=$(mktemp -d)
         curl -fsSL "$NERD_FONT_URL" -o "$TMP_DIR/Meslo.zip"
         unzip -q "$TMP_DIR/Meslo.zip" -d "$TMP_DIR/Meslo"
-        su "$USER" -c "cp '$TMP_DIR'/Meslo/MesloLGSNerdFontPropo-*.ttf '$FONT_DIR/'"
+        # Copy as root and fix ownership (su cannot access root's temp dir)
+        cp "$TMP_DIR"/Meslo/MesloLGSNerdFontPropo-*.ttf "$FONT_DIR/"
+        chown "$USER:$USER" "$FONT_DIR"/MesloLGSNerdFontPropo-*.ttf
         rm -rf "$TMP_DIR"
     fi
     # Configure fontconfig
