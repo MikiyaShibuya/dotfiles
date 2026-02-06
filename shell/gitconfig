@@ -7,9 +7,10 @@
     # only current branch
     g = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --date=format:'%Y-%m-%d %H:%M'
 
-    # show all branches
+    # all branches
     graph = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=format:'%Y-%m-%d %H:%M'
-    ga = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=format:'%Y-%m-%d %H:%M'
+    # branches with my commits + origin default branch
+    ga = "!f() { me=$(git config user.email); def=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null || echo refs/remotes/origin/main); my_refs=$(git log --all --not \"$def\" --author=\"$me\" --source --format=%S 2>/dev/null | sort -u); git log --graph --date-order -C -M --pretty=format:'<%h> %ad [%an] %Cgreen%d%Creset %s' --date=format:'%Y-%m-%d %H:%M' HEAD $def $my_refs; }; f"
 
 [pager]
     diff = diff-highlight | less
