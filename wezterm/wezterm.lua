@@ -64,4 +64,13 @@ config.keys = {
   { key = 'RightArrow', mods = 'ALT', action = act.Nop },
 }
 
+-- Ctrl+クリックでリンクをデフォルトブラウザで開く
+config.mouse_bindings = {
+  {
+    event = { Up = { streak = 1, button = 'Left' } },
+    mods = 'CTRL',
+    action = act.OpenLinkAtMouseCursor,
+  },
+}
+
 return config
