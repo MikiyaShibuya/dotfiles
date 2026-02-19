@@ -1,0 +1,131 @@
+{
+  // ============================================================
+  // Font: WezTerm + Neovim と同一
+  // ============================================================
+  "editor.fontFamily": "'MesloLGS Nerd Font Propo', 'Noto Sans Mono CJK JP', monospace",
+  "editor.fontSize": 14,
+  "editor.fontLigatures": false,
+  "terminal.integrated.fontFamily": "'MesloLGS Nerd Font Propo', 'Noto Sans Mono CJK JP', monospace",
+  "terminal.integrated.fontSize": 14,
+
+  // ============================================================
+  // Editor: Neovim init.lua + core/init.lua equivalent settings
+  // ============================================================
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.autoIndent": "advanced",
+  "editor.lineNumbers": "on",
+  "editor.wordWrap": "off",
+  "editor.renderWhitespace": "none",
+  "editor.minimap.enabled": false,
+  "editor.cursorBlinking": "solid",
+  "editor.cursorSurroundingLines": 5,
+  "editor.linkedEditing": true,
+  "editor.formatOnSave": false,
+  "editor.inlayHints.enabled": "on",
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "editor.stickyScroll.enabled": false,
+  "editor.smoothScrolling": false,
+
+  // No swap file equivalent: auto save
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+
+  // ignorecase + smartcase
+  "editor.find.seedSearchStringFromSelection": "selection",
+  "search.smartCase": true,
+
+  // Encoding
+  "files.encoding": "utf8",
+
+  // Split behavior: splitbelow + splitright
+  "workbench.editor.openSideBySideDirection": "right",
+
+  // ============================================================
+  // Theme: onedark equivalent
+  // ============================================================
+  "workbench.colorTheme": "One Dark Pro",
+  "workbench.iconTheme": "material-icon-theme",
+
+  // Sidebar
+  "workbench.sideBar.location": "left",
+  "explorer.confirmDelete": true,
+  "explorer.confirmDragAndDrop": false,
+
+  // ============================================================
+  // Terminal
+  // ============================================================
+  "terminal.integrated.defaultProfile.linux": "zsh",
+  "terminal.integrated.scrollback": 10000,
+
+  // ============================================================
+  // vscode-neovim: 実際のNeovimをバックエンドとして使用
+  // ============================================================
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "vscode-neovim.neovimInitVimPaths.linux": "~/.local/share/dotfiles/vscode/vscode-neovim-init.lua",
+
+  // ============================================================
+  // Language-specific: basedpyright equivalent (Pylance)
+  // ============================================================
+  "python.analysis.typeCheckingMode": "standard",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportMissingTypeStubs": "none",
+    "reportUnknownParameterType": "none",
+    "reportUnknownVariableType": "none",
+    "reportUnknownMemberType": "none",
+    "reportUnusedCallResult": "none",
+    "reportUnknownArgumentType": "none",
+    "reportImplicitOverride": "none",
+    "reportUnnecessaryIsInstance": "none",
+    "reportUnreachable": "warning",
+    "reportAny": "none",
+    "reportUnnecessaryComparison": "none",
+    "reportMissingTypeArgument": "none",
+    "reportUnusedParameter": "warning",
+    "reportUnusedImport": "warning",
+    "reportConstantRedefinition": "warning",
+    "reportUnannotatedClassAttribute": "none",
+    "reportExplicitAny": "warning",
+    "reportUnknownLambdaType": "none"
+  },
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.analysis.inlayHints.variableTypes": true,
+  "python.analysis.inlayHints.callArgumentNames": "all",
+
+  // C/C++ (clangd)
+  "clangd.path": "clangd",
+
+  // TypeScript
+  "typescript.suggest.autoImports": true,
+  "javascript.suggest.autoImports": true,
+
+  // ============================================================
+  // Copilot
+  // ============================================================
+  "github.copilot.enable": {
+    "*": true
+  },
+
+  // ============================================================
+  // Diagnostic display
+  // ============================================================
+  "editor.hover.delay": 250,
+  "problems.decorations.enabled": true,
+  "editor.autoClosingComments": "never",
+
+  // ============================================================
+  // File associations
+  // ============================================================
+  "files.associations": {
+    "*.launch": "xml",
+    "*.xacro": "xml",
+    "*.urdf": "xml",
+    "*.sdf": "xml"
+  }
+}
