@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.tile-across-monitors"
+          path="/org/gnome/shell/extensions/tile-across-monitors/">
+    <key name="tile-half-left" type="as">
+      <default>['&lt;Super&gt;Left']</default>
+      <summary>Tile left or move to left monitor</summary>
+    </key>
+    <key name="tile-half-right" type="as">
+      <default>['&lt;Super&gt;Right']</default>
+      <summary>Tile right or move to right monitor</summary>
+    </key>
+  </schema>
+</schemalist>
