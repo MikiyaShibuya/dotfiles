@@ -1,5 +1,4 @@
 {
-  "alwaysThinkingEnabled": true,
   "attribution": {
     "commit": "Supported by Claude Opus 4.5"
   },
@@ -13,5 +12,6 @@
       "Bash(tree:*)",
       "Read(/home/mshibuya/**)"
     ]
-  }
+  },
+  "alwaysThinkingEnabled": true
 }
