@@ -35,7 +35,11 @@ su "$USER" -c "ln -nfs '$SCRIPT_DIR' '$EXT_DIR'"
 # Compile schemas
 glib-compile-schemas "$SCRIPT_DIR/schemas/"
 
-# Clear tiling-assistant's left/right keybindings to avoid conflicts
+# Clear conflicting keybindings
+# Mutter built-in tiling (toggle-tiled-left/right) conflicts with extension keybindings
+su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings set org.gnome.mutter.keybindings toggle-tiled-left '[]'" 2>/dev/null || true
+su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings set org.gnome.mutter.keybindings toggle-tiled-right '[]'" 2>/dev/null || true
+# tiling-assistant extension
 su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings set org.gnome.shell.extensions.tiling-assistant tile-left-half '[]'" 2>/dev/null || true
 su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings set org.gnome.shell.extensions.tiling-assistant tile-right-half '[]'" 2>/dev/null || true
 
