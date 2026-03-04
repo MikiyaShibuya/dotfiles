@@ -1,0 +1,90 @@
+[
+  // ============================================================
+  // Terminal toggle (NvChad <A-i/h/v> equivalent)
+  // ============================================================
+  {
+    "key": "alt+i",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "alt+h",
+    "command": "workbench.action.togglePanel"
+  },
+
+  // ============================================================
+  // Terminal: <C-x> to escape terminal focus (NvChad equivalent)
+  // ============================================================
+  {
+    "key": "ctrl+x",
+    "command": "workbench.action.focusActiveEditorGroup",
+    "when": "terminalFocus"
+  },
+
+  // ============================================================
+  // Window navigation from terminal (C-h/j/k/l)
+  // vscode-neovimはエディタ内のみ処理するため、
+  // ターミナルからのウィンドウ移動はkeybindings.jsonで定義
+  // ============================================================
+  {
+    "key": "ctrl+h",
+    "command": "workbench.action.focusLeftGroup",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+l",
+    "command": "workbench.action.focusRightGroup",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "workbench.action.focusBelowGroup",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+k",
+    "command": "workbench.action.focusAboveGroup",
+    "when": "terminalFocus"
+  },
+
+  // ============================================================
+  // Copilot: Shift-Tab to accept (copilot.vim equivalent)
+  // ============================================================
+  {
+    "key": "shift+tab",
+    "command": "editor.action.inlineSuggest.commit",
+    "when": "inlineSuggestionVisible && editorTextFocus"
+  },
+  {
+    "key": "shift+tab",
+    "command": "-editor.action.outdentLines",
+    "when": "inlineSuggestionVisible && editorTextFocus"
+  },
+
+  // ============================================================
+  // Escape: ensure Esc always reaches vscode-neovim
+  // 補完/パラメータヒント等のウィジェットが Esc を消費して
+  // Normal モードに戻れない問題を防ぐ
+  // ============================================================
+  {
+    "key": "escape",
+    "command": "vscode-neovim.escape",
+    "when": "editorTextFocus && neovim.init && neovim.mode != 'normal'"
+  },
+
+  // ============================================================
+  // Disable defaults that conflict with Neovim keybindings
+  // ============================================================
+  {
+    "key": "ctrl+k",
+    "command": "-workbench.action.terminal.clear",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "-workbench.action.togglePanel"
+  },
+  {
+    "key": "ctrl+n",
+    "command": "-workbench.action.files.newUntitledFile"
+  }
+]
