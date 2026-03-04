@@ -138,6 +138,7 @@ if [[ "$OS" == "Linux" && "${DISTRO:-}" == "ubuntu" ]]; then
     add_component "fusuma" "fusuma (touchpad gestures)"
     add_component "backlight_control" "Backlight control (resume fix)"
     add_component "gnome_settings" "GNOME settings (keyboard repeat, keybindings)"
+    add_component "tile_across_monitors" "Tile across monitors (GNOME extension)"
     add_component "fontconfig" "Fonts + Fontconfig (Noto CJK, MesloLGS Nerd Font)"
 fi
 
@@ -218,11 +219,17 @@ check_gnome_settings() {
     switch_windows=$(su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings get org.gnome.desktop.wm.keybindings switch-windows" 2>/dev/null || echo "")
     switch_monitor=$(su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings get org.gnome.mutter.keybindings switch-monitor" 2>/dev/null || echo "")
     touchpad_speed=$(su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings get org.gnome.desktop.peripherals.touchpad speed" 2>/dev/null || echo "")
+    tiling_popup=$(su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings get org.gnome.shell.extensions.tiling-assistant enable-tiling-popup" 2>/dev/null || echo "")
     [[ "$repeat_interval" == "10" || "$repeat_interval" == "uint32 10" ]] && \
     [[ "$delay" == "200" || "$delay" == "uint32 200" ]] && \
     [[ "$switch_windows" == "['<Ctrl>Tab']" ]] && \
     [[ "$switch_monitor" == "@as []" || "$switch_monitor" == "[]" ]] && \
-    [[ "$touchpad_speed" == "0.5" ]]
+    [[ "$touchpad_speed" == "0.5" ]] && \
+    [[ "$tiling_popup" == "false" ]]
+}
+
+check_tile_across_monitors() {
+    check_link "$USER_HOME/.local/share/gnome-shell/extensions/tile-across-monitors@custom"
 }
 
 check_fontconfig() {
@@ -524,6 +531,14 @@ install_gnome_settings() {
     su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings set org.gnome.mutter.keybindings switch-monitor '[]'"
     # Touchpad speed
     su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings set org.gnome.desktop.peripherals.touchpad speed 0.5"
+    # Disable tiling assistant popup (window suggestion when tiling)
+    su "$USER" -c "DBUS_SESSION_BUS_ADDRESS='$DBUS_ADDR' gsettings set org.gnome.shell.extensions.tiling-assistant enable-tiling-popup false"
+    echo "  Done."
+}
+
+install_tile_across_monitors() {
+    echo "Installing tile-across-monitors extension..."
+    "$SCRIPT_DIR/linux/ubuntu/gnome-extensions/tile-across-monitors@custom/install.sh"
     echo "  Done."
 }
 
@@ -569,6 +584,9 @@ echo -e "${GREEN}========================================${NC}"
 NOTES=()
 for comp in "${TO_INSTALL[@]}"; do
     case "$comp" in
+        tile_across_monitors)
+            NOTES+=("tile-across-monitors: Log out and back in for the extension to take effect")
+            ;;
         fusuma)
             NOTES+=("fusuma: Log out and back in for input group. Then: systemctl --user daemon-reload && systemctl --user enable --now fusuma")
             ;;
