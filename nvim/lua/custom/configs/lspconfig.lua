@@ -77,15 +77,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -- Diagnostic UI configuration
 local x = vim.diagnostic.severity
 vim.diagnostic.config({
-  virtual_text = false,
-  signs = {
-    text = {
-      [x.ERROR] = "󰅙",
-      [x.WARN] = "",
-      [x.INFO] = "󰋼",
-      [x.HINT] = "󰌵",
-    },
+  virtual_text = {
+    format = function() return "" end,
+    prefix = "■",
   },
+  signs = false,
   update_in_insert = false,
   underline = true,
   float = {
