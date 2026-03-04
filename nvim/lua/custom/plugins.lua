@@ -29,6 +29,19 @@ local plugins = {
       keymap.set("i", "<S-Tab>", "copilot#Accept('<CR>')", { expr = true, silent = true, script = true, replace_keycodes = false })
     end,
   },
+  -- DAP (Debug Adapter Protocol)
+  {
+    "mfussenegger/nvim-dap",
+    lazy = false,
+    dependencies = {
+      "rcarriga/nvim-dap-ui",
+      "nvim-neotest/nvim-nio",
+      "mfussenegger/nvim-dap-python",
+    },
+    config = function()
+      require "custom.configs.dap"
+    end,
+  },
   {
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreview", "MarkdownPreviewStop", "MarkdownPreviewToggle" },
