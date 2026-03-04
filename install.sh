@@ -87,6 +87,7 @@ elif [[ $OS = Linux ]]; then
     apt-get install --no-install-recommends -y \
         git build-essential curl unzip tmux htop less zsh \
         python3-pip python3-venv iputils-ping software-properties-common \
+        ripgrep \
         > /dev/null
 
     su $USER -c 'mkdir -p $HOME/.local/bin'

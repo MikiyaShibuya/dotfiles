@@ -74,16 +74,31 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- Disable virtual text
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics,
-  {
-    virtual_text = false,
-    signs = true,
-    update_in_insert = false,
-    underline = true,
-  }
-)
+-- Diagnostic UI configuration
+local x = vim.diagnostic.severity
+vim.diagnostic.config({
+  virtual_text = {
+    format = function() return "" end,
+    prefix = "■",
+  },
+  signs = false,
+  update_in_insert = false,
+  underline = true,
+  float = {
+    border = "rounded",
+    source = true,
+    header = "",
+    prefix = function(diagnostic)
+      local icons = {
+        [x.ERROR] = "󰅙 ",
+        [x.WARN] = " ",
+        [x.INFO] = "󰋼 ",
+        [x.HINT] = "󰌵 ",
+      }
+      return icons[diagnostic.severity] or "", "DiagnosticSign" .. ({ "Error", "Warn", "Info", "Hint" })[diagnostic.severity]
+    end,
+  },
+})
 
 -- Show diagnostics on cursor hold; no focusable, only show at cursor
 -- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#show-line-diagnostics-automatically-in-hover-window
