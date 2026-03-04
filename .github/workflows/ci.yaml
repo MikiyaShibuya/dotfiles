@@ -5,7 +5,9 @@ on:
     branches:
       - main
       - dev
-      - claude-work
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-amd64:
