@@ -1,0 +1,7 @@
+{
+    "name": "Tile Across Monitors",
+    "description": "Tile windows to half screen. When already tiled to the edge, move to the next monitor.",
+    "uuid": "tile-across-monitors@custom",
+    "shell-version": ["46"],
+    "settings-schema": "org.gnome.shell.extensions.tile-across-monitors"
+}
