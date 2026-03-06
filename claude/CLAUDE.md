@@ -32,6 +32,14 @@
   - 理由: OEMリポジトリを自動追加し、メタパッケージを引き込む（2026-01-07に問題発生）
   - 代替: 必要なパッケージは `apt install` で個別にインストール
 
+## ホストPCへのパッケージインストール禁止
+- ホストPCのシステムディレクトリ（`/usr`, `/usr/local`, `/opt`, `/snap` 等）に変更を加えるコマンドは**実行禁止**
+  - 例: `apt install`, `snap install`, `flatpak install`, `pip install`（venv外）, `npm install -g`, `cargo install`, `make install`, `cmake --install`
+- ビルド、テスト、開発で一時的に必要なツール・ライブラリは **Docker コンテナ内で実行**する
+- 例外:
+  - ユーザーが明示的に「ホストにインストールして」と指示した場合
+  - プロジェクトローカルなインストール（作業ディレクトリ内に閉じ、ディレクトリ削除で完全に消えるもの。例: venv内の`pip install`、プロジェクト内の`npm install`）
+
 # Git Safety Rules (CRITICAL)
 
 ## 禁止コマンド
