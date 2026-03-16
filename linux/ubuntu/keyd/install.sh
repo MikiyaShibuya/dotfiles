@@ -32,6 +32,12 @@ echo "Linking configuration files..."
 mkdir -p /etc/keyd
 ln -nfs "$SCRIPT_DIR/default.conf" /etc/keyd/default.conf
 
+# Install systemd drop-in override for auto-restart
+echo "Installing systemd override for auto-restart..."
+mkdir -p /etc/systemd/system/keyd.service.d
+ln -nfs "$SCRIPT_DIR/keyd-override.conf" /etc/systemd/system/keyd.service.d/override.conf
+systemctl daemon-reload
+
 # Enable and start keyd service
 echo "Enabling keyd service..."
 systemctl enable keyd
