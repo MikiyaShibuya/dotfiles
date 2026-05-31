@@ -16,8 +16,10 @@ config.font_size = 10.0
 -- アイコングリフの表示を改善
 config.allow_square_glyphs_to_overflow_width = 'WhenFollowedBySpace'
 
--- ダブルクリック時の単語選択境界文字（デフォルト + <>を追加）
-config.selection_word_boundary = " \t\n{}[]()\"'`<>"
+-- ダブルクリック時の単語選択境界文字（開発向け: パス/file:line/識別子は一括選択、
+-- 罫線 │(U+2502) や | などの明確な区切りは境界にする。
+-- ここに無い文字は単語の一部として扱われる仕様）
+config.selection_word_boundary = " \t\n|│()[]{}<>\"'`;,*"
 
 config.colors = {
   foreground = '#FFFFFF',
