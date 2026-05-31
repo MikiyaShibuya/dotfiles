@@ -29,7 +29,10 @@ fi
 
 # Install powerlevel10k
 # To configure, > p10k configure
-export XDG_CACHE_HOME=$HOME/.cache/p10k
+# 注意: XDG_CACHE_HOME はここで上書きしない。これは XDG 共通のキャッシュ先で、
+# p10k 専用ではない。上書きすると yarn/pip/poetry 等の全キャッシュが巻き込まれ
+# 肥大化する（過去に ~/.cache/p10k が 11.3 GiB まで膨張）。p10k は未設定時の
+# フォールバック ${XDG_CACHE_HOME:-$HOME/.cache} で正常動作する。
 if [[ ! -d "$HOME/powerlevel10k" ]]; then
     echo "Installing powerlevel10k..."
     git clone -q --depth 1 https://github.com/romkatv/powerlevel10k.git $HOME/powerlevel10k
