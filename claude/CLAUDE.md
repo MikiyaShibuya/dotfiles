@@ -119,6 +119,12 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 - backport元: `**<backport先ブランチ>向けbackport**: #NNNN`
 - backport先: `**<backport元ブランチ>向け対応**: #NNNN`
 
+# Linear
+
+- Issue作成時はプロジェクトの指定が必須
+- IssueのStatusはデフォルトでBacklogにする
+- assigneeは指示が無い限り自分にする
+
 # 行動原則
 
 ## 指示の解釈
