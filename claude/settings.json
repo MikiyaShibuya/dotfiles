@@ -27,7 +27,21 @@
       "Bash(scp -i ~/.ssh/general:*)",
       "Bash(rsync -av:*)",
       "Bash(rsync -avz:*)",
-      "Bash(sr01-medusa-ro:*)"
+      "Bash(sr01-medusa-ro:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(gh run view:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh workflow view:*)",
+      "Bash(gh workflow list:*)",
+      "Bash(gh release view:*)",
+      "Bash(gh release list:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh search:*)"
     ]
   },
   "alwaysThinkingEnabled": true
