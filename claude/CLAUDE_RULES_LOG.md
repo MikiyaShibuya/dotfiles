@@ -80,3 +80,11 @@ Dockerビルドで変更が反映されない際、原因分析をせずにす�
 3. ユーザー指摘後の自己分析でも「実行モードの問題」と矮小化し、対象マシンのミスを最後まで見逃した
 
 **教訓:** 行動前に対象を口頭宣言する強制装置がないと、知識として知っていても本番で間違える。CLAUDE.md ルール（B）＋ PreToolUse hook での機械的ブロック（E）の二段構えで対応。hook はローカルでの `setup-cli.sh deploy|build` および `setup-server.sh` を検知して exit 2 で阻止し、assistant に対象宣言とユーザー確認を要求する。
+
+## コンフリクト解消にrebaseを使用 (2026-06-09)
+
+**経緯:** PR #5172 (marker-pose-T3) が base ブランチ (marker-pose-T2) とコンフリクト。解消のため `git rebase origin/marker-pose-T2` を実行した。
+
+**根本原因:** PR stack (T0→T1→T2→T3→T4…) の文脈を無視し、コンフリクト解消の手段としてrebaseを選択した。rebaseはコミット履歴を書き換えるため force push が必要になり、下流ブランチ (T4〜T12) が全て diverge して連鎖的なforce pushが必要になる。
+
+**教訓:** PR stack では merge commit でコンフリクトを解消するのが正解。後続ブランチの有無を確認してから手段を選ぶ。
