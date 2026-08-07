@@ -1,6 +1,8 @@
 {
   "attribution": {
-    "commit": "Supported by Claude Opus 4.5"
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
   },
   "permissions": {
     "allow": [
