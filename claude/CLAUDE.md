@@ -73,6 +73,9 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 - サブモジュールと親リポジトリを混同しない
 - 間違ったコミットは `git revert` で修正する
 
+## worktree
+- 作成場所は次のいずれか: repo内 / `~/tmp`（再起動で消えない）/ `/tmp`（再起動で消える）。ホーム直下等に安易に置かない
+
 ## サブモジュール
 - サブモジュール内のコミット後は、親リポでサブモジュール参照を必ず更新する
 - 任意のコミットで `git checkout` + `git submodule update --init --recursive` が整合する状態を維持する
