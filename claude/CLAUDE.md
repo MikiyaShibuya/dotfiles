@@ -27,6 +27,23 @@
 - ファイル作成の際は既存ファイルを上書きして消去しないように
 - コマンドを提示する際は必ず実行ディレクトリを明記する（`cd /path/to/dir` を含めるか「`<dir>` で実行」と添える）
 
+## シェルコマンドの書き方（承認プロンプト回避）
+
+複数の項目を調べるとき、以下を守ること:
+
+- for / while ループや改行による複数コマンドの並列実行をしない。
+  項目ごとに独立した単一コマンドとして1つずつ実行する。
+- 整形に `python3 -c` や `python` へのパイプを使わない。
+  `gh` なら `--json` + `--jq`、`kubectl` なら `-o jsonpath` のように、
+  各CLIの組み込み整形フラグを使う。
+- `$(...)` やバッククォートのコマンド置換を避ける。
+  途中結果が必要なら、別々のコマンドに分けて実行する。
+
+例: 複数PRの状態確認は、ループにせず以下を1件ずつ実行する。
+```
+gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mergeCommit --jq '"PR #\(.number) state=\(.state) base=\(.baseRefName) mergedAt=\(.mergedAt) commit=\((.mergeCommit.oid // "")[:12])"'
+```
+
 # システム管理
 
 - `ubuntu-drivers autoinstall` の代わりに `apt install` で個別にインストールする
