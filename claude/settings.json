@@ -21,7 +21,13 @@
       "Bash(sleep:*)",
       "Bash(getent hosts:*)",
       "Bash(cd /home/mshibuya/private/claude-chat:*)",
-      "Bash(cd /home/mshibuya/tmp/:*)"
+      "Bash(cd /home/mshibuya/tmp/:*)",
+      "Bash(ssh medusa:*)",
+      "Bash(ssh -i ~/.ssh/general medusa:*)",
+      "Bash(scp -i ~/.ssh/general:*)",
+      "Bash(rsync -av:*)",
+      "Bash(rsync -avz:*)",
+      "Bash(sr01-medusa-ro:*)"
     ]
   },
   "alwaysThinkingEnabled": true
