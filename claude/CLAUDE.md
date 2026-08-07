@@ -81,6 +81,40 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 - rebaseが許容されるのは「後続ブランチが存在しないことが保証されている」または「rebaseのメリットがデメリットを明確に上回る正統な理由がある」場合のみ。その場合もユーザーに相談してから実行する
 - `git add` 前に必ず `grep -rn "^<<<<<<< \|^>>>>>>> \|^=======$" <変更ファイル>` でマーカー残存を確認する（同一ファイルに複数箇所あり得る）
 
+## スタックPRのbase merge後コンフリクト一括解消（ours strategy）
+
+スタックPRでbaseブランチがマージ済みの場合、PRのbaseを更新しようとすると大量コンフリクトが発生する。対象ブランチにbaseのコミットが含まれており、mainに入ったマージコミットと別オブジェクトとしてgitが認識するため。
+
+**方針**: ours mergeでgit祖先関係を修正し、rebaseで作った目標treeをrestore+amendで上書きする。
+
+1. **対象ブランチをリモートに合わせる**
+   ```bash
+   git checkout -B <対象ブランチ> origin/<対象ブランチ>
+   ```
+2. **一時ブランチを作成してrebaseで目標状態を作る**（コンフリクトが発生した場合は解消して続行）
+   ```bash
+   git checkout -b temp-<対象ブランチ>
+   git rebase origin/<マージ済みbaseブランチ>
+   ```
+3. **対象ブランチに戻りours mergeで祖先関係を修正**（treeは変わらない）
+   ```bash
+   git checkout <対象ブランチ>
+   git merge -s ours origin/<マージ済みbaseブランチ> --no-edit
+   ```
+4. **一時ブランチのtreeをmergeコミットに上書き**
+   ```bash
+   git restore --source=temp-<対象ブランチ> --staged --worktree .
+   git commit --amend --no-edit
+   ```
+5. **一時ブランチを削除**
+   ```bash
+   git branch -d temp-<対象ブランチ>
+   ```
+6. **完全性チェック**（PRのdiffがT固有ファイルのみであることを確認）
+   ```bash
+   git diff origin/<マージ済みbaseブランチ> HEAD --stat
+   ```
+
 ## worktree
 - 作成場所は次のいずれか: repo内 / `~/tmp`（再起動で消えない）/ `/tmp`（再起動で消える）。ホーム直下等に安易に置かない
 
