@@ -150,6 +150,15 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 - 通知目的のコマンド（タイマー、リマインド）はフォアグラウンドで実行する
 - 既存の禁止ルールを自動化・効率化の理由で例外扱いしない
 
+# マシン固有環境
+
+開発マシン・ロボット・ROS環境の接続情報は `~/.claude/machine.md` を参照すること
+
+sr01レポのaarch64イメージをmedusaでビルド・push・デプロイする手順は `~/.claude/medusa_build_deploy.md` を参照すること
+# sr01: CI lint の正しい実行方法
+
+sr01レポのセルフリント手順（clang-format v19のコンテナ経由実行、`build.py lint`/`ci.py lint` の使い分け、CI lint再現）は `~/.claude/sr01_self_lint.md` を参照すること
+
 # 再発防止策の追加手順
 
 インシデント発生時にユーザーから再発防止策の記録を求められた場合:
