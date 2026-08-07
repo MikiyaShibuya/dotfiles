@@ -13,7 +13,15 @@
       "Bash(find:*)",
       "Bash(tree:*)",
       "Read(/home/mshibuya/**)",
-      "Bash(docker exec roscontainer-sr01-offline bash -c:*)"
+      "Bash(docker exec roscontainer-sr01-offline bash -c:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(echo:*)",
+      "Bash(sed -n:*)",
+      "Bash(sleep:*)",
+      "Bash(getent hosts:*)",
+      "Bash(cd /home/mshibuya/private/claude-chat:*)",
+      "Bash(cd /home/mshibuya/tmp/:*)"
     ]
   },
   "alwaysThinkingEnabled": true
