@@ -12,7 +12,7 @@
 
 # Editor
 
-- ファイル編集の例示では vim を使用する（sudo時: `sudo vim /path/to/file`）
+- Use vim/neovim no Emacs/nano
 
 # Code Review Checklist
 
