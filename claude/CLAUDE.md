@@ -51,6 +51,8 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
   - 例: `apt install`, `snap install`, `pip install`（venv外）, `npm install -g`, `cargo install`, `make install`
   - 一時的なツールは Docker コンテナ内で実行する
   - 例外: ユーザーの明示的指示、またはプロジェクトローカルなインストール
+- ROS2 環境が必要な場合は `ssh sr01-devcontainer`（ROS2 Jazzy）経由で使う。ただしこれはローカルマシン上のコンテナであり、そこでの実行は「ローカル実行」として扱う（ビルドの実行場所は「デプロイ・ビルド」節に従う）
+
 
 # Git Safety (CRITICAL)
 
@@ -164,6 +166,7 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 - 置換・移行時は両者のバージョンを確認してから互換性を判断する
 - 設定・エントリの「存在」だけでなく「内容の正確性」も確認する（存在する ≠ 正しい）
 - 完了報告には変更の効果を示す証拠（実行結果・テスト出力等）を含める。「問題ありません」は証拠とともにのみ述べる
+  - 証拠を得るためにマシンリソースを大きく消費する処理（イメージビルド、フルビルド、lint一括実行）を自発的に起こさない。既存の実行結果・CI結果を証拠に使い、新規実行が必要なら相談する
 - 本番環境への操作前に、別環境での検証可否を検討し先に提案する
 
 ## Docker
@@ -189,6 +192,12 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
   - **デプロイ先**（ロボット号機名 / なし=ビルドのみ）
 - デプロイ範囲は自分の差分ではなくロボットの実状態で判断する。デプロイ前に `docker ps --format '{{.Names}} {{.Image}}'` で全コンテナのイメージタグを確認し、自ブランチタグでないコンテナも併せて `dc updatex` する（合間に別ブランチの検証が入るため、「差分が波及しないから更新不要」は成立しない）
 - ローカルマシンに対して deploy/build を実行する場合は「⚠️ ローカルに対して実行します」と注意喚起してからユーザー確認を取る
+- ローカル（sr01-devcontainer 含む）でのコンテナイメージのビルドは行わない。イメージビルドは medusa で実行する
+- モジュール単位のビルド（`colcon build --packages-select <pkg>`）はローカルで実行してよいが、CPU を占有するとホストがフリーズし作業効率を落とすため、並列度を無制限にしない
+  - 実行前に `uptime` で load average を確認し、論理コア数の半分（16コア機なら 8）を超えていたら実行せず medusa を提案する
+  - 実行時は並列度を絞る: `./tools/build.py run --container <c> --env CMAKE_BUILD_PARALLEL_LEVEL=4 --env 'MAKEFLAGS=-j4 -l8' colcon build --parallel-workers 1 --packages-select <pkg>`
+  - フルビルド・多数パッケージ・同一セッションで3回以上の繰り返しは medusa で実行する
+- 指示のない lint（`build.py lint` / `ci.py lint`）は実行しない。実行したほうがよいと判断した場合は理由を述べて相談し、承認を得てから実行する
 - `run_in_background: true` ＋出力ファイル経由で結果を取りに行く運用は避け、原則フォアグラウンドで結果を直接受ける
 
 # マシン固有環境
