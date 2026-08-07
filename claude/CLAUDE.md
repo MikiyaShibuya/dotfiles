@@ -66,6 +66,7 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 - amendはユーザーに確認してから行う
 - 明示的な指示（「コミットして」等）がある場合のみ実行する
 - 機能追加/削除時は関連ファイル（ドキュメント、テスト、ビルド設定、サブモジュール参照）を同一コミットで更新する
+- 単一の機能を実現するためのsubmodule bumpは同じコミットで行う
 
 ## gitコマンド実行時
 - `cd` とgitコマンドは別々のBash呼び出しで実行する
