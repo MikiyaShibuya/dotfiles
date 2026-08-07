@@ -80,6 +80,45 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 - サブモジュール内のコミット後は、親リポでサブモジュール参照を必ず更新する
 - 任意のコミットで `git checkout` + `git submodule update --init --recursive` が整合する状態を維持する
 
+## PR作成
+
+- タイトルはPR単体で内容が分かるように書く。スタック番号・タスク番号・シーケンス番号（#12, T2, #6-webui等）を含めない
+- スコープブラケット（`[Feature]`等）はリポジトリの慣例がある場合のみ使う
+- bodyに `🤖 Generated with [Claude Code](https://claude.com/claude-code)` を含めない
+- bodyにClaude Codeが作成・支援した旨の記述を含めない
+- PR作成時はassigneeに自身を設定する: `gh pr create ... --assignee @me`
+
+### PRスタックのbody様式
+
+スタックの一部としてPRを作る場合のみ以下の様式を使う（単独PRには不要）。
+
+```
+## 概要
+<このPR単体が何を実装するかを1〜2文>
+
+## 変更点
+- <カテゴリ>: シンボル/ファイル ... （機能・種別でグルーピング）
+
+## PR Stack (<スタック名>)
+
+- `<baseブランチ>`
+  - #NNNN — <PRタイトル>
+    - #NNNN — <子PRタイトル>   ← 依存をインデントのネストで表現
+  - 👉 #NNNN — <このPRタイトル>  ← 現在のPRの行頭に 👉
+
+**<KEEPブランチ> 向け対応**: #NNNN  ← バックポートPRがある場合のみ
+```
+
+- ツリー最上位はbaseブランチ名。依存関係をネストで表現し、各行は `#NNNN — <タイトル>`（区切りは em dash `—`）
+- 現在のPR行頭に `👉`。同一ツリーを全PRに貼り位置マーカーだけ変える
+
+### バックポートPRの相互参照
+
+同一機能を複数ブランチ（例: main と KEEP-sr-*）に反映する場合、両方のPR bodyに互いのPR番号を記載し相互参照させる（片方向のみは不可）。
+
+- backport元: `**<backport先ブランチ>向けbackport**: #NNNN`
+- backport先: `**<backport元ブランチ>向け対応**: #NNNN`
+
 # 行動原則
 
 ## 指示の解釈
