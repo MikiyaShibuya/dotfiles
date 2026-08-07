@@ -14,19 +14,18 @@
       "Bash(tree:*)",
       "Read(/home/mshibuya/**)",
       "Bash(docker exec roscontainer-sr01-offline bash -c:*)",
+      "Bash(ssh -i ~/.ssh/general medusa:*)",
+      "Bash(scp -i ~/.ssh/general:*)",
+      "Bash(rsync -avz:*)",
+      "Bash(rsync -av:*)",
+      "Bash(getent hosts:*)",
+      "Bash(sleep:*)",
+      "Bash(cd /home/mshibuya/private/claude-chat:*)",
       "Bash(head:*)",
       "Bash(tail:*)",
       "Bash(echo:*)",
       "Bash(sed -n:*)",
-      "Bash(sleep:*)",
-      "Bash(getent hosts:*)",
-      "Bash(cd /home/mshibuya/private/claude-chat:*)",
-      "Bash(cd /home/mshibuya/tmp/:*)",
       "Bash(ssh medusa:*)",
-      "Bash(ssh -i ~/.ssh/general medusa:*)",
-      "Bash(scp -i ~/.ssh/general:*)",
-      "Bash(rsync -av:*)",
-      "Bash(rsync -avz:*)",
       "Bash(sr01-medusa-ro:*)",
       "Bash(gh pr view:*)",
       "Bash(gh pr list:*)",
@@ -42,6 +41,7 @@
       "Bash(gh release list:*)",
       "Bash(gh repo view:*)",
       "Bash(gh search:*)",
+      "Bash(cd /home/mshibuya/tmp/:*)",
       "mcp__linear__get_agent_skill",
       "mcp__linear__get_attachment",
       "mcp__linear__get_diff",
@@ -76,6 +76,19 @@
       "mcp__linear__list_users",
       "mcp__linear__search_documentation",
       "mcp__linear__extract_images"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cmd=$(jq -r '.tool_input.command' 2>/dev/null); if printf '%s' \"$cmd\" | grep -Eq '\\bgit\\b.*\\bpush\\b'; then if printf '%s' \"$cmd\" | grep -Eq -- '(--force([=[:space:]]|$)|[[:space:]]-[A-Za-z]*f[A-Za-z]*([[:space:]]|$))'; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"plain force-push (--force/-f) is blocked by policy (CLAUDE.md Git Safety). Use --force-with-lease if needed.\"}}'; elif printf '%s' \"$cmd\" | grep -Eq -- '--force-with-lease'; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"ask\",\"permissionDecisionReason\":\"force-with-lease push requires user approval (CLAUDE.md Git Safety).\"}}'; fi; fi; exit 0"
+          }
+        ]
+      }
     ]
   },
   "alwaysThinkingEnabled": true
