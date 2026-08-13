@@ -106,6 +106,8 @@ fi
 if [ ! -f "$HOME/.fzf.zsh" ]; then
     yes | zsh -c "$HOME/.fzf/install"
 fi
+# Prepend so ~/.fzf/bin/fzf wins over older system fzf (needs >= 0.48 for --zsh)
+[ -d "$HOME/.fzf/bin" ] && PATH="$HOME/.fzf/bin:$PATH"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
