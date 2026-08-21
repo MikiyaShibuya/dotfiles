@@ -1,0 +1,55 @@
+/* Power Modeトグルのプロファイル別配色。
+   .quick-menu-toggle 直下の StBoxLayout に本体ボタン(.quick-toggle)と
+   矢印ボタン(.quick-toggle-arrow)が並ぶため、両方に同じ背景色を当てる。
+   矢印側はシェル側のBrightnessContrastEffectで自動的に明るく描画される。 */
+
+/* Performance = 青 */
+.quick-menu-toggle.ppc-power-performance .quick-toggle,
+.quick-menu-toggle.ppc-power-performance .quick-toggle-arrow {
+  background-color: #1c71d8;
+  color: #ffffff;
+}
+
+.quick-menu-toggle.ppc-power-performance .quick-toggle:hover,
+.quick-menu-toggle.ppc-power-performance .quick-toggle-arrow:hover {
+  background-color: #3584e4;
+}
+
+.quick-menu-toggle.ppc-power-performance .quick-toggle:active,
+.quick-menu-toggle.ppc-power-performance .quick-toggle-arrow:active {
+  background-color: #1a5fb4;
+}
+
+/* Balanced = 緑 */
+.quick-menu-toggle.ppc-power-balanced .quick-toggle,
+.quick-menu-toggle.ppc-power-balanced .quick-toggle-arrow {
+  background-color: #26a269;
+  color: #ffffff;
+}
+
+.quick-menu-toggle.ppc-power-balanced .quick-toggle:hover,
+.quick-menu-toggle.ppc-power-balanced .quick-toggle-arrow:hover {
+  background-color: #2ec27e;
+}
+
+.quick-menu-toggle.ppc-power-balanced .quick-toggle:active,
+.quick-menu-toggle.ppc-power-balanced .quick-toggle-arrow:active {
+  background-color: #1c8054;
+}
+
+/* Power Saver = 赤 */
+.quick-menu-toggle.ppc-power-saver .quick-toggle,
+.quick-menu-toggle.ppc-power-saver .quick-toggle-arrow {
+  background-color: #c01c28;
+  color: #ffffff;
+}
+
+.quick-menu-toggle.ppc-power-saver .quick-toggle:hover,
+.quick-menu-toggle.ppc-power-saver .quick-toggle-arrow:hover {
+  background-color: #e01b24;
+}
+
+.quick-menu-toggle.ppc-power-saver .quick-toggle:active,
+.quick-menu-toggle.ppc-power-saver .quick-toggle-arrow:active {
+  background-color: #a51d2d;
+}
