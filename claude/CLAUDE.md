@@ -281,6 +281,10 @@ sr01レポのaarch64イメージのビルド・push・デプロイは **abashiri
 
 sr01レポのセルフリント手順（clang-format v19のコンテナ経由実行、`build.py lint`/`ci.py lint` の使い分け、CI lint再現）は `~/.claude/sr01_self_lint.md` を参照すること
 
+# スライド作成
+
+スライド・プレゼン資料の作成を求められたら、着手前に `~/.claude/slide_generation.md` を読むこと（pptx生成 → Drive API で Google Slides へ変換、python-pptx の注意点、ファイル構成）
+
 # 再発防止策の追加手順
 
 インシデント発生時にユーザーから再発防止策の記録を求められた場合:
