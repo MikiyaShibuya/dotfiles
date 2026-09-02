@@ -156,6 +156,7 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 ## PR作成
 
 - タイトルはPR単体で内容が分かるように書く。スタック番号・タスク番号・シーケンス番号（#12, T2, #6-webui等）を含めない
+- タイトルは英語で書く
 - スコープブラケット（`[Feature]`等）はリポジトリの慣例がある場合のみ使う
 - bodyに `🤖 Generated with [Claude Code](https://claude.com/claude-code)` を含めない
 - bodyにClaude Codeが作成・支援した旨の記述を含めない
