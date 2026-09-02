@@ -276,7 +276,7 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 
 開発マシン・ロボット・ROS環境の接続情報は `~/.claude/machine.md` を参照すること
 
-sr01レポのaarch64イメージをmedusaでビルド・push・デプロイする手順は `~/.claude/medusa_build_deploy.md` を参照すること
+sr01レポのaarch64イメージのビルド・push・デプロイは **abashiri-prison を primary** とし、手順は `~/.claude/abashiri_build_deploy.md` を参照すること。medusa は副系で、手順は `~/.claude/medusa_build_deploy.md`（実行契約・デプロイ手順の原本も同ファイル）
 # sr01: CI lint の正しい実行方法
 
 sr01レポのセルフリント手順（clang-format v19のコンテナ経由実行、`build.py lint`/`ci.py lint` の使い分け、CI lint再現）は `~/.claude/sr01_self_lint.md` を参照すること
