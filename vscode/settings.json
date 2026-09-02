@@ -127,5 +127,6 @@
     "*.xacro": "xml",
     "*.urdf": "xml",
     "*.sdf": "xml"
-  }
+  },
+  "C_Cpp.intelliSenseEngine": "disabled"
 }

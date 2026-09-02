@@ -1,0 +1,8 @@
+{
+  "uuid": "power-profile-colors@custom",
+  "name": "Power Profile Colors",
+  "description": "クイック設定のPower Modeトグルを電源プロファイル別に色分けする（Performance=青 / Balanced=緑 / Power Saver=赤）。標準ではPerformanceとPower Saverが同じアクセント色になり区別できないため。",
+  "shell-version": ["46"],
+  "session-modes": ["user"],
+  "version": 1
+}

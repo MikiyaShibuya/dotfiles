@@ -24,11 +24,37 @@ else
 fi
 
 # Install ydotool if not already installed
+#
+# Build from source instead of using the apt package: apt ships v0.1.8, whose
+# `key` subcommand takes key names (`alt+r`) rather than the raw
+# `<keycode>:<pressed>` syntax config.yml relies on (`ydotool key 56:1 ...`).
+# v0.1.8 silently treats `56:1` as an uninterpretable value and just delays,
+# so gestures would break with no error. It also ships no ydotoold daemon.
+YDOTOOL_VERSION=v1.0.4
+
 if command -v ydotool &> /dev/null; then
-    echo "ydotool is already installed"
+    YDOTOOL_HELP="$(ydotool key --help 2>&1 || true)"
+    if grep -q '<keycode>:<pressed>' <<< "$YDOTOOL_HELP"; then
+        echo "ydotool is already installed: $(command -v ydotool)"
+    else
+        echo "Error: incompatible ydotool at $(command -v ydotool)"
+        echo "  config.yml needs the v1.x raw keycode syntax (e.g. 'ydotool key 56:1')."
+        echo "  Remove it (apt-get remove ydotool) and re-run this script."
+        exit 1
+    fi
 else
-    echo "Installing ydotool..."
-    apt-get install -y --no-install-recommends ydotool > /dev/null
+    echo "Installing ydotool $YDOTOOL_VERSION from source..."
+    apt-get update > /dev/null
+    apt-get install -y --no-install-recommends \
+        git cmake build-essential pkg-config scdoc > /dev/null
+
+    if [[ ! -d /tmp/ydotool ]]; then
+        git clone --depth 1 --branch "$YDOTOOL_VERSION" \
+            https://github.com/ReimuNotMoe/ydotool /tmp/ydotool
+    fi
+    cmake -S /tmp/ydotool -B /tmp/ydotool/build > /dev/null
+    cmake --build /tmp/ydotool/build > /dev/null
+    cmake --install /tmp/ydotool/build > /dev/null
 fi
 
 # Setup uinput access
@@ -63,6 +89,7 @@ if [[ -n "${SUDO_USER:-}" ]]; then
 
     echo "Run the following as your user to enable fusuma:"
     echo "  systemctl --user daemon-reload"
+    echo "  systemctl --user enable --now ydotoold"
     echo "  systemctl --user enable --now fusuma"
 fi
 
