@@ -105,6 +105,7 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 - サブモジュールと親リポジトリを混同しない
 - 間違ったコミットは `git revert` で修正する
 - git操作を宣言する前に、操作対象の実態を必ず確認する: リモートブランチは `git fetch` 後に存在確認、対象ブランチの状態は `git log --oneline` で確認する。会話コンテキストから推測したブランチ名・コミット数は使用前に必ず検証する
+- ブランチ参照前に対象だけfetchする（`git fetch origin <branch>`、約3秒）。手元の作業の話はローカル、他は `origin/<branch>`。乖離時は差分を述べて確認する
 
 ## コンフリクト解消
 - PRのコンフリクト解消は `git merge` を使う。`git rebase` はforce pushが必要になるため極力避ける
