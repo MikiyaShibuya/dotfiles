@@ -1,0 +1,3 @@
+[submodule "claude/private"]
+	path = claude/private
+	url = git@github.com:mshibuya-pfr/dotfiles-private.git

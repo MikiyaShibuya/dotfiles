@@ -81,7 +81,6 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
   - 例: `apt install`, `snap install`, `pip install`（venv外）, `npm install -g`, `cargo install`, `make install`
   - 一時的なツールは Docker コンテナ内で実行する
   - 例外: ユーザーの明示的指示、またはプロジェクトローカルなインストール
-- ROS2 環境が必要な場合は `ssh sr01-devcontainer`（ROS2 Jazzy）経由で使う。ただしこれはローカルマシン上のコンテナであり、そこでの実行は「ローカル実行」として扱う（ビルドの実行場所は「デプロイ・ビルド」節に従う）
 
 
 # Git Safety (CRITICAL)
@@ -188,7 +187,7 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 
 ### バックポートPRの相互参照
 
-同一機能を複数ブランチ（例: main と KEEP-sr-*）に反映する場合、両方のPR bodyに互いのPR番号を記載し相互参照させる（片方向のみは不可）。
+同一機能を複数ブランチ（例: main と長期メンテナンスブランチ）に反映する場合、両方のPR bodyに互いのPR番号を記載し相互参照させる（片方向のみは不可）。
 
 - backport元: `**<backport先ブランチ>向けbackport**: #NNNN`
 - backport先: `**<backport元ブランチ>向け対応**: #NNNN`
@@ -257,29 +256,6 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 - 子セッションとして親から作業を指示された場合、作業結果を無条件に親へ返信しない（子の返信が親コンテキストを汚染するため）。親への報告が必要と判断したら、返信前にユーザーに確認して許可を求める
 - 子セッション生成時、`spawn_session` の `directory` 引数は原則指定しない（省略時に親の cwd を継承する）。作業対象が worktree 等の別ディレクトリであっても、それを理由に `directory` を推測設定しない。ユーザーが起動ディレクトリを明示指定した場合のみ `directory` に設定する
 
-## デプロイ・ビルド
-- デプロイ系コマンド（`./setup-cli.sh deploy`、`./setup-cli.sh build`、`./setup-server.sh` 等）を実行する前に、必ず次の3点を文章で宣言する（ビルド実行とデプロイ先を混同しない。medusaは成果物の生成・push元でありデプロイ先ではない）
-  - **ビルド実行マシン**（medusa / ローカル / その他）
-  - **ビルド対象**（変更/パッケージ/ブランチ）
-  - **デプロイ先**（ロボット号機名 / なし=ビルドのみ）
-- デプロイ範囲は自分の差分ではなくロボットの実状態で判断する。デプロイ前に `docker ps --format '{{.Names}} {{.Image}}'` で全コンテナのイメージタグを確認し、自ブランチタグでないコンテナも併せて `dc updatex` する（合間に別ブランチの検証が入るため、「差分が波及しないから更新不要」は成立しない）
-- ローカルマシンに対して deploy/build を実行する場合は「⚠️ ローカルに対して実行します」と注意喚起してからユーザー確認を取る
-- ローカル（sr01-devcontainer 含む）でのコンテナイメージのビルドは行わない。イメージビルドは medusa で実行する
-- モジュール単位のビルド（`colcon build --packages-select <pkg>`）はローカルで実行してよいが、CPU を占有するとホストがフリーズし作業効率を落とすため、並列度を無制限にしない
-  - 実行前に `uptime` で load average を確認し、論理コア数の半分（16コア機なら 8）を超えていたら実行せず medusa を提案する
-  - 実行時は並列度を絞る: `./tools/build.py run --container <c> --env CMAKE_BUILD_PARALLEL_LEVEL=4 --env 'MAKEFLAGS=-j4 -l8' colcon build --parallel-workers 1 --packages-select <pkg>`
-  - フルビルド・多数パッケージ・同一セッションで3回以上の繰り返しは medusa で実行する
-- 指示のない lint（`build.py lint` / `ci.py lint`）は実行しない。実行したほうがよいと判断した場合は理由を述べて相談し、承認を得てから実行する
-- `run_in_background: true` ＋出力ファイル経由で結果を取りに行く運用は避け、原則フォアグラウンドで結果を直接受ける
-
-# マシン固有環境
-
-開発マシン・ロボット・ROS環境の接続情報は `~/.claude/machine.md` を参照すること
-
-sr01レポのaarch64イメージのビルド・push・デプロイは **abashiri-prison を primary** とし、手順は `~/.claude/abashiri_build_deploy.md` を参照すること。medusa は副系で、手順は `~/.claude/medusa_build_deploy.md`（実行契約・デプロイ手順の原本も同ファイル）
-# sr01: CI lint の正しい実行方法
-
-sr01レポのセルフリント手順（clang-format v19のコンテナ経由実行、`build.py lint`/`ci.py lint` の使い分け、CI lint再現）は `~/.claude/sr01_self_lint.md` を参照すること
 
 # スライド作成
 
@@ -291,6 +267,12 @@ sr01レポのセルフリント手順（clang-format v19のコンテナ経由実
 
 1. ルールを1〜2行の簡潔な行動指示として定式化する（エピソードの詳細は含めない）
 2. CLAUDE.mdの該当セクション（行動原則など）に追加する
-3. `~/.local/share/dotfiles/claude/CLAUDE_RULES_LOG.md` にインシデントの背景を記録する
+3. `~/.local/share/dotfiles/claude/private/CLAUDE_RULES_LOG.md` にインシデントの背景を記録する
    - 形式: `## ルール名 (日付)` → 経緯・根本原因・教訓
 4. CLAUDE.mdの総行数が増えすぎていないか確認し、既存ルールに統合できる場合は統合する
+
+# 社内固有設定
+
+社内固有のホスト名・機材名・コンテナ名・内部ブランチ名を含むルールは、このレポではなく非公開の `claude/private/` submodule に置く。このレポは公開されているため、それらを直接書かない。
+
+@~/.claude/CLAUDE.private.md
