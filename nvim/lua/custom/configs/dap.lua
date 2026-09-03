@@ -32,61 +32,12 @@ dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
 
--- Extrinsics Standalone configuration
-local workdir = "/home/mshibuya/pfr/sr_ws/sr01-production/camera-calibration/camera_calib"
-
--- Common environment for camera calibration
-local calib_env = {
-  PYTHONPATH = table.concat({
-    workdir .. "/baku-baku-camera-calib/production/src/baku_camera_calib",
-    workdir .. "/baku-baku-camera-calib/calib",
-    workdir,
-    workdir .. "/baku-baku-camera-calib/production/install/baku_camera_calib/lib/python3.12/site-packages",
-    workdir .. "/baku-baku-camera-calib/production/install/baku_calib_srvs/lib/python3.12/site-packages",
-    "/opt/ros/jazzy/lib/python3.12/site-packages",
-  }, ":"),
-  AMENT_PREFIX_PATH = workdir .. "/baku-baku-camera-calib/production/install/baku_camera_calib:"
-    .. workdir .. "/baku-baku-camera-calib/production/install/baku_calib_srvs:/opt/ros/jazzy",
-  LD_LIBRARY_PATH = workdir .. "/baku-baku-camera-calib/production/install/baku_calib_srvs/lib"
-    .. ":/opt/ros/jazzy/opt/zenoh_cpp_vendor/lib:/opt/ros/jazzy/opt/sdformat_vendor/lib"
-    .. ":/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/x86_64-linux-gnu"
-    .. ":/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib"
-    .. ":/opt/ros/jazzy/opt/gz_tools_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib"
-    .. ":/opt/ros/jazzy/lib",
-}
-
--- Custom configuration names (for dedup on reload)
-local custom_configs = { "Extrinsics Standalone", "Calib Dialog" }
-dap.configurations.python = vim.tbl_filter(function(c)
-  return not vim.tbl_contains(custom_configs, c.name)
-end, dap.configurations.python or {})
-
-table.insert(dap.configurations.python, {
-  type = "python",
-  request = "launch",
-  name = "Extrinsics Standalone",
-  program = workdir .. "/tests/run_extrinsics_standalone.py",
-  args = { "calibdata_SR01NONE/front/extrinsics_args_0.npz" },
-  cwd = workdir,
-  env = calib_env,
-  justMyCode = false,
-})
-
-table.insert(dap.configurations.python, {
-  type = "python",
-  request = "launch",
-  name = "Calib Dialog",
-  program = workdir .. "/camera_calib_dialog.py",
-  args = {
-    "--hostname", "SR01NONE",
-    "--output", "/home/mshibuya/camera_calib_results/SR01NONE_2026-02-19-10-40-46/summary.txt",
-    "--camera_type", "front",
-    "--robot_type", "SR",
-  },
-  cwd = workdir,
-  env = calib_env,
-  justMyCode = false,
-})
+-- 社内プロジェクトの launch 設定は非公開レポに置く。README "Private Configuration" 参照。
+-- pcall を使わないのは、モジュール内のエラーを握り潰さないため
+local dap_projects = vim.fn.stdpath("config") .. "/lua/custom/configs/dap_projects.lua"
+if vim.fn.filereadable(dap_projects) == 1 then
+  require("custom.configs.dap_projects").setup(dap)
+end
 
 -- Keymaps
 local keymap = vim.keymap

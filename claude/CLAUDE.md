@@ -267,12 +267,12 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 
 1. ルールを1〜2行の簡潔な行動指示として定式化する（エピソードの詳細は含めない）
 2. CLAUDE.mdの該当セクション（行動原則など）に追加する
-3. `~/.local/share/dotfiles/claude/private/CLAUDE_RULES_LOG.md` にインシデントの背景を記録する
+3. `~/.local/share/dotfiles/private/claude/CLAUDE_RULES_LOG.md` にインシデントの背景を記録する
    - 形式: `## ルール名 (日付)` → 経緯・根本原因・教訓
 4. CLAUDE.mdの総行数が増えすぎていないか確認し、既存ルールに統合できる場合は統合する
 
 # 社内固有設定
 
-社内固有のホスト名・機材名・コンテナ名・内部ブランチ名を含むルールは、このレポではなく非公開の `claude/private/` submodule に置く。このレポは公開されているため、それらを直接書かない。
+社内固有のホスト名・機材名・リポジトリ名・コンテナ名・内部ブランチ名を含む設定は、このレポではなく非公開の `private/` submodule に置く。このレポは公開されているため、それらを直接書かない。
 
 @~/.claude/CLAUDE.private.md

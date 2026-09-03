@@ -2,3 +2,6 @@
 docker/container-disk/*
 !docker/container-disk/.gitkeep
 gschemas.compiled
+
+# private submodule から張られる symlink（nvim の runtimepath 上に必要）
+nvim/lua/custom/configs/dap_projects.lua

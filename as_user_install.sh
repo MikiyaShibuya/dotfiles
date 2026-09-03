@@ -84,10 +84,12 @@ mkdir -p "$HOME/.claude"
 ln -nfs "$DOTFILES_DIR/claude/settings.json" "$HOME/.claude/settings.json"
 ln -nfs "$DOTFILES_DIR/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
 
-# 社内固有設定は非公開 submodule に置く。未取得の環境では公開分だけで動くようスキップする
-if [[ -e "$DOTFILES_DIR/claude/private/CLAUDE.private.md" ]]; then
-    ln -nfs "$DOTFILES_DIR/claude/private/CLAUDE.private.md" "$HOME/.claude/CLAUDE.private.md"
-    ln -nfs "$DOTFILES_DIR/claude/private/settings.local.json" "$HOME/.claude/settings.local.json"
+# ==== 社内固有設定 ====
+# 非公開 submodule に置く。未取得の環境では公開分だけで動くようスキップする
+if [[ -e "$DOTFILES_DIR/private/README.md" ]]; then
+    ln -nfs "$DOTFILES_DIR/private/claude/CLAUDE.private.md" "$HOME/.claude/CLAUDE.private.md"
+    ln -nfs "$DOTFILES_DIR/private/claude/settings.local.json" "$HOME/.claude/settings.local.json"
+    ln -nfs "$DOTFILES_DIR/private/nvim/dap_projects.lua" "$DOTFILES_DIR/nvim/lua/custom/configs/dap_projects.lua"
 fi
 
 # Install tpm (tmux plugin manager)

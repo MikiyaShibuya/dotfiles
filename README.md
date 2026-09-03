@@ -79,9 +79,33 @@ U=`id -u` G=`id -g` UBUNTU_CODENAME=jammy docker compose up --build
 │   ├── karabiner/  # Keyboard remapping
 │   └── iterm2/     # iTerm2 profile
 ├── docker/         # Dockerfile, compose.yaml
+├── private/        # Work-internal config (private submodule, optional)
 ├── install.sh      # Main installer (run as root)
 ├── install_optional.sh  # Interactive optional component installer
 └── as_user_install.sh  # User-level setup
+```
+
+## Private Configuration
+
+This repository is public, so it must not contain work-internal hostnames, machine
+names, repository names, container names, or internal branch names. Such settings
+live in a separate private repository mounted at `private/` as a submodule.
+
+`as_user_install.sh` symlinks the private files into place only when the submodule
+is checked out, so a clone without access to it still installs and runs with the
+public configuration alone.
+
+| Private file | Consumer |
+| --- | --- |
+| `private/claude/CLAUDE.private.md` | imported by `claude/CLAUDE.md` |
+| `private/claude/settings.local.json` | merged into `claude/settings.json` by Claude Code |
+| `private/nvim/dap_projects.lua` | loaded by `nvim/lua/custom/configs/dap.lua` if present |
+
+To check it out:
+
+```bash
+git submodule update --init --recursive
+./as_user_install.sh
 ```
 
 ## Setup SSH-Agent sudo auth
