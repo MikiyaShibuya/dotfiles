@@ -90,6 +90,14 @@ if [[ -e "$DOTFILES_DIR/private/README.md" ]]; then
     ln -nfs "$DOTFILES_DIR/private/claude/CLAUDE.private.md" "$HOME/.claude/CLAUDE.private.md"
     ln -nfs "$DOTFILES_DIR/private/claude/settings.local.json" "$HOME/.claude/settings.local.json"
     ln -nfs "$DOTFILES_DIR/private/nvim/dap_projects.lua" "$DOTFILES_DIR/nvim/lua/custom/configs/dap_projects.lua"
+
+    # skill はディレクトリ単位で張る。~/.claude/skills には dotfiles 管理外の
+    # skill も同居するため、skills ディレクトリ自体は symlink にしない
+    mkdir -p "$HOME/.claude/skills"
+    for skill_dir in "$DOTFILES_DIR"/private/claude/skills/*/; do
+        [[ -d "$skill_dir" ]] || continue
+        ln -nfs "${skill_dir%/}" "$HOME/.claude/skills/$(basename "$skill_dir")"
+    done
 fi
 
 # Install tpm (tmux plugin manager)
