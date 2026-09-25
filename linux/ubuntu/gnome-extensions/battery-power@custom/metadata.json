@@ -1,0 +1,8 @@
+{
+  "uuid": "battery-power@custom",
+  "name": "Battery Power",
+  "description": "バッテリーの充放電電力(W)をクイック設定の電池アイコン右に表示する。放電中は数値のみ、AC受電中はプラグアイコンを添え、充電中は色を変える。",
+  "shell-version": ["46"],
+  "session-modes": ["user"],
+  "version": 1
+}

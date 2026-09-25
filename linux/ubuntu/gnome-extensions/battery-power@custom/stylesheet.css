@@ -1,0 +1,23 @@
+/* 電池％の直後に並ぶので左に余白を入れる。St は actor の margin を無視することがあるため padding で確保する */
+.battery-power-indicator {
+  spacing: 4px;
+  padding-left: 8px;
+}
+
+/* Yaru のパネル用 system-status-icon は左右に padding 6px + margin 4px を持つ。
+   そのままだと充電中だけ余白が倍近くになるため打ち消し、放電中と同じ間隔に揃える */
+.battery-power-icon {
+  padding: 0;
+  margin: 0;
+}
+
+.battery-power-label {
+  font-feature-settings: "tnum";  /* 値が変わっても幅が動かないよう等幅数字にする */
+  font-size: 0.9em;
+}
+
+/* 充電中 = 緑。power-profile-colors の Balanced と同じ #26a269 系で揃える */
+.battery-power-indicator.battery-power-charging .battery-power-icon,
+.battery-power-indicator.battery-power-charging .battery-power-label {
+  color: #2ec27e;
+}

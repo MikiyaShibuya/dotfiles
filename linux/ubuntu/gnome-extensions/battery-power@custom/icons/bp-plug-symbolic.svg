@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Yaru/Adwaita にプラグ形の symbolic アイコンが無いため自前で用意する。
+     ファイル名を -symbolic.svg にすると St がパネルの前景色で塗り直す。 -->
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <g fill="#2e3436">
+    <rect x="5" y="1" width="2" height="3" rx="0.5"/>
+    <rect x="9" y="1" width="2" height="3" rx="0.5"/>
+    <rect x="3" y="4" width="10" height="6" rx="1.5"/>
+    <rect x="7" y="10" width="2" height="5" rx="1"/>
+  </g>
+</svg>
