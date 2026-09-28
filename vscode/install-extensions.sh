@@ -17,6 +17,7 @@ extensions=(
 
   # === AI ===
   anthropic.claude-code                  # Claude Code IDE integration (diff view, selection context)
+  vsls-contrib.codetour                  # Guided walkthroughs: per-line callouts written as .tours/*.tour
 
   # === Languages: mason.nvim equivalents ===
   ms-python.python                       # Python support
