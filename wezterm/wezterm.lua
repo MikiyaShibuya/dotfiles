@@ -75,4 +75,33 @@ config.mouse_bindings = {
   },
 }
 
+-- ターミナルに出た `path/to/file.cpp:120` を Ctrl+クリックで VSCode に飛ばす。
+-- Claude Code が挙げた参照箇所をその場で開くためのもの。
+-- 相対パスの基準は vsopen-resolve 側で決める（tmux を挟むと pane の cwd が
+-- WezTerm から見えないため、ここでは解決しない）。
+local source_file_pattern =
+  [[((?:~/|/)?(?:[\w.\-]+/)+[\w.\-]+\.]] ..
+  [[(?:cpp|hpp|cxx|hxx|cc|[ch]|py|ts|tsx|js|jsx|vue|lua|sh|rs|go|java|]] ..
+  [[md|json|jsonc|ya?ml|toml|xml|srv|msg|action|launch|cmake|txt|csv)]] ..
+  [[(?::\d+){1,2})]]
+
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
+table.insert(config.hyperlink_rules, {
+  regex = source_file_pattern,
+  format = 'vsopen:$1',
+})
+
+wezterm.on('open-uri', function(_, _, uri)
+  local target = uri:match('^vsopen:(.+)$')
+  if not target then
+    return true
+  end
+  -- GUI プロセスの PATH に ~/.local/bin は無いので絶対パスで起動する
+  wezterm.background_child_process {
+    os.getenv('HOME') .. '/.local/bin/vsopen-resolve',
+    target,
+  }
+  return false
+end)
+
 return config
