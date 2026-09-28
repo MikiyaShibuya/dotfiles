@@ -113,6 +113,21 @@
   },
 
   // ============================================================
+  // Code review: Claude Code が開いた箇所・差分を読む前提の設定
+  // ============================================================
+  // 既に開いているタブがあれば新規に開かず、そのタブを表に出す
+  "workbench.editor.revealIfOpen": true,
+  // gd などのジャンプでプレビュータブを使わない。参照箇所を並べたまま残す
+  "workbench.editor.enablePreviewFromCodeNavigation": false,
+  "workbench.editor.highlightModifiedTabs": true,
+  // 空白のみの差分を隠すと、整形由来の変更を見落とす
+  "diffEditor.ignoreTrimWhitespace": false,
+  "diffEditor.renderSideBySide": true,
+  "diffEditor.maxComputationTime": 0,
+  "scm.diffDecorationsGutterVisibility": "always",
+  "scm.diffDecorations": "all",
+
+  // ============================================================
   // Diagnostic display
   // ============================================================
   "editor.hover.delay": 250,
