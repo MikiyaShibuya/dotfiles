@@ -1,0 +1,177 @@
+#!/usr/bin/env bash
+#
+# vsopen - 会話中に参照しているコードを、動いている VSCode ウィンドウで開く
+#
+# Claude Code から「この箇所を見せて」に応えるための薄いラッパ。
+# 引数はエディタが吐く `file:line` 形式をそのまま受けられる形にしてある。
+#
+#   vsopen src/foo.cpp                 ファイルを開く
+#   vsopen src/foo.cpp:120             120行目にカーソルを置いて開く
+#   vsopen src/foo.cpp:120:8           行と桁を指定して開く
+#   vsopen src/foo.cpp:120-160         範囲は開始行へのジャンプに丸める（後述）
+#   vsopen a.cpp:10 b.hpp:20 c.ts      複数箇所をまとめて開く
+#   vsopen -d OLD NEW                  2ファイルを差分ビューで開く
+#   vsopen -g HEAD src/foo.cpp         指定リビジョンとの差分ビューで開く
+#   vsopen -n src/foo.cpp              新しいウィンドウで開く
+#
+# `code --goto` は位置指定しか持たないため、範囲を選択状態にはできない。
+# 範囲指定は開始行へジャンプし、範囲を標準出力に出して呼び出し側に返す。
+
+set -euo pipefail
+
+readonly PROG="${0##*/}"
+
+die() {
+    printf '%s: %s\n' "$PROG" "$1" >&2
+    exit 1
+}
+
+usage() {
+    awk 'NR > 2 && /^#/ { sub(/^# ?/, ""); print; next } NR > 2 { exit }' "$0"
+    exit "${1:-0}"
+}
+
+# 差分用の一時ファイルはセッション単位で溜めて、終了時には消さない。
+# VSCode は差分タブを開いたまま保持するため、即削除すると中身が消える。
+tmp_root() {
+    local dir="${TMPDIR:-/tmp}/vsopen-$UID"
+    mkdir -p "$dir"
+    printf '%s' "$dir"
+}
+
+require_code() {
+    command -v code >/dev/null 2>&1 \
+        || die "'code' がPATHにない。VSCode の CLI が必要（ssh先やコンテナ内では使えない）"
+}
+
+# 開いたファイルのリポジトリルートを控える。ターミナル上の `file:line` を
+# クリックしたとき、vsopen-resolve が相対パスの基準として使う
+record_root() {
+    local dir root
+    dir="$(dirname "$1")"
+    root="$(git -C "$dir" rev-parse --show-toplevel 2>/dev/null)" || root="$dir"
+    local cache="${XDG_CACHE_HOME:-$HOME/.cache}/vsopen"
+    mkdir -p "$cache"
+    printf '%s\n' "$root" > "$cache/last-root"
+}
+
+# spec から file / line / col を切り出す。行番号らしき接尾辞だけを剥がし、
+# 剥がした結果が実在しなければ spec 全体をファイル名として扱う
+parse_target() {
+    local spec="$1"
+    local file line col
+
+    if [[ "$spec" =~ ^(.+):([0-9]+):([0-9]+)$ ]]; then
+        file="${BASH_REMATCH[1]}"; line="${BASH_REMATCH[2]}"; col="${BASH_REMATCH[3]}"
+    elif [[ "$spec" =~ ^(.+):([0-9]+)-([0-9]+)$ ]]; then
+        file="${BASH_REMATCH[1]}"; line="${BASH_REMATCH[2]}"; col=1
+        RANGE_END="${BASH_REMATCH[3]}"
+    elif [[ "$spec" =~ ^(.+):([0-9]+)$ ]]; then
+        file="${BASH_REMATCH[1]}"; line="${BASH_REMATCH[2]}"; col=1
+    else
+        file="$spec"; line=""; col=""
+    fi
+
+    if [[ ! -e "$file" && -e "$spec" ]]; then
+        file="$spec"; line=""; col=""; RANGE_END=""
+    fi
+
+    PARSED_FILE="$file"; PARSED_LINE="$line"; PARSED_COL="$col"
+}
+
+open_target() {
+    local spec="$1"
+    RANGE_END=""
+    parse_target "$spec"
+
+    [[ -e "$PARSED_FILE" ]] || die "ファイルが存在しない: $PARSED_FILE"
+    [[ -f "$PARSED_FILE" ]] || die "通常ファイルではない: $PARSED_FILE"
+
+    local abs
+    abs="$(realpath "$PARSED_FILE")"
+    record_root "$abs"
+
+    if [[ -n "$PARSED_LINE" ]]; then
+        # stdin が tty でないと code が使い方を出力するので塞ぐ
+        code "${WINDOW_ARGS[@]}" --goto "$abs:$PARSED_LINE:$PARSED_COL" </dev/null
+        if [[ -n "$RANGE_END" ]]; then
+            printf 'opened %s:%s-%s\n' "$abs" "$PARSED_LINE" "$RANGE_END"
+        else
+            printf 'opened %s:%s\n' "$abs" "$PARSED_LINE"
+        fi
+    else
+        code "${WINDOW_ARGS[@]}" "$abs"
+        printf 'opened %s\n' "$abs"
+    fi
+}
+
+open_file_diff() {
+    local left="$1" right="$2"
+    [[ -f "$left" ]] || die "ファイルが存在しない: $left"
+    [[ -f "$right" ]] || die "ファイルが存在しない: $right"
+    code "${WINDOW_ARGS[@]}" --diff "$(realpath "$left")" "$(realpath "$right")"
+    printf 'diff %s <-> %s\n' "$left" "$right"
+}
+
+open_git_diff() {
+    local rev="$1" spec="$2"
+    RANGE_END=""
+    parse_target "$spec"
+    [[ -f "$PARSED_FILE" ]] || die "ファイルが存在しない: $PARSED_FILE"
+
+    local abs dir relpath
+    abs="$(realpath "$PARSED_FILE")"
+    dir="$(dirname "$abs")"
+
+    git -C "$dir" rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+        || die "git リポジトリの外: $abs"
+    relpath="$(git -C "$dir" ls-files --full-name -- "$abs")"
+    [[ -n "$relpath" ]] || die "git の管理下にない: $abs"
+
+    local snapshot
+    snapshot="$(tmp_root)/$(printf '%s' "$rev" | tr '/:~^' '____').${abs##*/}"
+    git -C "$dir" show "$rev:$relpath" > "$snapshot" \
+        || die "リビジョン $rev に $relpath が存在しない"
+
+    code "${WINDOW_ARGS[@]}" --diff "$snapshot" "$abs"
+    printf 'diff %s@%s <-> worktree\n' "$relpath" "$rev"
+}
+
+main() {
+    WINDOW_ARGS=()
+    local mode=open
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h|--help) usage 0 ;;
+            -n|--new-window) WINDOW_ARGS+=(--new-window); shift ;;
+            -d|--diff) mode=filediff; shift; break ;;
+            -g|--git-diff) mode=gitdiff; shift; break ;;
+            --) shift; break ;;
+            -*) die "不明なオプション: $1（--help 参照）" ;;
+            *) break ;;
+        esac
+    done
+
+    [[ $# -gt 0 ]] || usage 1
+    require_code
+
+    case "$mode" in
+        filediff)
+            [[ $# -eq 2 ]] || die "-d は2ファイルを取る（指定: $#）"
+            open_file_diff "$1" "$2"
+            ;;
+        gitdiff)
+            [[ $# -eq 2 ]] || die "-g は <rev> <file> を取る（指定: $#）"
+            open_git_diff "$1" "$2"
+            ;;
+        open)
+            local spec
+            for spec in "$@"; do
+                open_target "$spec"
+            done
+            ;;
+    esac
+}
+
+main "$@"

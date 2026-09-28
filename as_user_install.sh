@@ -79,6 +79,14 @@ ln -nfs "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.config/tmux/tmux.conf"
 mkdir -p "$HOME/.config/wezterm"
 ln -nfs "$DOTFILES_DIR/wezterm/wezterm.lua" "$HOME/.config/wezterm/wezterm.lua"
 
+# ==== ユーザーコマンド ====
+# ~/.local/bin は zshrc が PATH に入れている
+mkdir -p "$HOME/.local/bin"
+for cmd in "$DOTFILES_DIR"/bin/*; do
+    [[ -f "$cmd" && -x "$cmd" ]] || continue
+    ln -nfs "$cmd" "$HOME/.local/bin/$(basename "$cmd")"
+done
+
 # ==== Claude Code Setting ====
 mkdir -p "$HOME/.claude"
 ln -nfs "$DOTFILES_DIR/claude/settings.json" "$HOME/.claude/settings.json"

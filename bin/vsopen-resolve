@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+#
+# vsopen-resolve - ターミナルに出た `file:line` を実ファイルに解決して vsopen に渡す
+#
+# WezTerm の hyperlink_rules から Ctrl+クリックで呼ばれる。クリック時点では
+# 相対パスの基準ディレクトリが分からないため、候補ルートを順に当てて実在する
+# ものを選ぶ。tmux を挟むと WezTerm から pane の cwd が見えないのが理由。
+#
+# 候補ルートの優先順:
+#   1. vsopen が最後に開いたファイルのリポジトリルート（~/.cache/vsopen/last-root）
+#   2. ~/.config/vsopen/roots に1行1パスで書いたディレクトリ
+#   3. $HOME
+#
+#   vsopen-resolve src/foo.cpp:120
+#   vsopen-resolve /abs/path/foo.cpp:120:8
+
+set -euo pipefail
+
+readonly PROG="${0##*/}"
+readonly LAST_ROOT_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/vsopen/last-root"
+readonly ROOTS_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/vsopen/roots"
+
+die() {
+    printf '%s: %s\n' "$PROG" "$1" >&2
+    exit 1
+}
+
+# 末尾の :line / :line:col を落として純粋なパス部分を得る
+strip_position() {
+    local spec="$1"
+    spec="${spec%:}"
+    if [[ "$spec" =~ ^(.+):[0-9]+:[0-9]+$ ]]; then
+        printf '%s' "${BASH_REMATCH[1]}"
+    elif [[ "$spec" =~ ^(.+):[0-9]+$ ]]; then
+        printf '%s' "${BASH_REMATCH[1]}"
+    else
+        printf '%s' "$spec"
+    fi
+}
+
+candidate_roots() {
+    [[ -r "$LAST_ROOT_FILE" ]] && cat "$LAST_ROOT_FILE"
+    # コメント行と空行を捨てる。設定ファイルは任意なので無くてもよい
+    [[ -r "$ROOTS_FILE" ]] && sed -E '/^[[:space:]]*(#|$)/d' "$ROOTS_FILE"
+    printf '%s\n' "$HOME"
+}
+
+main() {
+    [[ $# -ge 1 ]] || die "usage: $PROG <file>[:<line>[:<col>]]"
+
+    local spec="$1"
+    spec="${spec#vsopen:}"
+
+    local path suffix
+    path="$(strip_position "$spec")"
+    suffix="${spec#"$path"}"
+
+    # チルダ展開はシェルを経ていないので自前で行う
+    [[ "$path" == '~/'* ]] && path="$HOME/${path#\~/}"
+
+    if [[ "$path" == /* ]]; then
+        [[ -f "$path" ]] || die "ファイルが存在しない: $path"
+        exec vsopen "$path$suffix"
+    fi
+
+    # 先頭の / が hyperlink の単語境界で削られた絶対パスも拾う
+    if [[ -f "/$path" ]]; then
+        exec vsopen "/$path$suffix"
+    fi
+
+    local root
+    while IFS= read -r root; do
+        [[ -n "$root" && -d "$root" ]] || continue
+        if [[ -f "$root/$path" ]]; then
+            exec vsopen "$root/$path$suffix"
+        fi
+    done < <(candidate_roots)
+
+    die "どの候補ルートにも見つからない: $path"
+}
+
+main "$@"
