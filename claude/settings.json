@@ -81,6 +81,7 @@
       "Bash(vsopen:*)",
       "Bash(code --goto:*)",
       "Bash(code --diff:*)",
+      "Bash(code --list-extensions:*)",
       "mcp__linear__get_agent_skill",
       "mcp__linear__get_attachment",
       "mcp__linear__get_diff",

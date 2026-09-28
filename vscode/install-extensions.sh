@@ -15,9 +15,8 @@ extensions=(
   # === Git: gitsigns equivalent ===
   eamodio.gitlens                        # Git blame, history, hunk navigation
 
-  # === AI: copilot.vim equivalent ===
-  GitHub.copilot                         # GitHub Copilot
-  GitHub.copilot-chat                    # Copilot Chat
+  # === AI ===
+  anthropic.claude-code                  # Claude Code IDE integration (diff view, selection context)
 
   # === Languages: mason.nvim equivalents ===
   ms-python.python                       # Python support
@@ -33,12 +32,27 @@ extensions=(
   ms-vscode-remote.remote-ssh            # Remote SSH
 )
 
+# vscode-neovim と normal mode を奪い合うため、同居させない
+conflicting=(
+  vscodevim.vim
+)
+
 echo "Installing VSCode extensions..."
 for ext in "${extensions[@]}"; do
   [[ "$ext" =~ ^# ]] && continue
   echo "  Installing: $ext"
   code --install-extension "$ext" --force 2>/dev/null || \
     echo "    WARNING: Failed to install $ext"
+done
+
+echo "Removing conflicting extensions..."
+installed="$(code --list-extensions 2>/dev/null)"
+for ext in "${conflicting[@]}"; do
+  if grep -qix "$ext" <<<"$installed"; then
+    echo "  Uninstalling: $ext"
+    code --uninstall-extension "$ext" 2>/dev/null || \
+      echo "    WARNING: Failed to uninstall $ext"
+  fi
 done
 
 echo ""
