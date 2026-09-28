@@ -28,7 +28,13 @@
   "editor.bracketPairColorization.enabled": true,
   "editor.guides.bracketPairs": true,
   "editor.stickyScroll.enabled": false,
-  "editor.smoothScrolling": false,
+
+  // Chromium は Linux でタッチパッドの慣性スクロールを実装しないため、
+  // せめて補間アニメーションで飛びを減らす
+  "editor.smoothScrolling": true,
+  "workbench.list.smoothScrolling": true,
+  "terminal.integrated.smoothScrolling": true,
+  "editor.mouseWheelScrollSensitivity": 1.5,
 
   // No swap file equivalent: auto save
   "files.autoSave": "afterDelay",
