@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily archive of Claude Code transcripts
+
+[Timer]
+OnCalendar=daily
+# 停止中に逃した回は次回起動時に取り戻す
+Persistent=true
+RandomizedDelaySec=30min
+
+[Install]
+WantedBy=timers.target

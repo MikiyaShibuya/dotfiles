@@ -92,6 +92,15 @@ mkdir -p "$HOME/.claude"
 ln -nfs "$DOTFILES_DIR/claude/settings.json" "$HOME/.claude/settings.json"
 ln -nfs "$DOTFILES_DIR/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
 
+# transcript の日次退避。user systemd の無い環境（テスト用コンテナ等）ではスキップする
+if [[ $OS = Linux ]] && systemctl --user show-environment &> /dev/null; then
+    mkdir -p "$HOME/.config/systemd/user"
+    ln -nfs "$DOTFILES_DIR/claude/archive/claude-transcript-archive.service" "$HOME/.config/systemd/user/"
+    ln -nfs "$DOTFILES_DIR/claude/archive/claude-transcript-archive.timer" "$HOME/.config/systemd/user/"
+    systemctl --user daemon-reload
+    systemctl --user enable --now claude-transcript-archive.timer
+fi
+
 # ==== 社内固有設定 ====
 # 非公開 submodule に置く。未取得の環境では公開分だけで動くようスキップする
 if [[ -e "$DOTFILES_DIR/private/README.md" ]]; then

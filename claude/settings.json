@@ -4,6 +4,7 @@
     "pr": "",
     "sessionUrl": false
   },
+  "cleanupPeriodDays": 90,
   "permissions": {
     "allow": [
       "Bash(git:*)",

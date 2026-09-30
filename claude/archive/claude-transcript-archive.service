@@ -1,0 +1,8 @@
+[Unit]
+Description=Archive Claude Code transcripts before cleanupPeriodDays removes them
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/claude-archive-transcripts
+Nice=19
+IOSchedulingClass=idle

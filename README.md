@@ -108,6 +108,27 @@ git submodule update --init --recursive
 ./as_user_install.sh
 ```
 
+## Claude Code transcript の退避
+
+Claude Code は `cleanupPeriodDays`（`claude/settings.json` で 90 日）を過ぎた
+`~/.claude/projects/**/*.jsonl` を削除する。削除タイミングに依存せず残すため、
+user systemd timer `claude-transcript-archive.timer` が毎日全 transcript を
+`~/.claude-archive/projects/` へ zstd 圧縮で複製する（`as_user_install.sh` が登録）。
+
+- 退避版は削除しない。圧縮後の増加は約 100MB/月
+- 元より新しい退避版はスキップし、追記されたセッションだけ再圧縮する
+- root 所有で読めないディレクトリ（コンテナ内の Claude が作るもの）は対象外
+
+```bash
+# 検索（圧縮のまま）
+rg -z '<keyword>' ~/.claude-archive/projects/
+# 手動実行・結果確認
+systemctl --user start claude-transcript-archive.service
+journalctl --user -u claude-transcript-archive.service -n 5
+# 削除済みセッションを resume できる状態に戻す
+zstd -d ~/.claude-archive/projects/<slug>/<uuid>.jsonl.zst -o ~/.claude/projects/<slug>/<uuid>.jsonl
+```
+
 ## Setup SSH-Agent sudo auth
 
 Execute sudo commands without password by authenticating with SSH key.

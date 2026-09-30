@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+# claude-archive-transcripts - Claude Code の transcript を圧縮して退避する
+#
+# Usage: claude-archive-transcripts
+#
+# Environment variables:
+#   CLAUDE_PROJECTS_DIR  退避元 (default: ~/.claude/projects)
+#   CLAUDE_ARCHIVE_DIR   退避先 (default: ~/.claude-archive/projects)
+#
+# 退避先は削除しない。背景は README「Claude Code transcript の退避」参照
+
+set -euo pipefail
+
+SRC="${CLAUDE_PROJECTS_DIR:-$HOME/.claude/projects}"
+DST="${CLAUDE_ARCHIVE_DIR:-$HOME/.claude-archive/projects}"
+
+if [[ ! -d "$SRC" ]]; then
+    echo "Error: $SRC not found" >&2
+    exit 1
+fi
+command -v zstd &> /dev/null || { echo "Error: zstd not found" >&2; exit 1; }
+
+mkdir -p "$DST"
+
+archived=0
+failed=0
+while IFS= read -r -d '' src; do
+    rel="${src#"$SRC"/}"
+    dst="$DST/$rel.zst"
+    # dst の mtime は src に揃えてあるので、追記されたセッションだけ再圧縮される
+    [[ -e "$dst" && ! "$src" -nt "$dst" ]] && continue
+
+    mkdir -p "$(dirname "$dst")"
+    tmp="$dst.tmp.$$"
+    # 途中で落ちても既存の退避版を壊さないよう、一時ファイル経由で置き換える
+    if zstd -q -19 -T0 -f -o "$tmp" "$src" && touch -r "$src" "$tmp" && mv -f "$tmp" "$dst"; then
+        archived=$((archived + 1))
+    else
+        rm -f "$tmp"
+        echo "Warning: failed to archive $src" >&2
+        failed=$((failed + 1))
+    fi
+done < <(find "$SRC" -type d ! -readable -prune -o -type f -name '*.jsonl' -print0)
+
+# コンテナ内の root で動いた Claude が作るディレクトリは読めないので数だけ残す
+unreadable=$(find "$SRC" -mindepth 1 -type d ! -readable -prune -print | wc -l)
+
+echo "archived=$archived failed=$failed unreadable_dirs=$unreadable dst=$DST"
+[[ $failed -eq 0 ]]
