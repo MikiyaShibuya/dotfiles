@@ -141,6 +141,7 @@ if [[ "$OS" == "Linux" && "${DISTRO:-}" == "ubuntu" ]]; then
     add_component "tile_across_monitors" "Tile across monitors (GNOME extension)"
     add_component "power_profile_colors" "Power profile colors (GNOME extension)"
     add_component "battery_power" "Battery power watts (GNOME extension)"
+    add_component "power_history" "Battery/load history in Quick Settings (GNOME extension)"
     add_component "fontconfig" "Fonts + Fontconfig (Noto CJK, MesloLGS Nerd Font)"
 fi
 
@@ -240,6 +241,10 @@ check_power_profile_colors() {
 
 check_battery_power() {
     check_link "$USER_HOME/.local/share/gnome-shell/extensions/battery-power@custom"
+}
+
+check_power_history() {
+    check_link "$USER_HOME/.local/share/gnome-shell/extensions/power-history@custom"
 }
 
 check_fontconfig() {
@@ -564,6 +569,12 @@ install_battery_power() {
     echo "  Done."
 }
 
+install_power_history() {
+    echo "Installing power-history extension..."
+    "$SCRIPT_DIR/linux/ubuntu/gnome-extensions/power-history@custom/install.sh"
+    echo "  Done."
+}
+
 install_fontconfig() {
     echo "Installing fonts and configuring fontconfig..."
     # Install Noto CJK fonts
@@ -614,6 +625,9 @@ for comp in "${TO_INSTALL[@]}"; do
             ;;
         battery_power)
             NOTES+=("battery-power: Log out and back in for the extension to take effect")
+            ;;
+        power_history)
+            NOTES+=("power-history: Log out and back in for the extension to take effect")
             ;;
         fusuma)
             NOTES+=("fusuma: Log out and back in for input group. Then: systemctl --user daemon-reload && systemctl --user enable --now fusuma")

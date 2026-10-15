@@ -1,0 +1,8 @@
+{
+  "uuid": "power-history@custom",
+  "name": "Power History",
+  "description": "Shows a 24-hour battery chart in Quick Settings and opens a detail window on click.",
+  "shell-version": ["46"],
+  "session-modes": ["user"],
+  "version": 1
+}

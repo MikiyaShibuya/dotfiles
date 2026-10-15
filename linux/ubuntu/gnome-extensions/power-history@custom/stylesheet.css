@@ -1,0 +1,25 @@
+/* テーマの明暗どちらでも馴染むよう、中間灰の半透明で面を作る */
+.power-history-card {
+  background-color: rgba(127, 127, 127, 0.14);
+  border-radius: 18px;
+  padding: 12px 14px 10px 14px;
+  transition-duration: 100ms;
+}
+
+.power-history-card:hover,
+.power-history-card:focus {
+  background-color: rgba(127, 127, 127, 0.22);
+}
+
+.power-history-card:active {
+  background-color: rgba(127, 127, 127, 0.30);
+}
+
+.power-history-heading {
+  font-feature-settings: "tnum";
+}
+
+.power-history-chart {
+  height: 84px;
+  margin-top: 8px;
+}
