@@ -173,7 +173,10 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
    ```
 
 ## worktree
-- 作成場所は次のいずれか: repo内 / `~/tmp`（再起動で消えない）/ `/tmp`（再起動で消える）。ホーム直下等に安易に置かない
+- 作成場所は `<repoルート>/.claude/worktrees/<名前>` に固定する（EnterWorktree の既定と同じ）。`~/tmp`・`/tmp`・ホーム直下には作らない
+- サブモジュールの worktree は最上位リポジトリの `.claude/submodule-worktrees/<サブモジュール名>/<名前>` に置く。サブモジュール内で EnterWorktree を使わない（サブモジュール側に置かれるため）
+- 作成前に最上位リポジトリの `.git/info/exclude` に `/.claude/worktrees/`・`/.claude/submodule-worktrees/` があるか確認し、無ければ追加する
+- 置き場の外への `git worktree add|move` は hook（`claude/hooks/worktree-guard.sh`）が拒否する
 
 ## サブモジュール
 - サブモジュール内のコミット後は、親リポでサブモジュール参照を必ず更新する

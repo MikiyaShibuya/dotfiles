@@ -128,6 +128,10 @@
           {
             "type": "command",
             "command": "cmd=$(jq -r '.tool_input.command' 2>/dev/null); if printf '%s' \"$cmd\" | grep -Eq '\\bgit\\b.*\\bpush\\b'; then if printf '%s' \"$cmd\" | grep -Eq -- '(--force([=[:space:]]|$)|[[:space:]]-[A-Za-z]*f[A-Za-z]*([[:space:]]|$))'; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"plain force-push (--force/-f) is blocked by policy (CLAUDE.md Git Safety). Use --force-with-lease if needed.\"}}'; elif printf '%s' \"$cmd\" | grep -Eq -- '--force-with-lease'; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"ask\",\"permissionDecisionReason\":\"force-with-lease push requires user approval (CLAUDE.md Git Safety).\"}}'; fi; fi; exit 0"
+          },
+          {
+            "type": "command",
+            "command": "$HOME/.local/share/dotfiles/claude/hooks/worktree-guard.sh"
           }
         ]
       }
