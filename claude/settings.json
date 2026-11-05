@@ -135,6 +135,37 @@
           }
         ]
       }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/share/dotfiles/claude/hooks/lang-compact.sh"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/share/dotfiles/claude/hooks/lang-reminder.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/share/dotfiles/claude/hooks/lang-drift.sh"
+          }
+        ]
+      }
     ]
   },
   "alwaysThinkingEnabled": true,
