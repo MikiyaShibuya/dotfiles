@@ -91,6 +91,7 @@ done
 mkdir -p "$HOME/.claude"
 ln -nfs "$DOTFILES_DIR/claude/settings.json" "$HOME/.claude/settings.json"
 ln -nfs "$DOTFILES_DIR/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+ln -nfs "$DOTFILES_DIR/claude/slide_generation.md" "$HOME/.claude/slide_generation.md"
 
 # transcript の日次退避。user systemd の無い環境（テスト用コンテナ等）ではスキップする
 if [[ $OS = Linux ]] && systemctl --user show-environment &> /dev/null; then
@@ -114,6 +115,12 @@ if [[ -e "$DOTFILES_DIR/private/README.md" ]]; then
     for skill_dir in "$DOTFILES_DIR"/private/claude/skills/*/; do
         [[ -d "$skill_dir" ]] || continue
         ln -nfs "${skill_dir%/}" "$HOME/.claude/skills/$(basename "$skill_dir")"
+    done
+
+    # 手順書・接続情報は ~/.claude 直下から参照されるため1ファイルずつ張る
+    for doc in "$DOTFILES_DIR"/private/claude/docs/*.md; do
+        [[ -e "$doc" ]] || continue
+        ln -nfs "$doc" "$HOME/.claude/$(basename "$doc")"
     done
 fi
 
