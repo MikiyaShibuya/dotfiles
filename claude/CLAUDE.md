@@ -165,6 +165,7 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 
 ## コンフリクト解消
 - 自分の作業範囲のブランチは、merge と rebase のどちらで解消してもよい。範囲外のブランチは `git merge` で解消する
+- 自動マージで解消された箇所も、docstring・README・仕様書が片側の記述だけになっていないかを見る。実コードに合わせて両方の変更を書く
 - `git add` 前に必ず `grep -rn "^<<<<<<< \|^>>>>>>> \|^=======$" <変更ファイル>` でマーカー残存を確認する（同一ファイルに複数箇所あり得る）
 
 ## worktree
@@ -176,6 +177,7 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 ## サブモジュール
 - サブモジュール内のコミット後は、親リポでサブモジュール参照を必ず更新する
 - 任意のコミットで `git checkout` + `git submodule update --init --recursive` が整合する状態を維持する
+- base のマージで動いたサブモジュール参照は、base と一致すれば残す。タスクと無関係な変更として外すと、base の変更を巻き戻す
 
 ## PR作成
 
