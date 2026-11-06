@@ -1,3 +1,25 @@
+# 目指す振る舞い
+
+頼まれたことを、確かめた事実に基づいて、相手がすぐ使える状態まで仕上げる。その際、相手の時間や環境、他人の作業を余計に使わない。個別ルールに無い場面はこの方針で判断する。
+
+- 頼まれたことは、相手がすぐ使える段階（CI 結果の確認、成果物の表示、後片付け）まで終える
+- ユーザーの PC とデスクトップを占有しない（重い処理、認証画面、GUI の起動）
+- 指摘を受けたら、違反したルールを特定し、CLAUDE.md の修正を提案する。memory に事例を書き足さない。memory は進行中の案件の状態だけに使う
+
+## 自分の作業範囲
+
+次のどちらかに当たるものを「自分の作業範囲」とする。判定がつかないときは範囲外として扱う。
+
+- **Claude が作った作業ブランチ**: 次をすべて満たすもの
+  - ブランチ上のコミットがすべて自分のもの
+  - `git fetch origin <branch>` の後、リモートにだけあるコミットが無い
+  - auto-merge が設定されておらず、マージキューにも入っていない
+- **自分だけのリポジトリの main**: `git shortlog -sn -20` の結果が自分だけで、並行して進めている作業も無いもの
+
+範囲内では、amend、force push、rebase などの履歴の書き換えと、一括実行を、確認なしで行う。force push には `--force-with-lease` を使う。スタックの後続ブランチも範囲内なら、まとめて付け替える。
+
+複数人で開発している main・develop・KEEP-* などの共通ブランチでは、これらを一切行わない。
+
 # 応答スタイル
 
 ## 送信前チェック（報告・説明・提案に適用）
@@ -94,6 +116,7 @@
 
 - for / while ループや改行による複数コマンドの並列実行をしない。
   項目ごとに独立した単一コマンドとして1つずつ実行する。
+- 例外: 対象がすべて自分の作業範囲内なら、対象を明示的に並べたスクリプトを Write で作り、`bash <file>` の1回で一括実行してよい。ループは使わない
 - 整形に `python3 -c` や `python` へのパイプを使わない。
   `gh` なら `--json` + `--jq`、`kubectl` なら `-o jsonpath` のように、
   各CLIの組み込み整形フラグを使う。
@@ -117,7 +140,8 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 # Git Safety (CRITICAL)
 
 ## 絶対禁止
-- `git reset --hard`, `git push --force`（main/master）, `git clean -fd`
+- `git reset --hard`, `git clean -fd`
+- 共通ブランチ（複数人開発の main・develop・KEEP-* 等）への amend・force push・履歴の書き換え
 
 ## ユーザー確認が必要な操作
 - 未コミットの変更を失う可能性のある全ての操作（`git restore`, `git checkout --`, `git stash drop` 等）
@@ -125,8 +149,9 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 ## コミット
 - 論理的な単位で分割し、各コミットは単一の目的を表す
 - コミット前に `git diff` で各ファイルの変更内容を確認し、現在のタスクに関連するものだけをステージする
-- amendはユーザーに確認してから行う
+- amend は自分の作業範囲（冒頭「目指す振る舞い」）では確認なしで行う。範囲外では確認する
 - 実装を依頼されたらコミットまで行う。pushは別途指示があった場合のみ
+  - 例外: Claude が作った作業ブランチ（冒頭の判定）への push は、force push を含めて指示なしで行う
 - 曖昧な応答（「y」「ok」）や、自分が提案していないアクションを承認と解釈してコミットしない
 - 機能追加/削除時は関連ファイル（ドキュメント、テスト、ビルド設定、サブモジュール参照）を同一コミットで更新する
 - 単一の機能を実現するためのsubmodule bumpは同じコミットで行う
@@ -139,43 +164,8 @@ gh pr view <PR番号> --repo <repo> --json number,state,baseRefName,mergedAt,mer
 - ブランチ参照前に対象だけfetchする（`git fetch origin <branch>`、約3秒）。手元の作業の話はローカル、他は `origin/<branch>`。乖離時は差分を述べて確認する
 
 ## コンフリクト解消
-- PRのコンフリクト解消は `git merge` を使う。`git rebase` はforce pushが必要になるため極力避ける
-- rebaseが許容されるのは「後続ブランチが存在しないことが保証されている」または「rebaseのメリットがデメリットを明確に上回る正統な理由がある」場合のみ。その場合もユーザーに相談してから実行する
+- 自分の作業範囲のブランチは、merge と rebase のどちらで解消してもよい。範囲外のブランチは `git merge` で解消する
 - `git add` 前に必ず `grep -rn "^<<<<<<< \|^>>>>>>> \|^=======$" <変更ファイル>` でマーカー残存を確認する（同一ファイルに複数箇所あり得る）
-
-## スタックPRのbase merge後コンフリクト一括解消（ours strategy）
-
-スタックPRでbaseブランチがマージ済みの場合、PRのbaseを更新しようとすると大量コンフリクトが発生する。対象ブランチにbaseのコミットが含まれており、mainに入ったマージコミットと別オブジェクトとしてgitが認識するため。
-
-**方針**: ours mergeでgit祖先関係を修正し、rebaseで作った目標treeをrestore+amendで上書きする。
-
-1. **対象ブランチをリモートに合わせる**
-   ```bash
-   git checkout -B <対象ブランチ> origin/<対象ブランチ>
-   ```
-2. **一時ブランチを作成してrebaseで目標状態を作る**（コンフリクトが発生した場合は解消して続行）
-   ```bash
-   git checkout -b temp-<対象ブランチ>
-   git rebase origin/<マージ済みbaseブランチ>
-   ```
-3. **対象ブランチに戻りours mergeで祖先関係を修正**（treeは変わらない）
-   ```bash
-   git checkout <対象ブランチ>
-   git merge -s ours origin/<マージ済みbaseブランチ> --no-edit
-   ```
-4. **一時ブランチのtreeをmergeコミットに上書き**
-   ```bash
-   git restore --source=temp-<対象ブランチ> --staged --worktree .
-   git commit --amend --no-edit
-   ```
-5. **一時ブランチを削除**
-   ```bash
-   git branch -d temp-<対象ブランチ>
-   ```
-6. **完全性チェック**（PRのdiffがT固有ファイルのみであることを確認）
-   ```bash
-   git diff origin/<マージ済みbaseブランチ> HEAD --stat
-   ```
 
 ## worktree
 - 作成場所は `<repoルート>/.claude/worktrees/<名前>` に固定する（EnterWorktree の既定と同じ）。`~/tmp`・`/tmp`・ホーム直下には作らない
