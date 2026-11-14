@@ -150,5 +150,7 @@
     "*.sdf": "xml"
   },
   "C_Cpp.intelliSenseEngine": "disabled",
-  "codetour.showMarkers": true
+  "codetour.showMarkers": true,
+  "security.workspace.trust.untrustedFiles": "open",
+  "git.openRepositoryInParentFolders": "never"
 }
