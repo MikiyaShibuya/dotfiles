@@ -1,10 +1,10 @@
 {
+  "cleanupPeriodDays": 90,
   "attribution": {
     "commit": "",
     "pr": "",
     "sessionUrl": false
   },
-  "cleanupPeriodDays": 90,
   "permissions": {
     "allow": [
       "Bash(git:*)",
@@ -119,7 +119,7 @@
       "mcp__linear__extract_images"
     ]
   },
-  "model": "opus[1m]",
+  "model": "opus",
   "hooks": {
     "PreToolUse": [
       {
@@ -150,5 +150,13 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
-  "autoCompactWindow": 150000
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    }
+  },
+  "autoCompactWindow": 150000,
+  "env": {
+    "CLAUDE_CODE_EFFORT_LEVEL": "high"
+  }
 }
